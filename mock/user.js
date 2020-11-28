@@ -1,3 +1,10 @@
+/*
+ * @Descripttion:
+ * @Author: ex_lanlj2@partner.midea.com
+ * @Date: 2020-11-24 14:57:59
+ * @LastEditors: ex_lanlj2@partner.midea.com
+ * @LastEditTime: 2020-11-28 17:24:24
+ */
 
 const tokens = {
   admin: {
@@ -21,6 +28,83 @@ const users = {
     avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
     name: 'Normal Editor'
   }
+}
+
+const menusData = {
+  'code': 20000,
+  'data': [{
+    'children': [{
+      'children': [{
+        'component': '/system/user/create',
+        'hidden': true,
+        'id': 27,
+        'meta': {
+          'status': true,
+          'title': '添加用户'
+        },
+        'name': '添加用户',
+        'path': '/system/user/create',
+        'pid': 2
+      }, {
+        'component': '/system/user/edit',
+        'hidden': true,
+        'id': 29,
+        'meta': {
+          'status': true,
+          'title': '用户编辑',
+          'noCache': true,
+          'activeMenu': '/system/user'
+        },
+        'name': '用户编辑',
+        'path': '/system/user/edit/:id(\\d+)',
+        'pid': 2
+      }],
+      'component': '/system/user/list',
+      'hidden': false,
+      'id': 2,
+      'meta': {
+        'status': true,
+        'title': '用户管理'
+      },
+      'name': '用户管理',
+      'path': '/system/user',
+      'pid': 1
+    }, {
+      'component': '/system/menu/index',
+      'hidden': false,
+      'id': 3,
+      'meta': {
+        'status': true,
+        'title': '菜单管理'
+      },
+      'name': '菜单管理',
+      'path': '/system/menu',
+      'pid': 1
+    }, {
+      'alwaysShow': true,
+      'component': '/system/role/index',
+      'hidden': false,
+      'id': 26,
+      'meta': {
+        'status': true,
+        'title': '角色管理'
+      },
+      'name': '角色管理',
+      'path': '/system/role',
+      'pid': 1
+    }],
+    'component': '',
+    'hidden': false,
+    'id': 1,
+    'meta': {
+      'icon': 'el-icon-setting',
+      'status': true,
+      'title': '系统管理'
+    },
+    'name': '系统管理',
+    'path': '',
+    'pid': 0
+  }]
 }
 
 module.exports = [
@@ -79,6 +163,14 @@ module.exports = [
         code: 20000,
         data: 'success'
       }
+    }
+  },
+  // user getAuthMenu
+  {
+    url: '/vue-element-admin/user/getAuthMenu',
+    type: 'get',
+    response: _ => {
+      return menusData
     }
   }
 ]
