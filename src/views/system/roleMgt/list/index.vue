@@ -1,3 +1,10 @@
+<!--
+ * @Descripttion:
+ * @Author: ex_lanlj2@partner.midea.com
+ * @Date: 2020-11-30 17:15:42
+ * @LastEditors: ex_lanlj2@partner.midea.com
+ * @LastEditTime: 2020-12-05 12:47:28
+-->
 <template>
   <div class="app-container">
     <div class="filter-container">
@@ -79,7 +86,7 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
+      <el-table-column label="Actions" align="center" width="280" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             Edit
@@ -93,6 +100,11 @@
           <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">
             Delete
           </el-button>
+          <router-link :to="'/system/roleMgt/roleTomenu'">
+            <el-button type="primary" size="small">
+              授权
+            </el-button>
+          </router-link>
         </template>
       </el-table-column>
     </el-table>
@@ -131,6 +143,7 @@
         <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
           Confirm
         </el-button>
+
       </div>
     </el-dialog>
 

@@ -3,12 +3,12 @@
  * @Author: ex_lanlj2@partner.midea.com
  * @Date: 2020-11-24 14:58:00
  * @LastEditors: ex_lanlj2@partner.midea.com
- * @LastEditTime: 2020-11-28 15:41:24
+ * @LastEditTime: 2020-11-30 16:33:07
  */
 import { asyncRoutes, constantRoutes } from '@/router'
 import { getAuthMenu } from '@/api/user'
 import Layout from '@/layout'
-
+import { Message } from 'element-ui'
 /**
  * Use meta.role to determine if the current user has permission
  * @param roles
@@ -23,7 +23,7 @@ function hasPermission(roles, route) {
 }
 
 export const loadView = (view) => {
-  return (resolve) => require([`@/views${view}.vue`], resolve)
+  return (resolve) => require([`@/views${view}`], resolve)
 }
 
 /**
@@ -39,7 +39,7 @@ export function generaMenu(routes, data) {
       redirect: item.redirect,
       children: [],
       name: 'menu_' + item.id,
-      meta: item.meta
+      meta: (item.meta && (typeof item.meta === 'string')) ? JSON.parse(item.meta) : (item.meta || {})
     }
 
     if (item.children) {
@@ -91,10 +91,9 @@ const actions = {
         console.log(response)
         let data = response
         if (response.code !== 20000) {
-          // this.$message({
-          //   message: '菜单数据加载异常',
-          //   type: 0
-          // })
+          Message.success({
+            message: '菜单数据加载异常'
+          })
         } else {
           data = response.data
           Object.assign(loadMenuData, data)

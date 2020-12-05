@@ -1,5 +1,17 @@
+<!--
+ * @Descripttion:
+ * @Author: ex_lanlj2@partner.midea.com
+ * @Date: 2020-11-30 15:29:17
+ * @LastEditors: ex_lanlj2@partner.midea.com
+ * @LastEditTime: 2020-12-05 13:04:12
+-->
 <template>
   <div class="app-container">
+    <router-link :to="'/system/userMgt/create'">
+      <el-button type="primary" size="small" icon="el-icon-edit">
+        Add
+      </el-button>
+    </router-link>
     <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%">
       <el-table-column align="center" label="ID" width="80">
         <template slot-scope="scope">
@@ -41,10 +53,13 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="Actions" width="120">
+      <el-table-column align="center" label="Actions" width="220">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" icon="el-icon-edit" @click="goto('/system/user/edit/'+scope.row.id)">
+          <el-button type="primary" size="small" icon="el-icon-edit" @click="goto('/system/userMgt/edit',scope.row.title)">
             Edit
+          </el-button>
+          <el-button type="primary" size="small" icon="el-icon-edit" @click="goto('/system/userMgt/userTorole',scope.row.title)">
+            分配
           </el-button>
         </template>
       </el-table-column>
@@ -87,7 +102,7 @@ export default {
   },
   methods: {
     goto(path) {
-      this.$router.push({ path: path, query: { ids: '1213' }})
+      this.$router.push({ path: path })
     },
     getList() {
       this.listLoading = true

@@ -1,5 +1,17 @@
+<!--
+ * @Descripttion:
+ * @Author: ex_lanlj2@partner.midea.com
+ * @Date: 2020-11-24 14:58:00
+ * @LastEditors: ex_lanlj2@partner.midea.com
+ * @LastEditTime: 2020-12-05 12:22:52
+-->
 <template>
   <div class="app-container">
+    <router-link :to="'/system/menuMgt/create'">
+      <el-button type="primary" size="small" icon="el-icon-edit">
+        Add
+      </el-button>
+    </router-link>
     <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%">
       <el-table-column align="center" label="ID" width="80">
         <template slot-scope="scope">
@@ -43,9 +55,11 @@
 
       <el-table-column align="center" label="Actions" width="120">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" icon="el-icon-edit" @click="goto('/system/user/edit'+scope.row.id)">
-            Edit
-          </el-button>
+          <router-link :to="'/system/menuMgt/edit'">
+            <el-button type="primary" size="small" icon="el-icon-edit">
+              Edit {{ scope.row.er }}
+            </el-button>
+          </router-link>
         </template>
       </el-table-column>
     </el-table>
@@ -86,9 +100,6 @@ export default {
     this.getList()
   },
   methods: {
-    goto(path) {
-      this.$router.push({ path: path, query: { ids: '1213' }})
-    },
     getList() {
       this.listLoading = true
       fetchList(this.listQuery).then(response => {
