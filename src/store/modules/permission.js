@@ -3,7 +3,7 @@
  * @Author: ex_lanlj2@partner.midea.com
  * @Date: 2020-11-24 14:58:00
  * @LastEditors: ex_lanlj2@partner.midea.com
- * @LastEditTime: 2020-11-30 16:33:07
+ * @LastEditTime: 2020-12-05 13:50:07
  */
 import { asyncRoutes, constantRoutes } from '@/router'
 import { getAuthMenu } from '@/api/user'
@@ -75,6 +75,15 @@ const state = {
   addRoutes: []
 }
 
+// export function menusSomefiter(data) {
+//   const obj = {}
+//   data = data.reduce((cur, next) => {
+//     obj[next.path] ? '' : obj[next.path] = true && cur.push(next)
+//     return cur
+//   }, [])
+//   return data
+// }
+
 const mutations = {
   SET_ROUTES: (state, routes) => {
     state.addRoutes = routes
@@ -88,14 +97,10 @@ const actions = {
       const loadMenuData = []
       // 先查询后台并返回左侧菜单数据并把数据添加到路由
       getAuthMenu(state.token).then(response => {
-        console.log(response)
         let data = response
-        if (response.code !== 20000) {
-          Message.success({
-            message: '菜单数据加载异常'
-          })
-        } else {
+        if (response.code === 20000) {
           data = response.data
+
           Object.assign(loadMenuData, data)
           generaMenu(asyncRoutes, loadMenuData)
           let accessedRoutes
@@ -106,6 +111,10 @@ const actions = {
           }
           commit('SET_ROUTES', accessedRoutes)
           resolve(accessedRoutes)
+        } else {
+          Message.success({
+            message: '菜单数据加载异常'
+          })
         }
       }).catch(error => {
         console.log(error)

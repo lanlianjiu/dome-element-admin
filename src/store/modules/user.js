@@ -25,6 +25,10 @@ const mutations = {
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles
+  },
+  CELAR_ROUTES: (state) => {
+    state.addRoutes = []
+    state.routes = []
   }
 }
 
@@ -78,6 +82,7 @@ const actions = {
       logout(state.token).then(() => {
         commit('SET_TOKEN', '')
         commit('SET_ROLES', [])
+        commit('CELAR_ROUTES')
         removeToken()
         resetRouter()
 

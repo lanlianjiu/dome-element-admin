@@ -3,7 +3,7 @@
  * @Author: ex_lanlj2@partner.midea.com
  * @Date: 2020-11-24 14:57:59
  * @LastEditors: ex_lanlj2@partner.midea.com
- * @LastEditTime: 2020-12-05 13:04:58
+ * @LastEditTime: 2020-12-11 17:52:00
  */
 
 const tokens = {
@@ -62,7 +62,8 @@ const menusData = {
           id: 30,
           meta: {
             title: '菜单列表',
-            noCache: true
+            noCache: true,
+            activeMenu: '/system/menuMgt'
           },
           name: '菜单列表',
           path: 'list',
@@ -74,7 +75,8 @@ const menusData = {
           id: 29,
           meta: {
             title: '编辑菜单',
-            noCache: true
+            noCache: true,
+            activeMenu: '/system/menuMgt'
           },
           name: '编辑菜单',
           path: 'edit',
@@ -84,7 +86,8 @@ const menusData = {
           hidden: true,
           id: 34,
           meta: {
-            title: '添加菜单'
+            title: '添加菜单',
+            activeMenu: '/system/menuMgt'
           },
           name: '添加菜单',
           path: '/system/menuMgt/create',
@@ -109,7 +112,8 @@ const menusData = {
           id: 35,
           meta: {
             title: '用户列表',
-            noCache: true
+            noCache: true,
+            activeMenu: '/system/userMgt'
           },
           name: '用户列表',
           path: 'list',
@@ -131,7 +135,8 @@ const menusData = {
           hidden: true,
           id: 37,
           meta: {
-            title: '添加用户'
+            title: '添加用户',
+            activeMenu: '/system/userMgt'
           },
           name: '添加用户',
           path: '/system/userMgt/create',
@@ -141,7 +146,8 @@ const menusData = {
           hidden: true,
           id: 40,
           meta: {
-            title: '分配角色'
+            title: '分配角色',
+            activeMenu: '/system/userMgt'
           },
           name: '分配角色',
           path: '/system/userMgt/userTorole',
@@ -149,7 +155,6 @@ const menusData = {
         }]
     },
     {
-      alwaysShow: true,
       component: '/system/roleMgt/index',
       redirect: '/system/roleMgt/list',
       hidden: false,
@@ -166,7 +171,8 @@ const menusData = {
         id: 38,
         meta: {
           title: '角色列表',
-          noCache: true
+          noCache: true,
+          activeMenu: '/system/roleMgt'
         },
         name: '角色列表',
         path: 'list',
@@ -177,7 +183,8 @@ const menusData = {
         id: 39,
         meta: {
           title: '角色授权',
-          noCache: true
+          noCache: true,
+          activeMenu: '/system/roleMgt'
         },
         name: '角色授权',
         path: 'roleTomenu',
@@ -252,7 +259,7 @@ module.exports = [
     url: '/vue-element-admin/user/getAuthMenu',
     type: 'get',
     response: _ => {
-      return menusData
+      return menusData || []
     }
   }
 ]

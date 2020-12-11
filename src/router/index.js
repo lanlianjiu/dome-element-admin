@@ -190,6 +190,161 @@ export const asyncRoutes = [
   nestedRouter,
   tableRouter,
 
+  // {
+  //   component: Layout,
+  //   redirect: 'noRedirect',
+  //   hidden: false,
+  //   id: 1,
+  //   meta: {
+  //     icon: 'el-icon-setting',
+  //     title: 'system'
+  //   },
+  //   name: 'system',
+  //   path: '/system',
+  //   pid: 0,
+  //   children: [{
+  //     component: () => import('@/views/system/menuMgt/index'),
+  //     redirect: '/system/menuMgt/list',
+  //     hidden: false,
+  //     id: 2,
+  //     meta: {
+  //       title: 'menuMgt'
+  //     },
+  //     name: 'menuMgt',
+  //     path: 'menuMgt',
+  //     pid: 1,
+  //     children: [
+  //       {
+  //         component: () => import('@/views/system/menuMgt/list'),
+  //         hidden: true,
+  //         id: 30,
+  //         meta: {
+  //           title: 'list',
+  //           noCache: true
+  //         },
+  //         name: 'list',
+  //         path: 'list',
+  //         pid: 2
+  //       },
+  //       {
+  //         component: () => import('@/views/system/menuMgt/edit'),
+  //         hidden: true,
+  //         id: 29,
+  //         meta: {
+  //           title: 'edit',
+  //           noCache: true
+  //         },
+  //         name: 'edit',
+  //         path: 'edit',
+  //         pid: 2
+  //       }, {
+  //         component: () => import('@/views/system/menuMgt/create'),
+  //         hidden: true,
+  //         id: 34,
+  //         meta: {
+  //           title: 'create'
+  //         },
+  //         name: 'create',
+  //         path: '/system/menuMgt/create',
+  //         pid: 2
+  //       }]
+  //   },
+  //   {
+  //     component: () => import('@/views/system/userMgt/index'),
+  //     redirect: '/system/userMgt/list',
+  //     hidden: false,
+  //     id: 3,
+  //     meta: {
+  //       title: 'userMgt'
+  //     },
+  //     name: 'userMgt',
+  //     path: 'userMgt',
+  //     pid: 1,
+  //     children: [
+  //       {
+  //         component: () => import('@/views/system/userMgt/list'),
+  //         hidden: true,
+  //         id: 35,
+  //         meta: {
+  //           title: 'list',
+  //           noCache: true
+  //         },
+  //         name: 'list',
+  //         path: 'list',
+  //         pid: 3
+  //       },
+  //       {
+  //         component: () => import('@/views/system/userMgt/edit'),
+  //         hidden: true,
+  //         id: 36,
+  //         meta: {
+  //           title: 'edit',
+  //           noCache: true
+  //         },
+  //         name: 'edit',
+  //         path: 'edit',
+  //         pid: 3
+  //       }, {
+  //         component: () => import('@/views/system/userMgt/create'),
+  //         hidden: true,
+  //         id: 37,
+  //         meta: {
+  //           title: 'create'
+  //         },
+  //         name: 'create',
+  //         path: '/system/userMgt/create',
+  //         pid: 3
+  //       }, {
+  //         component: () => import('@/views/system/userMgt/userTorole'),
+  //         hidden: true,
+  //         id: 40,
+  //         meta: {
+  //           title: 'userTorole'
+  //         },
+  //         name: 'userTorole',
+  //         path: '/system/userMgt/userTorole',
+  //         pid: 3
+  //       }]
+  //   },
+  //   {
+  //     alwaysShow: true,
+  //     component: () => import('@/views/system/roleMgt/index'),
+  //     redirect: '/system/roleMgt/list',
+  //     hidden: false,
+  //     id: 4,
+  //     meta: {
+  //       title: 'roleMgt'
+  //     },
+  //     name: 'roleMgt',
+  //     path: 'roleMgt',
+  //     pid: 1,
+  //     children: [{
+  //       component: () => import('@/views/system/roleMgt/list'),
+  //       hidden: true,
+  //       id: 38,
+  //       meta: {
+  //         title: 'list',
+  //         noCache: true
+  //       },
+  //       name: 'list',
+  //       path: 'list',
+  //       pid: 4
+  //     }, {
+  //       component: () => import('@/views/system/roleMgt/roleTomenu'),
+  //       hidden: true,
+  //       id: 39,
+  //       meta: {
+  //         title: 'roleTomenu',
+  //         noCache: true
+  //       },
+  //       name: 'roleTomenu',
+  //       path: 'roleTomenu',
+  //       pid: 4
+  //     }]
+  //   }
+  //   ]
+  // },
+
   {
     path: '/example',
     component: Layout,
