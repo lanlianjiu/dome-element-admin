@@ -3,7 +3,7 @@
  * @Author: ex_lanlj2@partner.midea.com
  * @Date: 2020-11-24 14:58:00
  * @LastEditors: ex_lanlj2@partner.midea.com
- * @LastEditTime: 2020-12-05 13:50:07
+ * @LastEditTime: 2020-12-19 14:37:15
  */
 import { asyncRoutes, constantRoutes } from '@/router'
 import { getAuthMenu } from '@/api/user'
@@ -33,18 +33,19 @@ export const loadView = (view) => {
 export function generaMenu(routes, data) {
   data.forEach(item => {
     const menu = {
-      path: (!item.path) ? item.id + '_key' : item.path,
+      name: item.name,
+      path: item.path,
       component: (!item.component) ? Layout : loadView(`${item.component}`),
-      hidden: item.hidden,
       redirect: item.redirect,
-      children: [],
-      name: 'menu_' + item.id,
-      meta: (item.meta && (typeof item.meta === 'string')) ? JSON.parse(item.meta) : (item.meta || {})
+      hidden: item.hidden || false,
+      meta: (item.meta && (typeof item.meta === 'string')) ? JSON.parse(item.meta) : (item.meta || {}),
+      children: []
     }
 
-    if (item.children) {
+    if (item.children && (!item.is_external_link)) {
       generaMenu(menu.children, item.children)
     }
+
     routes.push(menu)
   })
 }
@@ -75,19 +76,19 @@ const state = {
   addRoutes: []
 }
 
-// export function menusSomefiter(data) {
-//   const obj = {}
-//   data = data.reduce((cur, next) => {
-//     obj[next.path] ? '' : obj[next.path] = true && cur.push(next)
-//     return cur
-//   }, [])
-//   return data
-// }
+export function menusSomefiter(data) {
+  const obj = {}
+  data = data.reduce((cur, next) => {
+    obj[next.path] ? '' : obj[next.path] = true && cur.push(next)
+    return cur
+  }, [])
+  return data
+}
 
 const mutations = {
   SET_ROUTES: (state, routes) => {
-    state.addRoutes = routes
-    state.routes = constantRoutes.concat(routes)
+    const res = menusSomefiter(routes)
+    state.routes = constantRoutes.concat(res)
   }
 }
 
@@ -100,15 +101,17 @@ const actions = {
         let data = response
         if (response.code === 20000) {
           data = response.data
+          const resData = menusSomefiter(asyncRoutes)
+          generaMenu(resData, Object.assign(loadMenuData, data))
 
-          Object.assign(loadMenuData, data)
-          generaMenu(asyncRoutes, loadMenuData)
-          let accessedRoutes
+          let accessedRoutes = []
+
           if (roles.includes('admin')) {
-            accessedRoutes = asyncRoutes || []
+            accessedRoutes = resData || []
           } else {
-            accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
+            accessedRoutes = filterAsyncRoutes(resData, roles)
           }
+
           commit('SET_ROUTES', accessedRoutes)
           resolve(accessedRoutes)
         } else {
