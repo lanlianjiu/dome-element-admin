@@ -1,108 +1,215 @@
 <template>
-  <div class="createPost-container">
-    <el-form ref="postForm" :model="postForm" :rules="rules" class="form-container">
+  <div class="page-warp">
+    <el-form ref="postForm" :model="actionForm" :rules="rules" class="form-container" label-width="130px">
 
-      <sticky :z-index="10" :class-name="'sub-navbar '+postForm.status">
-        <CommentDropdown v-model="postForm.comment_disabled" />
-        <PlatformDropdown v-model="postForm.platforms" />
-        <SourceUrlDropdown v-model="postForm.source_uri" />
-        <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">
-          Publish
-        </el-button>
-        <el-button v-loading="loading" type="warning" @click="draftForm">
-          Draft
-        </el-button>
-      </sticky>
+      <el-row :gutter="20" class="action_title">
+        基本设置
+      </el-row>
 
-      <div class="createPost-main-container">
-        <el-row>
-          <Warning />
+      <el-row :gutter="20" class="dash_line">
+        <el-form-item label="是否是外链">
 
-          <el-col :span="24">
-            <el-form-item style="margin-bottom: 40px;" prop="title">
-              <MDinput v-model="postForm.title" :maxlength="100" name="name" required>
-                Title
-              </MDinput>
-            </el-form-item>
-
-            <div class="postInfo-container">
-              <el-row>
-                <el-col :span="8">
-                  <el-form-item label-width="60px" label="Author:" class="postInfo-container-item">
-                    <el-select v-model="postForm.author" :remote-method="getRemoteUserList" filterable default-first-option remote placeholder="Search user">
-                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item" />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-
-                <el-col :span="10">
-                  <el-form-item label-width="120px" label="Publish Time:" class="postInfo-container-item">
-                    <el-date-picker v-model="displayTime" type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="Select date and time" />
-                  </el-form-item>
-                </el-col>
-
-                <el-col :span="6">
-                  <el-form-item label-width="90px" label="Importance:" class="postInfo-container-item">
-                    <el-rate
-                      v-model="postForm.importance"
-                      :max="3"
-                      :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
-                      :low-threshold="1"
-                      :high-threshold="3"
-                      style="display:inline-block"
-                    />
-                  </el-form-item>
-                </el-col>
-              </el-row>
+          <div class="input_body">
+            <div class="input_left">
+              <el-switch v-model="actionForm.is_external_link" />
             </div>
-          </el-col>
-        </el-row>
+            <div class="input_right">
+              路由作为外链打开
+            </div>
+          </div>
 
-        <el-form-item style="margin-bottom: 40px;" label-width="70px" label="Summary:">
-          <el-input v-model="postForm.content_short" :rows="1" type="textarea" class="article-textarea" autosize placeholder="Please enter the content" />
-          <span v-show="contentShortLength" class="word-counter">{{ contentShortLength }}words</span>
         </el-form-item>
 
-        <el-form-item prop="content" style="margin-bottom: 30px;">
-          <Tinymce ref="editor" v-model="postForm.content" :height="400" />
+        <el-form-item label="路由名称">
+          <div class="input_body">
+            <div class="input_left">
+              <el-input v-model="actionForm.name" class="input_w" placeholder="请输入路由名称" />
+            </div>
+            <div class="input_right">
+              路由名称确保唯一性
+            </div>
+          </div>
         </el-form-item>
 
-        <el-form-item prop="image_uri" style="margin-bottom: 30px;">
-          <Upload v-model="postForm.image_uri" />
+        <el-form-item label="路由标签名">
+          <div class="input_body">
+            <div class="input_left">
+              <el-input v-model="actionForm.meta.title" class="input_w" placeholder="请输入路由标签名" />
+            </div>
+            <div class="input_right">
+              路由标签，用于侧边栏以及面包屑显示名称
+            </div>
+          </div>
         </el-form-item>
-      </div>
+
+        <el-form-item label="路由路径">
+          <div class="input_body">
+            <div class="input_left">
+              <el-input v-model="actionForm.path" class="input_w" placeholder="请输入路由路径" />
+            </div>
+            <div class="input_right">
+              路由标签，用于侧边栏以及面包屑显示名称
+            </div>
+          </div>
+        </el-form-item>
+
+        <el-form-item label="页面路径">
+          <div class="input_body">
+            <div class="input_left">
+              <el-input v-model="actionForm.component" class="input_w" placeholder="请输入页面路径" />
+            </div>
+            <div class="input_right">
+              页面（组件文件）的src下目录路径
+            </div>
+          </div>
+        </el-form-item>
+
+        <el-form-item label="菜单状态">
+
+          <div class="input_body">
+            <div class="input_left">
+              <el-switch v-model="actionForm.stauts" :active-value="1" :inactive-value="1" />
+            </div>
+            <div class="input_right">
+              菜单是否有效
+            </div>
+          </div>
+
+        </el-form-item>
+
+      </el-row>
+
+      <el-row :gutter="20" class="action_title">
+        其他设置
+      </el-row>
+      <el-row :gutter="20" class="dash_line">
+
+        <el-form-item label="菜单图标">
+          <div class="input_body">
+            <div class="input_left">
+              <el-input v-model="actionForm.meta.icon" class="input_w" placeholder="请输入菜单图标" />
+            </div>
+            <div class="input_right">
+              设置该路由的图标，支持 svg-class，也支持 el-icon-x element-ui 的 icon
+            </div>
+          </div>
+        </el-form-item>
+
+        <el-form-item label="是否隐藏">
+          <div class="input_body">
+            <div class="input_left">
+              <el-switch v-model="actionForm.hidden" />
+            </div>
+            <div class="input_right">
+              当设置 true 的时候该路由不会在侧边栏出现
+            </div>
+          </div>
+        </el-form-item>
+
+        <el-form-item label="导航是否可点击">
+          <div class="input_body">
+            <div class="input_left">
+              <el-input v-model="actionForm.redirect" class="input_w" placeholder="请输入可点击路由或noRedirect" />
+            </div>
+            <div class="input_right">
+              当设置 noRedirect 的时候该路由在面包屑导航中不可被点击
+            </div>
+          </div>
+        </el-form-item>
+
+        <el-form-item label="是否显示根路由">
+          <div class="input_body">
+            <div class="input_left">
+              <el-switch v-model="actionForm.alwaysShow" />
+            </div>
+            <div class="input_right">
+              你可以设置 alwaysShow: true，这样它就会忽略之前定义的规则，一直显示根路由
+            </div>
+          </div>
+        </el-form-item>
+
+        <el-form-item label="是否缓存路由">
+          <div class="input_body">
+            <div class="input_left">
+              <el-switch v-model="actionForm.meta.noCache" />
+            </div>
+            <div class="input_right">
+              如果设置为true，则不会被 <keep-alive> 缓存(默认 false)
+              </keep-alive></div>
+          </div>
+        </el-form-item>
+
+        <el-form-item label="是否面包屑中显示">
+          <div class="input_body">
+            <div class="input_left">
+              <el-switch v-model="actionForm.meta.breadcrumb" />
+            </div>
+            <div class="input_right">
+              如果设置为false，则不会在breadcrumb面包屑中显示(默认 true)
+            </div>
+          </div>
+        </el-form-item>
+
+        <el-form-item label="是否在标签栏显示">
+          <div class="input_body">
+            <div class="input_left">
+              <el-switch v-model="actionForm.meta.affix" />
+            </div>
+            <div class="input_right">
+              如果设置为true，它则会固定在tags-view中(默认 false)
+            </div>
+          </div>
+        </el-form-item>
+
+        <el-form-item label="高亮的路由路径">
+          <div class="input_body">
+            <div class="input_left">
+              <el-input v-model="actionForm.meta.activeMenu" class="input_w" placeholder="请输入高亮的路由路径" />
+            </div>
+            <div class="input_right">
+              当路由设置了该属性，则会高亮相对应的侧边栏
+            </div>
+          </div>
+        </el-form-item>
+
+      </el-row>
     </el-form>
+    <footer>
+      <div class="footer-body">
+        <el-button type="primary" @click="submitForm">保 存</el-button>
+        <el-button @click="cancelForm">取 消</el-button>
+      </div>
+    </footer>
+
   </div>
 </template>
 
 <script>
-import Tinymce from '@/components/Tinymce'
-import Upload from '@/components/Upload/SingleImage3'
-import MDinput from '@/components/MDinput'
-import Sticky from '@/components/Sticky' // 粘性header组件
-import { validURL } from '@/utils/validate'
-import { fetchArticle } from '@/api/article'
-import { searchUser } from '@/api/remote-search'
-import Warning from './Warning'
-import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from './Dropdown'
 
 const defaultForm = {
-  status: 'draft',
-  title: '', // 文章题目
-  content: '', // 文章内容
-  content_short: '', // 文章摘要
-  source_uri: '', // 文章外链
-  image_uri: '', // 文章图片
-  display_time: undefined, // 前台展示时间
-  id: undefined,
-  platforms: ['a-platform'],
-  comment_disabled: false,
-  importance: 0
+  name: '',
+  path: '',
+  component: '',
+  redirect: '', // 当设置 noRedirect 的时候该路由在面包屑导航中不可被点击
+  hidden: false, // 当设置 true 的时候该路由不会在侧边栏出现
+  alwaysShow: false, // 你可以设置 alwaysShow: true，这样它就会忽略之前定义的规则，一直显示根路由
+  is_external_link: false, // 路由作为外链打开
+  stauts: 1, // 菜单状态
+  meta: {
+    title: '', // 设置该路由在侧边栏和面包屑中展示的名字
+    icon: '', // 设置该路由的图标，支持 svg-class，也支持 el-icon-x element-ui 的 icon
+    noCache: false, // 如果设置为true，则不会被 <keep-alive> 缓存(默认 false)
+    breadcrumb: true, //  如果设置为false，则不会在breadcrumb面包屑中显示(默认 true)
+    affix: false, // 如果设置为true，它则会固定在tags-view中(默认 false)
+    activeMenu: '' // 当路由设置了该属性，则会高亮相对应的侧边栏。
+  }
 }
 
 export default {
   name: 'ArticleDetail',
-  components: { Tinymce, MDinput, Upload, Sticky, Warning, CommentDropdown, PlatformDropdown, SourceUrlDropdown },
+  components: {
+
+  },
   props: {
     isEdit: {
       type: Boolean,
@@ -110,140 +217,45 @@ export default {
     }
   },
   data() {
-    const validateRequire = (rule, value, callback) => {
-      if (value === '') {
-        this.$message({
-          message: rule.field + '为必传项',
-          type: 'error'
-        })
-        callback(new Error(rule.field + '为必传项'))
-      } else {
-        callback()
-      }
-    }
-    const validateSourceUri = (rule, value, callback) => {
-      if (value) {
-        if (validURL(value)) {
-          callback()
-        } else {
-          this.$message({
-            message: '外链url填写不正确',
-            type: 'error'
-          })
-          callback(new Error('外链url填写不正确'))
-        }
-      } else {
-        callback()
-      }
-    }
     return {
-      postForm: Object.assign({}, defaultForm),
+      actionForm: Object.assign({}, defaultForm),
       loading: false,
       userListOptions: [],
-      rules: {
-        image_uri: [{ validator: validateRequire }],
-        title: [{ validator: validateRequire }],
-        content: [{ validator: validateRequire }],
-        source_uri: [{ validator: validateSourceUri, trigger: 'blur' }]
-      },
-      tempRoute: {}
+      rules: {}
     }
   },
   computed: {
-    contentShortLength() {
-      return this.postForm.content_short.length
-    },
-    displayTime: {
-      // set and get is useful when the data
-      // returned by the back end api is different from the front end
-      // back end return => "2013-06-25 06:59:25"
-      // front end need timestamp => 1372114765000
-      get() {
-        return (+new Date(this.postForm.display_time))
-      },
-      set(val) {
-        this.postForm.display_time = new Date(val)
-      }
-    }
+
   },
   created() {
-    if (this.isEdit) {
-      const id = this.$route.params && this.$route.params.id
-      this.fetchData(id)
+    if (this.$route.query.id) {
+      this.actionForm = this.$route.query
     }
-
-    // Why need to make a copy of this.$route here?
-    // Because if you enter this page and quickly switch tag, may be in the execution of the setTagsViewTitle function, this.$route is no longer pointing to the current page
-    // https://github.com/PanJiaChen/vue-element-admin/issues/1221
-    this.tempRoute = Object.assign({}, this.$route)
   },
   methods: {
-    fetchData(id) {
-      fetchArticle(id).then(response => {
-        this.postForm = response.data
-
-        // just for test
-        this.postForm.title += `   Article Id:${this.postForm.id}`
-        this.postForm.content_short += `   Article Id:${this.postForm.id}`
-
-        // set tagsview title
-        this.setTagsViewTitle()
-
-        // set page title
-        this.setPageTitle()
-      }).catch(err => {
-        console.log(err)
-      })
-    },
-    setTagsViewTitle() {
-      const title = 'Edit Article'
-      const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` })
-      this.$store.dispatch('tagsView/updateVisitedView', route)
-    },
-    setPageTitle() {
-      const title = 'Edit Article'
-      document.title = `${title} - ${this.postForm.id}`
-    },
     submitForm() {
-      console.log(this.postForm)
       this.$refs.postForm.validate(valid => {
         if (valid) {
           this.loading = true
+
           this.$notify({
             title: '成功',
             message: '发布文章成功',
             type: 'success',
             duration: 2000
           })
-          this.postForm.status = 'published'
+
           this.loading = false
+
+          this.cancelForm()
         } else {
           console.log('error submit!!')
           return false
         }
       })
     },
-    draftForm() {
-      if (this.postForm.content.length === 0 || this.postForm.title.length === 0) {
-        this.$message({
-          message: '请填写必要的标题和内容',
-          type: 'warning'
-        })
-        return
-      }
-      this.$message({
-        message: '保存成功',
-        type: 'success',
-        showClose: true,
-        duration: 1000
-      })
-      this.postForm.status = 'draft'
-    },
-    getRemoteUserList(query) {
-      searchUser(query).then(response => {
-        if (!response.data.items) return
-        this.userListOptions = response.data.items.map(v => v.name)
-      })
+    cancelForm() {
+      this.router_go(this, 'list', 'replace', { closeTag: true })
     }
   }
 }
@@ -252,38 +264,40 @@ export default {
 <style lang="scss" scoped>
 @import "~@/styles/mixin.scss";
 
-.createPost-container {
-  position: relative;
+.page-warp {
+  margin: 10px 20px 10px 20px;
+  padding: 20px;
+  background-color: #FFF;
+  border-radius: 4px;
+  .dash_line{
+    border:1px dashed #dddddd;
+    padding: 15px;
+    margin: 0 !important;
+  }
+  .action_title{
+    font-size: 14px;
+    color: #606266;
+    padding: 10px 0 10px 0;
+    margin: 0 !important;
+  }
+  .footer-body{
+    text-align: center;
+    margin: 20px;
+  }
+  .input_body{
+    display: flex;
+    .input_left{
 
-  .createPost-main-container {
-    padding: 40px 45px 20px 50px;
-
-    .postInfo-container {
-      position: relative;
-      @include clearfix;
-      margin-bottom: 10px;
-
-      .postInfo-container-item {
-        float: left;
-      }
+    }
+    .input_right{
+      color: #909399;
+      margin-left: 15px;
+    }
+    .input_w{
+      min-width: 300px;
+      max-width: 400px;
     }
   }
-
-  .word-counter {
-    width: 40px;
-    position: absolute;
-    right: 10px;
-    top: 0px;
-  }
 }
 
-.article-textarea ::v-deep {
-  textarea {
-    padding-right: 40px;
-    resize: none;
-    border: none;
-    border-radius: 0px;
-    border-bottom: 1px solid #bfcbd9;
-  }
-}
 </style>

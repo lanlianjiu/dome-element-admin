@@ -1,10 +1,4 @@
-<!--
- * @Descripttion:
- * @Author: ex_lanlj2@partner.midea.com
- * @Date: 2020-11-30 17:15:42
- * @LastEditors: ex_lanlj2@partner.midea.com
- * @LastEditTime: 2020-12-05 12:47:28
--->
+
 <template>
   <div class="app-container">
     <div class="filter-container">

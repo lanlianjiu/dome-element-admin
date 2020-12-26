@@ -1,10 +1,4 @@
-/*
- * @Descripttion:
- * @Author: ex_lanlj2@partner.midea.com
- * @Date: 2020-11-24 14:58:00
- * @LastEditors: ex_lanlj2@partner.midea.com
- * @LastEditTime: 2020-12-19 14:37:15
- */
+
 import { asyncRoutes, constantRoutes } from '@/router'
 import { getAuthMenu } from '@/api/user'
 import Layout from '@/layout'
@@ -38,6 +32,8 @@ export function generaMenu(routes, data) {
       component: (!item.component) ? Layout : loadView(`${item.component}`),
       redirect: item.redirect,
       hidden: item.hidden || false,
+      alwaysShow: item.alwaysShow || false,
+      is_external_link: item.is_external_link || false,
       meta: (item.meta && (typeof item.meta === 'string')) ? JSON.parse(item.meta) : (item.meta || {}),
       children: []
     }

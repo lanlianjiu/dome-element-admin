@@ -1,10 +1,4 @@
-/*
- * @Descripttion:
- * @Author: ex_lanlj2@partner.midea.com
- * @Date: 2020-11-24 14:57:59
- * @LastEditors: ex_lanlj2@partner.midea.com
- * @LastEditTime: 2020-11-28 13:06:47
- */
+
 import request from '@/utils/request'
 
 export function login(data) {

@@ -5,7 +5,11 @@ module.exports = [
     path: '/documentation',
     meta: {
       icon: 'documentation',
-      title: 'Documentation'
+      title: 'Documentation',
+      noCache: false,
+      breadcrumb: true,
+      affix: false,
+      activeMenu: ''
     },
     name: 'Documentation',
     redirect: '/documentation/index',
@@ -18,7 +22,14 @@ module.exports = [
         component: '/documentation/index',
         name: 'list',
         hidden: true,
-        meta: { title: 'Documentation', activeMenu: '/documentation', breadcrumb: false }
+        meta: {
+          title: 'Documentation',
+          activeMenu: '/documentation',
+          breadcrumb: false,
+          icon: '',
+          noCache: false,
+          affix: false
+        }
       }
     ]
   },
@@ -30,7 +41,11 @@ module.exports = [
     redirect: '/guide/index',
     meta: {
       icon: 'guide',
-      title: 'Guide'
+      title: 'Guide',
+      noCache: false,
+      breadcrumb: true,
+      affix: false,
+      activeMenu: ''
     },
     children: [
       {
@@ -40,7 +55,14 @@ module.exports = [
         path: 'index',
         component: '/guide/index',
         name: 'guide_list',
-        meta: { title: 'Guide', noCache: true, breadcrumb: false, activeMenu: '/guide' }
+        meta: {
+          title: 'Guide',
+          noCache: true,
+          breadcrumb: false,
+          activeMenu: '/guide',
+          icon: '',
+          affix: false
+        }
       }
     ]
   },
@@ -52,7 +74,11 @@ module.exports = [
     redirect: '/profile/index',
     meta: {
       icon: 'user',
-      title: 'Profile'
+      title: 'Profile',
+      noCache: false,
+      breadcrumb: true,
+      affix: false,
+      activeMenu: ''
     },
     children: [
       {
@@ -62,7 +88,14 @@ module.exports = [
         path: 'index',
         component: '/profile/index',
         name: 'profile_index',
-        meta: { title: 'Profile', breadcrumb: false, noCache: true, activeMenu: '/profile' }
+        meta: {
+          title: 'Profile',
+          breadcrumb: false,
+          noCache: true,
+          activeMenu: '/profile',
+          icon: '',
+          affix: false
+        }
       }
     ]
   },
@@ -75,7 +108,11 @@ module.exports = [
     name: 'Permission',
     meta: {
       title: 'Permission',
-      icon: 'lock'
+      icon: 'lock',
+      noCache: false,
+      breadcrumb: true,
+      affix: false,
+      activeMenu: ''
     },
     children: [
       {
@@ -85,7 +122,12 @@ module.exports = [
         component: '/permission/page',
         name: 'PagePermission',
         meta: {
-          title: 'Page Permission'
+          title: 'Page Permission',
+          icon: '',
+          noCache: false,
+          breadcrumb: true,
+          affix: false,
+          activeMenu: ''
         }
       },
       {
@@ -95,7 +137,12 @@ module.exports = [
         component: '/permission/directive',
         name: 'DirectivePermission',
         meta: {
-          title: 'Directive Permission'
+          title: 'Directive Permission',
+          icon: '',
+          noCache: false,
+          breadcrumb: true,
+          affix: false,
+          activeMenu: ''
         }
       },
       {
@@ -105,7 +152,12 @@ module.exports = [
         component: '/permission/role',
         name: 'RolePermission',
         meta: {
-          title: 'Role Permission'
+          title: 'Role Permission',
+          icon: '',
+          noCache: false,
+          breadcrumb: true,
+          affix: false,
+          activeMenu: ''
         }
       }
     ]
@@ -116,7 +168,14 @@ module.exports = [
     path: '/icons',
     component: '',
     name: 'Icons',
-    meta: { title: 'Icons', icon: 'icon' },
+    meta: {
+      title: 'Icons',
+      icon: 'icon',
+      noCache: false,
+      breadcrumb: true,
+      affix: false,
+      activeMenu: ''
+    },
     redirect: '/icons/index',
     children: [
       {
@@ -126,7 +185,14 @@ module.exports = [
         component: '/icons/index',
         hidden: true,
         name: 'Icons_index',
-        meta: { title: 'Icons', breadcrumb: false, noCache: true }
+        meta: {
+          title: 'Icons',
+          breadcrumb: false,
+          noCache: true,
+          icon: '',
+          affix: false,
+          activeMenu: ''
+        }
       }
     ]
   },
@@ -138,7 +204,11 @@ module.exports = [
     name: 'ComponentDemo',
     meta: {
       title: 'Components',
-      icon: 'component'
+      icon: 'component',
+      noCache: false,
+      breadcrumb: true,
+      affix: false,
+      activeMenu: ''
     },
     children: [
       {
@@ -147,7 +217,14 @@ module.exports = [
         path: 'tinymce',
         component: '/components-demo/tinymce',
         name: 'TinymceDemo',
-        meta: { title: 'Tinymce' }
+        meta: {
+          title: 'Tinymce',
+          icon: '',
+          noCache: false,
+          breadcrumb: true,
+          affix: false,
+          activeMenu: ''
+        }
       },
       {
         id: 30,
@@ -155,7 +232,12 @@ module.exports = [
         path: 'markdown',
         component: '/components-demo/markdown',
         name: 'MarkdownDemo',
-        meta: { title: 'Markdown' }
+        meta: { title: 'Markdown',
+          icon: '',
+          noCache: false,
+          breadcrumb: true,
+          affix: false,
+          activeMenu: '' }
       },
       {
         id: 31,
@@ -163,7 +245,14 @@ module.exports = [
         path: 'json-editor',
         component: '/components-demo/json-editor',
         name: 'JsonEditorDemo',
-        meta: { title: 'JSON Editor' }
+        meta: { title: 'JSON Editor',
+          icon: '',
+          noCache: false,
+          breadcrumb: true,
+          affix: false,
+          activeMenu: ''
+        }
+
       },
       {
         id: 32,
@@ -171,7 +260,12 @@ module.exports = [
         path: 'split-pane',
         component: '/components-demo/split-pane',
         name: 'SplitpaneDemo',
-        meta: { title: 'SplitPane' }
+        meta: { title: 'SplitPane',
+          icon: '',
+          noCache: false,
+          breadcrumb: true,
+          affix: false,
+          activeMenu: '' }
       },
       {
         id: 33,
@@ -179,7 +273,12 @@ module.exports = [
         path: 'avatar-upload',
         component: '/components-demo/avatar-upload',
         name: 'AvatarUploadDemo',
-        meta: { title: 'Upload' }
+        meta: { title: 'Upload',
+          icon: '',
+          noCache: false,
+          breadcrumb: true,
+          affix: false,
+          activeMenu: '' }
       },
       {
         id: 34,
@@ -187,7 +286,12 @@ module.exports = [
         path: 'dropzone',
         component: '/components-demo/dropzone',
         name: 'DropzoneDemo',
-        meta: { title: 'Dropzone' }
+        meta: { title: 'Dropzone',
+          icon: '',
+          noCache: false,
+          breadcrumb: true,
+          affix: false,
+          activeMenu: '' }
       },
       {
         id: 35,
@@ -195,7 +299,12 @@ module.exports = [
         path: 'sticky',
         component: '/components-demo/sticky',
         name: 'StickyDemo',
-        meta: { title: 'Sticky' }
+        meta: { title: 'Sticky',
+          icon: '',
+          noCache: false,
+          breadcrumb: true,
+          affix: false,
+          activeMenu: '' }
       },
       {
         id: 36,
@@ -203,7 +312,12 @@ module.exports = [
         path: 'count-to',
         component: '/components-demo/count-to',
         name: 'CountToDemo',
-        meta: { title: 'Count To' }
+        meta: { title: 'Count To',
+          icon: '',
+          noCache: false,
+          breadcrumb: true,
+          affix: false,
+          activeMenu: '' }
       },
       {
         id: 37,
@@ -211,7 +325,12 @@ module.exports = [
         path: 'mixin',
         component: '/components-demo/mixin',
         name: 'ComponentMixinDemo',
-        meta: { title: 'Component Mixin' }
+        meta: { title: 'Component Mixin',
+          icon: '',
+          noCache: false,
+          breadcrumb: true,
+          affix: false,
+          activeMenu: '' }
       },
       {
         id: 38,
@@ -219,7 +338,12 @@ module.exports = [
         path: 'back-to-top',
         component: '/components-demo/back-to-top',
         name: 'BackToTopDemo',
-        meta: { title: 'Back To Top' }
+        meta: { title: 'Back To Top',
+          icon: '',
+          noCache: false,
+          breadcrumb: true,
+          affix: false,
+          activeMenu: '' }
       },
       {
         id: 39,
@@ -227,7 +351,12 @@ module.exports = [
         path: 'drag-dialog',
         component: '/components-demo/drag-dialog',
         name: 'DragDialogDemo',
-        meta: { title: 'Drag Dialog' }
+        meta: { title: 'Drag Dialog',
+          icon: '',
+          noCache: false,
+          breadcrumb: true,
+          affix: false,
+          activeMenu: '' }
       },
       {
         id: 40,
@@ -235,7 +364,13 @@ module.exports = [
         path: 'drag-select',
         component: '/components-demo/drag-select',
         name: 'DragSelectDemo',
-        meta: { title: 'Drag Select' }
+        meta: { title: 'Drag Select',
+          icon: '',
+          noCache: false,
+          breadcrumb: true,
+          affix: false,
+          activeMenu: ''
+        }
       },
       {
         id: 41,
@@ -243,7 +378,12 @@ module.exports = [
         path: 'dnd-list',
         component: '/components-demo/dnd-list',
         name: 'DndListDemo',
-        meta: { title: 'Dnd List' }
+        meta: { title: 'Dnd List',
+          icon: '',
+          noCache: false,
+          breadcrumb: true,
+          affix: false,
+          activeMenu: '' }
       },
       {
         id: 42,
@@ -251,7 +391,12 @@ module.exports = [
         path: 'drag-kanban',
         component: '/components-demo/drag-kanban',
         name: 'DragKanbanDemo',
-        meta: { title: 'Drag Kanban' }
+        meta: { title: 'Drag Kanban',
+          icon: '',
+          noCache: false,
+          breadcrumb: true,
+          affix: false,
+          activeMenu: '' }
       }
     ]
   },
@@ -263,7 +408,11 @@ module.exports = [
     name: 'Charts',
     meta: {
       title: 'Charts',
-      icon: 'chart'
+      icon: 'chart',
+      noCache: false,
+      breadcrumb: true,
+      affix: false,
+      activeMenu: ''
     },
     children: [
       {
@@ -272,7 +421,11 @@ module.exports = [
         path: 'keyboard',
         component: '/charts/keyboard',
         name: 'KeyboardChart',
-        meta: { title: 'Keyboard Chart', noCache: true }
+        meta: { title: 'Keyboard Chart', noCache: true,
+          icon: '',
+          breadcrumb: true,
+          affix: false,
+          activeMenu: '' }
       },
       {
         id: 45,
@@ -280,7 +433,11 @@ module.exports = [
         path: 'line',
         component: '/charts/line',
         name: 'LineChart',
-        meta: { title: 'Line Chart', noCache: true }
+        meta: { title: 'Line Chart', noCache: true,
+          icon: '',
+          breadcrumb: true,
+          affix: false,
+          activeMenu: '' }
       },
       {
         id: 46,
@@ -288,7 +445,11 @@ module.exports = [
         path: 'mix-chart',
         component: '/charts/mix-chart',
         name: 'MixChart',
-        meta: { title: 'Mix Chart', noCache: true }
+        meta: { title: 'Mix Chart', noCache: true,
+          icon: '',
+          breadcrumb: true,
+          affix: false,
+          activeMenu: '' }
       }
     ]
   },
@@ -309,7 +470,12 @@ module.exports = [
         path: 'menu1',
         component: '/nested/menu1/index', // Parent router-view
         name: 'Menu1',
-        meta: { title: 'Menu 1' },
+        meta: { title: 'Menu 1',
+          icon: '',
+          noCache: false,
+          breadcrumb: true,
+          affix: false,
+          activeMenu: '' },
         redirect: '/nested/menu1/menu1-1',
         children: [
           {
@@ -318,7 +484,12 @@ module.exports = [
             path: 'menu1-1',
             component: '/nested/menu1/menu1-1',
             name: 'Menu1-1',
-            meta: { title: 'Menu 1-1' }
+            meta: { title: 'Menu 1-1',
+              icon: '',
+              noCache: false,
+              breadcrumb: true,
+              affix: false,
+              activeMenu: '' }
           },
           {
             id: 51,
@@ -327,7 +498,11 @@ module.exports = [
             component: '/nested/menu1/menu1-2',
             name: 'Menu1-2',
             redirect: '/nested/menu1/menu1-2/menu1-2-1',
-            meta: { title: 'Menu 1-2' },
+            meta: { title: 'Menu 1-2',
+              noCache: false,
+              breadcrumb: true,
+              affix: false,
+              activeMenu: '' },
             children: [
               {
                 id: 53,
@@ -335,7 +510,12 @@ module.exports = [
                 path: 'menu1-2-1',
                 component: '/nested/menu1/menu1-2/menu1-2-1',
                 name: 'Menu1-2-1',
-                meta: { title: 'Menu 1-2-1' }
+                meta: { title: 'Menu 1-2-1',
+                  icon: '',
+                  noCache: false,
+                  breadcrumb: true,
+                  affix: false,
+                  activeMenu: '' }
               },
               {
                 id: 54,
@@ -343,7 +523,12 @@ module.exports = [
                 path: 'menu1-2-2',
                 component: '/nested/menu1/menu1-2/menu1-2-2',
                 name: 'Menu1-2-2',
-                meta: { title: 'Menu 1-2-2' }
+                meta: { title: 'Menu 1-2-2',
+                  icon: '',
+                  noCache: false,
+                  breadcrumb: true,
+                  affix: false,
+                  activeMenu: '' }
               }
             ]
           },
@@ -353,7 +538,12 @@ module.exports = [
             path: 'menu1-3',
             component: '/nested/menu1/menu1-3',
             name: 'Menu1-3',
-            meta: { title: 'Menu 1-3' }
+            meta: { title: 'Menu 1-3',
+              icon: '',
+              noCache: false,
+              breadcrumb: true,
+              affix: false,
+              activeMenu: '' }
           }
         ]
       },
@@ -363,7 +553,12 @@ module.exports = [
         path: 'menu2',
         name: 'Menu2',
         component: '/nested/menu2/index',
-        meta: { title: 'Menu 2' }
+        meta: { title: 'Menu 2',
+          icon: '',
+          noCache: false,
+          breadcrumb: true,
+          affix: false,
+          activeMenu: '' }
       }
     ]
   },
@@ -375,7 +570,11 @@ module.exports = [
     name: 'Table',
     meta: {
       title: 'Table',
-      icon: 'table'
+      icon: 'table',
+      noCache: false,
+      breadcrumb: true,
+      affix: false,
+      activeMenu: ''
     },
     children: [
       {
@@ -384,7 +583,11 @@ module.exports = [
         path: 'dynamic-table',
         component: '/table/dynamic-table/index',
         name: 'DynamicTable',
-        meta: { title: 'Dynamic Table' }
+        meta: { title: 'Dynamic Table',
+          noCache: false,
+          breadcrumb: true,
+          affix: false,
+          activeMenu: '' }
       },
       {
         id: 57,
@@ -392,7 +595,12 @@ module.exports = [
         path: 'drag-table',
         component: '/table/drag-table',
         name: 'DragTable',
-        meta: { title: 'Drag Table' }
+        meta: { title: 'Drag Table',
+          icon: '',
+          noCache: false,
+          breadcrumb: true,
+          affix: false,
+          activeMenu: '' }
       },
       {
         id: 58,
@@ -400,7 +608,12 @@ module.exports = [
         path: 'inline-edit-table',
         component: '/table/inline-edit-table',
         name: 'InlineEditTable',
-        meta: { title: 'Inline Edit' }
+        meta: { title: 'Inline Edit',
+          icon: '',
+          noCache: false,
+          breadcrumb: true,
+          affix: false,
+          activeMenu: '' }
       },
       {
         id: 59,
@@ -408,7 +621,13 @@ module.exports = [
         path: 'complex-table',
         component: '/table/complex-table',
         name: 'ComplexTable',
-        meta: { title: 'Complex Table' }
+        meta: { title: 'Complex Table',
+          icon: '',
+          noCache: false,
+          breadcrumb: true,
+          affix: false,
+          activeMenu: ''
+        }
       }
     ]
   },
@@ -420,7 +639,11 @@ module.exports = [
     name: 'Example',
     meta: {
       title: 'Example',
-      icon: 'el-icon-s-help'
+      icon: 'el-icon-s-help',
+      noCache: false,
+      breadcrumb: true,
+      affix: false,
+      activeMenu: ''
     },
     children: [
       {
@@ -429,7 +652,12 @@ module.exports = [
         path: 'create',
         component: '/example/create',
         name: 'CreateArticle',
-        meta: { title: 'Create Article', icon: 'edit' }
+        meta: { title: 'Create Article', icon: 'edit',
+          noCache: false,
+          breadcrumb: true,
+          affix: false,
+          activeMenu: ''
+        }
       },
       {
         id: 62,
@@ -437,7 +665,11 @@ module.exports = [
         path: 'edit/:id(\\d+)',
         component: '/example/edit',
         name: 'EditArticle',
-        meta: { title: 'Edit Article', noCache: true, activeMenu: '/example/list' },
+        meta: { title: 'Edit Article', noCache: true, activeMenu: '/example/list',
+
+          icon: '',
+          breadcrumb: true,
+          affix: false },
         hidden: true
       },
       {
@@ -446,7 +678,11 @@ module.exports = [
         path: 'list',
         component: '/example/list',
         name: 'ArticleList',
-        meta: { title: 'Article List', icon: 'list' }
+        meta: { title: 'Article List', icon: 'list',
+          noCache: false,
+          breadcrumb: true,
+          affix: false,
+          activeMenu: '' }
       }
     ]
   },
@@ -459,7 +695,11 @@ module.exports = [
     redirect: '/tab/index',
     meta: {
       icon: 'tab',
-      title: 'Tab'
+      title: 'Tab',
+      noCache: false,
+      breadcrumb: true,
+      affix: false,
+      activeMenu: ''
     },
     children: [
       {
@@ -469,7 +709,10 @@ module.exports = [
         hidden: true,
         component: '/tab/index',
         name: 'Tab_index',
-        meta: { title: 'Tab', breadcrumb: false, activeMenu: '/tab' }
+        meta: { title: 'Tab', breadcrumb: false, activeMenu: '/tab',
+          icon: '',
+          noCache: false,
+          affix: false }
       }
     ]
   },
@@ -482,7 +725,11 @@ module.exports = [
     name: 'ErrorPages',
     meta: {
       title: 'Error Pages',
-      icon: '404'
+      icon: '404',
+      noCache: false,
+      breadcrumb: true,
+      affix: false,
+      activeMenu: ''
     },
     children: [
       {
@@ -491,7 +738,11 @@ module.exports = [
         path: '401',
         component: '/error-page/401',
         name: 'Page401',
-        meta: { title: '401', noCache: true }
+        meta: { title: '401', noCache: true,
+          icon: '',
+          breadcrumb: true,
+          affix: false,
+          activeMenu: '' }
       },
       {
         id: 68,
@@ -499,7 +750,11 @@ module.exports = [
         path: '404',
         component: '/error-page/404',
         name: 'Page404',
-        meta: { title: '404', noCache: true }
+        meta: { title: '404', noCache: true,
+          icon: '',
+          breadcrumb: true,
+          affix: false,
+          activeMenu: '' }
       }
     ]
   },
@@ -509,7 +764,11 @@ module.exports = [
     component: '',
     redirect: '/error-log/index',
     name: 'ErrorLog',
-    meta: { title: 'Error Log', icon: 'bug' },
+    meta: { title: 'Error Log', icon: 'bug',
+      noCache: false,
+      breadcrumb: true,
+      affix: false,
+      activeMenu: '' },
     children: [
       {
         id: 77,
@@ -518,7 +777,11 @@ module.exports = [
         hidden: true,
         component: '/error-log/index',
         name: 'ErrorLog_index',
-        meta: { title: 'Error Log', icon: 'bug', breadcrumb: false }
+        meta: { title: 'Error Log', icon: 'bug', breadcrumb: false,
+
+          noCache: false,
+          affix: false,
+          activeMenu: '' }
       }
     ]
   },
@@ -531,7 +794,11 @@ module.exports = [
     name: 'Excel',
     meta: {
       title: 'Excel',
-      icon: 'excel'
+      icon: 'excel',
+      noCache: false,
+      breadcrumb: true,
+      affix: false,
+      activeMenu: ''
     },
     children: [
       {
@@ -540,7 +807,12 @@ module.exports = [
         path: 'export-excel',
         component: '/excel/export-excel',
         name: 'ExportExcel',
-        meta: { title: 'Export Excel' }
+        meta: { title: 'Export Excel',
+          icon: '',
+          noCache: false,
+          breadcrumb: true,
+          affix: false,
+          activeMenu: '' }
       },
       {
         id: 71,
@@ -548,7 +820,12 @@ module.exports = [
         path: 'export-selected-excel',
         component: '/excel/select-excel',
         name: 'SelectExcel',
-        meta: { title: 'Export Selected' }
+        meta: { title: 'Export Selected',
+          icon: '',
+          noCache: false,
+          breadcrumb: true,
+          affix: false,
+          activeMenu: '' }
       },
       {
         id: 72,
@@ -556,7 +833,12 @@ module.exports = [
         path: 'export-merge-header',
         component: '/excel/merge-header',
         name: 'MergeHeader',
-        meta: { title: 'Merge Header' }
+        meta: { title: 'Merge Header',
+          icon: '',
+          noCache: false,
+          breadcrumb: true,
+          affix: false,
+          activeMenu: '' }
       },
       {
         id: 73,
@@ -564,7 +846,12 @@ module.exports = [
         path: 'upload-excel',
         component: '/excel/upload-excel',
         name: 'UploadExcel',
-        meta: { title: 'Upload Excel' }
+        meta: { title: 'Upload Excel',
+          icon: '',
+          noCache: false,
+          breadcrumb: true,
+          affix: false,
+          activeMenu: '' }
       }
     ]
   },
@@ -576,7 +863,11 @@ module.exports = [
     redirect: '/zip/download',
     alwaysShow: true,
     name: 'Zip',
-    meta: { title: 'Zip', icon: 'zip' },
+    meta: { title: 'Zip', icon: 'zip',
+      noCache: false,
+      breadcrumb: true,
+      affix: false,
+      activeMenu: '' },
     children: [
       {
         id: 75,
@@ -584,7 +875,11 @@ module.exports = [
         path: 'download',
         component: '/zip/index',
         name: 'ExportZip',
-        meta: { title: 'Export Zip', activeMenu: '/zip' }
+        meta: { title: 'Export Zip', activeMenu: '/zip',
+          icon: '',
+          noCache: false,
+          breadcrumb: true,
+          affix: false }
       }
     ]
   },
@@ -595,7 +890,11 @@ module.exports = [
     component: '',
     redirect: '/pdf/index',
     name: 'PDF',
-    meta: { title: 'PDF', icon: 'pdf' },
+    meta: { title: 'PDF', icon: 'pdf',
+      noCache: false,
+      breadcrumb: true,
+      affix: false,
+      activeMenu: '' },
     children: [
       {
         id: 79,
@@ -605,7 +904,12 @@ module.exports = [
         component: '/pdf/index',
         name: 'PDF_index',
         meta: {
-          title: 'PDF', breadcrumb: false, activeMenu: '/pdf'
+          title: 'PDF',
+          breadcrumb: false,
+          activeMenu: '/pdf',
+          icon: '',
+          noCache: false,
+          affix: false
         }
       }
 
@@ -618,7 +922,11 @@ module.exports = [
     component: '',
     redirect: '/theme/index',
     name: 'Theme',
-    meta: { title: 'Theme', icon: 'theme' },
+    meta: { title: 'Theme', icon: 'theme',
+      noCache: false,
+      breadcrumb: true,
+      affix: false,
+      activeMenu: '' },
     children: [
       {
         id: 81,
@@ -627,7 +935,11 @@ module.exports = [
         hidden: true,
         component: '/theme/index',
         name: 'Theme_index',
-        meta: { title: 'Theme', breadcrumb: false }
+        meta: { title: 'Theme', breadcrumb: false,
+          icon: '',
+          noCache: false,
+          affix: false,
+          activeMenu: '' }
       }
     ]
   },
@@ -638,7 +950,11 @@ module.exports = [
     component: '',
     redirect: '/clipboard/index',
     name: 'Clipboard',
-    meta: { title: 'Clipboard', icon: 'clipboard' },
+    meta: { title: 'Clipboard', icon: 'clipboard',
+      noCache: false,
+      breadcrumb: true,
+      affix: false,
+      activeMenu: '' },
     children: [
       {
         id: 83,
@@ -647,28 +963,45 @@ module.exports = [
         hidden: true,
         component: '/clipboard/index',
         name: 'ClipboardDemo_index',
-        meta: { title: 'Clipboard', breadcrumb: false }
+        meta: { title: 'Clipboard', breadcrumb: false,
+          icon: '',
+          noCache: false,
+          affix: false,
+          activeMenu: '' }
       }
     ]
   },
   // 下载外链
   {
     id: 87,
-    pid: 78,
+    pid: 0,
     path: '/pdf/download',
     is_external_link: true,
     component: '/pdf/download',
     hidden: true,
-    name: 'download'
+    name: 'download',
+    meta: { title: 'pdf download',
+      icon: '',
+      noCache: false,
+      breadcrumb: true,
+      affix: false,
+      activeMenu: '' },
+    children: []
   },
   // 菜单外链
   {
     id: 84,
+    pid: 0,
     path: 'https://github.com/PanJiaChen/vue-element-admin',
     is_external_link: true,
-    component: '',
+    component: 'https://github.com/PanJiaChen/vue-element-admin',
     name: 'External Link',
-    meta: { title: 'External Link', icon: 'link' }
+    meta: { title: 'External Link', icon: 'link',
+      noCache: false,
+      breadcrumb: true,
+      affix: false,
+      activeMenu: '' },
+    children: []
   },
 
   {
@@ -678,7 +1011,11 @@ module.exports = [
     id: 1,
     meta: {
       icon: 'el-icon-setting',
-      title: '系统管理'
+      title: '系统管理',
+      noCache: false,
+      breadcrumb: true,
+      affix: false,
+      activeMenu: ''
     },
     name: '系统管理',
     path: '/system',
@@ -702,7 +1039,10 @@ module.exports = [
           meta: {
             title: '菜单列表',
             noCache: true,
-            activeMenu: '/system/menuMgt'
+            activeMenu: '/system/menuMgt',
+            icon: '',
+            breadcrumb: true,
+            affix: false
           },
           name: '菜单列表',
           path: 'list',
@@ -715,7 +1055,10 @@ module.exports = [
           meta: {
             title: '编辑菜单',
             noCache: true,
-            activeMenu: '/system/menuMgt'
+            activeMenu: '/system/menuMgt',
+            icon: '',
+            breadcrumb: true,
+            affix: false
           },
           name: '编辑菜单',
           path: 'edit',
@@ -726,7 +1069,11 @@ module.exports = [
           id: 7,
           meta: {
             title: '添加菜单',
-            activeMenu: '/system/menuMgt'
+            activeMenu: '/system/menuMgt',
+            icon: '',
+            noCache: true,
+            breadcrumb: true,
+            affix: false
           },
           name: '添加菜单',
           path: '/system/menuMgt/create',
@@ -739,7 +1086,12 @@ module.exports = [
       hidden: false,
       id: 3,
       meta: {
-        title: '用户管理'
+        title: '用户管理',
+        icon: '',
+        noCache: false,
+        breadcrumb: true,
+        affix: false,
+        activeMenu: ''
       },
       name: '用户管理',
       path: 'userMgt',
@@ -752,7 +1104,10 @@ module.exports = [
           meta: {
             title: '用户列表',
             noCache: true,
-            activeMenu: '/system/userMgt'
+            activeMenu: '/system/userMgt',
+            icon: '',
+            breadcrumb: true,
+            affix: false
           },
           name: '用户列表',
           path: 'list',
@@ -764,7 +1119,11 @@ module.exports = [
           id: 9,
           meta: {
             title: '编辑用户',
-            noCache: true
+            noCache: true,
+            icon: '',
+            breadcrumb: true,
+            affix: false,
+            activeMenu: ''
           },
           name: '编辑用户',
           path: 'edit',
@@ -775,21 +1134,14 @@ module.exports = [
           id: 10,
           meta: {
             title: '添加用户',
-            activeMenu: '/system/userMgt'
+            activeMenu: '/system/userMgt',
+            icon: '',
+            noCache: false,
+            breadcrumb: true,
+            affix: false
           },
           name: '添加用户',
-          path: '/system/userMgt/create',
-          pid: 3
-        }, {
-          component: '/system/userMgt/userTorole',
-          hidden: true,
-          id: 11,
-          meta: {
-            title: '分配角色',
-            activeMenu: '/system/userMgt'
-          },
-          name: '分配角色',
-          path: '/system/userMgt/userTorole',
+          path: 'create',
           pid: 3
         }]
     },
@@ -799,7 +1151,12 @@ module.exports = [
       hidden: false,
       id: 4,
       meta: {
-        title: '角色管理'
+        title: '角色管理',
+        icon: '',
+        noCache: false,
+        breadcrumb: true,
+        affix: false,
+        activeMenu: ''
       },
       name: '角色管理',
       path: 'roleMgt',
@@ -811,25 +1168,69 @@ module.exports = [
         meta: {
           title: '角色列表',
           noCache: true,
-          activeMenu: '/system/roleMgt'
+          activeMenu: '/system/roleMgt',
+          icon: '',
+          breadcrumb: true,
+          affix: false
         },
         name: '角色列表',
         path: 'list',
         pid: 4
-      }, {
-        component: '/system/roleMgt/roleTomenu',
-        hidden: true,
-        id: 13,
-        meta: {
-          title: '角色授权',
-          noCache: true,
-          activeMenu: '/system/roleMgt'
-        },
-        name: '角色授权',
-        path: 'roleTomenu',
-        pid: 4
       }]
     }
+    ]
+  },
+
+  {
+    component: '',
+    redirect: 'noRedirect',
+    hidden: false,
+    id: 88,
+    meta: {
+      icon: 'el-icon-s-cooperation',
+      title: '系统工具',
+      noCache: false,
+      breadcrumb: true,
+      affix: false,
+      activeMenu: ''
+    },
+    name: '系统工具',
+    path: '/systemTools',
+    pid: 0,
+    children: [
+      {
+        component: '/systemTools/iconsMgt/index',
+        redirect: '/systemTools/iconsMgt/list',
+        hidden: false,
+        id: 89,
+        meta: {
+          title: '图标管理',
+          icon: '',
+          noCache: false,
+          breadcrumb: true,
+          affix: false,
+          activeMenu: ''
+        },
+        name: '图标管理',
+        path: 'iconsMgt',
+        pid: 88,
+        children: [{
+          component: '/systemTools/iconsMgt/list',
+          hidden: true,
+          id: 90,
+          meta: {
+            title: '图标列表',
+            noCache: true,
+            activeMenu: '/systemTools/iconsMgt',
+            icon: '',
+            breadcrumb: true,
+            affix: false
+          },
+          name: '图标列表',
+          path: 'list',
+          pid: 89
+        }]
+      }
     ]
   }
 

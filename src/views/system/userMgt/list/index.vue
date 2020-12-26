@@ -1,128 +1,88 @@
-<!--
- * @Descripttion:
- * @Author: ex_lanlj2@partner.midea.com
- * @Date: 2020-11-30 15:29:17
- * @LastEditors: ex_lanlj2@partner.midea.com
- * @LastEditTime: 2020-12-05 13:04:12
--->
+
 <template>
-  <div class="app-container">
-    <router-link :to="'/system/userMgt/create'">
-      <el-button type="primary" size="small" icon="el-icon-edit">
-        Add
-      </el-button>
-    </router-link>
-    <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%">
-      <el-table-column align="center" label="ID" width="80">
-        <template slot-scope="scope">
-          <span>{{ scope.row.id }}</span>
+  <div class="page-warp">
+    <el-table
+      :data="tableData"
+      border
+      style="width: 100%"
+    >
+      <el-table-column type="expand">
+        <template slot-scope="props">
+          <el-form label-position="left" inline class="demo-table-expand">
+            <el-form-item label="商品名称">
+              <span>{{ props.row.name }}</span>
+            </el-form-item>
+            <el-form-item label="所属店铺">
+              <span>{{ props.row.shop }}</span>
+            </el-form-item>
+            <el-form-item label="商品 ID">
+              <span>{{ props.row.id }}</span>
+            </el-form-item>
+            <el-form-item label="店铺 ID">
+              <span>{{ props.row.shopId }}</span>
+            </el-form-item>
+            <el-form-item label="商品分类">
+              <span>{{ props.row.category }}</span>
+            </el-form-item>
+            <el-form-item label="店铺地址">
+              <span>{{ props.row.address }}</span>
+            </el-form-item>
+            <el-form-item label="商品描述">
+              <span>{{ props.row.desc }}</span>
+            </el-form-item>
+          </el-form>
         </template>
       </el-table-column>
-
-      <el-table-column width="180px" align="center" label="Date">
-        <template slot-scope="scope">
-          <span>{{ scope.row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column width="120px" align="center" label="Author">
-        <template slot-scope="scope">
-          <span>{{ scope.row.author }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column width="100px" label="Importance">
-        <template slot-scope="scope">
-          <svg-icon v-for="n in +scope.row.importance" :key="n" icon-class="star" class="meta-item__icon" />
-        </template>
-      </el-table-column>
-
-      <el-table-column class-name="status-col" label="Status" width="110">
-        <template slot-scope="{row}">
-          <el-tag :type="row.status | statusFilter">
-            {{ row.status }}
-          </el-tag>
-        </template>
-      </el-table-column>
-
-      <el-table-column min-width="300px" label="Title">
-        <template slot-scope="{row}">
-          <router-link :to="'/example/edit/'+row.id" class="link-type">
-            <span>{{ row.title }}</span>
-          </router-link>
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="Actions" width="220">
-        <template slot-scope="scope">
-          <el-button type="primary" size="small" icon="el-icon-edit" @click="goto('/system/userMgt/edit',scope.row.title)">
-            Edit
-          </el-button>
-          <el-button type="primary" size="small" icon="el-icon-edit" @click="goto('/system/userMgt/userTorole',scope.row.title)">
-            分配
-          </el-button>
-        </template>
-      </el-table-column>
+      <el-table-column
+        label="商品 ID"
+        prop="id"
+      />
+      <el-table-column
+        label="商品名称"
+        prop="name"
+      />
+      <el-table-column
+        label="描述"
+        prop="desc"
+      />
     </el-table>
-
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+    <pagination v-show="total>0" :total="total" :page.sync="tableQuery.page" :limit.sync="tableQuery.limit" @pagination="getList" />
   </div>
 </template>
 
 <script>
-import { fetchList } from '@/api/article'
+
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
 export default {
   name: 'ArticleList',
   components: { Pagination },
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        published: 'success',
-        draft: 'info',
-        deleted: 'danger'
-      }
-      return statusMap[status]
-    }
-  },
   data() {
     return {
-      list: null,
       total: 0,
-      listLoading: true,
-      listQuery: {
+      tableQuery: {
         page: 1,
         limit: 20
-      }
+      },
+      tableData: []
     }
-  },
-  created() {
+  }, created() {
     this.getList()
   },
+
   methods: {
-    goto(path) {
-      this.$router.push({ path: path })
-    },
     getList() {
-      this.listLoading = true
-      fetchList(this.listQuery).then(response => {
-        this.list = response.data.items
-        this.total = response.data.total
-        this.listLoading = false
-      })
+
     }
   }
 }
 </script>
 
 <style scoped>
-.edit-input {
-  padding-right: 100px;
-}
-.cancel-btn {
-  position: absolute;
-  right: 15px;
-  top: 10px;
+.page-warp {
+  margin: 10px 20px 10px 20px;
+  padding: 20px;
+  background-color: #FFF;
+  border-radius: 4px;
 }
 </style>

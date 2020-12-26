@@ -255,16 +255,20 @@ $light_gray:#eee;
 .login-container {
   min-height: 100%;
   width: 100%;
-  background-color: $bg;
+  //background-color: $bg;
+  background:#009CE3 url('../../assets/images/login_bg.jpg') no-repeat;
   overflow: hidden;
 
   .login-form {
     position: relative;
     width: 520px;
     max-width: 100%;
-    padding: 160px 35px 0;
+    padding: 60px 35px 0;
     margin: 0 auto;
     overflow: hidden;
+    background-color: rgba(45,58,75,0.8);
+    margin-top: 100px;
+    border-radius: 4px;
   }
 
   .tips {
