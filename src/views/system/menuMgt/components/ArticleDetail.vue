@@ -68,7 +68,7 @@
 
           <div class="input_body">
             <div class="input_left">
-              <el-switch v-model="actionForm.stauts" :active-value="1" :inactive-value="1" />
+              <el-switch v-model="actionForm.stauts" :active-value="1" :inactive-value="0" />
             </div>
             <div class="input_right">
               菜单是否有效
@@ -255,7 +255,7 @@ export default {
       })
     },
     cancelForm() {
-      this.router_go(this, 'list', 'replace', { closeTag: true })
+      this.router_go(this, 'list', { type: 'replace', closeTag: true })
     }
   }
 }

@@ -1,5 +1,5 @@
 
-import { getList } from '@/api/system/menuMgt'
+import { getList } from '@/api/system/userMgt'
 const state = {
 
 }

@@ -125,13 +125,11 @@
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
 export default {
-  name: 'ArticleList',
+  name: 'MenuMgtList',
   components: { Pagination },
   data() {
     return {
-      searchForm: {
-
-      },
+      searchForm: {},
       total: 0,
       tableQuery: {
         page: 1,
@@ -152,7 +150,7 @@ export default {
         path: row ? 'edit' : 'create',
         query: row
       }
-      this.router_go(this, parmas.path, parmas.query)
+      this.router_go(this, parmas.path, { parmas: parmas.query })
     },
     handleDelete() {
 

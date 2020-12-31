@@ -9,12 +9,12 @@
 import store from '@/store'
 import router from '@/router'
 const router_action = (Vue) => {
-  Vue.prototype.router_go = (self, path, parmas, option) => {
+  Vue.prototype.router_go = (self, path, option) => {
     if (option && option.closeTag) {
       store.dispatch('tagsView/delView', self.$route)
     }
 
-    const params = { path: path, query: parmas }
+    const params = { path: path, query: option.parmas }
 
     if (path && option && option.type) {
       router[option.type](params)

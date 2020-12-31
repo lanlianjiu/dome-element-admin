@@ -1,9 +1,15 @@
 <template>
   <div class="login-container">
+
+    <el-carousel :interval="5000" class="login_bg_carousel" indicator-position="none" arrow="never">
+      <el-carousel-item v-for="item in arrImg" :key="item">
+        <img :src="item" alt="" style="height: 100vh;">
+      </el-carousel-item>
+    </el-carousel>
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left">
 
       <div class="title-container">
-        <h3 class="title">Login Form</h3>
+        <h3 class="title">登 录</h3>
       </div>
 
       <el-form-item prop="username">
@@ -46,17 +52,7 @@
       </el-tooltip>
 
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
-
-      <div style="position:relative">
-        <div class="tips">
-          <span>Username : admin</span>
-          <span>Password : any</span>
-        </div>
-        <div class="tips">
-          <span style="margin-right:18px;">Username : editor</span>
-          <span>Password : any</span>
-        </div>
-
+      <div style="position:relative;height: 36px;">
         <el-button class="thirdparty-button" type="primary" @click="showDialog=true">
           Or connect with
         </el-button>
@@ -76,7 +72,9 @@
 <script>
 import { validUsername } from '@/utils/validate'
 import SocialSign from './components/SocialSignin'
-
+import bg1 from '@/assets/images/bg_icon_1.jpg'
+import bg2 from '@/assets/images/bg_icon_2.jpg'
+import bg3 from '@/assets/images/bg_icon_3.jpg'
 export default {
   name: 'Login',
   components: { SocialSign },
@@ -109,7 +107,8 @@ export default {
       loading: false,
       showDialog: false,
       redirect: undefined,
-      otherQuery: {}
+      otherQuery: {},
+      arrImg: [bg1, bg2, bg3]
     }
   },
   watch: {
@@ -227,7 +226,7 @@ $cursor: #fff;
       -webkit-appearance: none;
       border-radius: 0px;
       padding: 12px 5px 12px 15px;
-      color: $light_gray;
+      color: #606266;
       height: 47px;
       caret-color: $cursor;
 
@@ -239,10 +238,18 @@ $cursor: #fff;
   }
 
   .el-form-item {
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+    background: #FFF;
     border-radius: 5px;
     color: #454545;
+  }
+  .login_bg_carousel{
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    .el-carousel__container{
+      height: 100vh;
+    }
   }
 }
 </style>
@@ -255,8 +262,6 @@ $light_gray:#eee;
 .login-container {
   min-height: 100%;
   width: 100%;
-  //background-color: $bg;
-  background:#009CE3 url('../../assets/images/login_bg.jpg') no-repeat;
   overflow: hidden;
 
   .login-form {
@@ -269,6 +274,7 @@ $light_gray:#eee;
     background-color: rgba(45,58,75,0.8);
     margin-top: 100px;
     border-radius: 4px;
+    z-index: 999;
   }
 
   .tips {
