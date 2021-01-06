@@ -7,10 +7,11 @@
     <div class="search-container">
       <el-form :inline="true" :model="searchForm">
         <el-form-item label="用户名称">
-          <el-input v-model="searchForm.user" placeholder="请输入用户名称" />
+          <el-input v-model="searchForm.userName" placeholder="请输入用户名称" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="searchAction">查询</el-button>
+          <el-button @click="resetSearch">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -20,13 +21,15 @@
       </el-button>
     </div>
     <el-table
+      v-tableHeight="{bottomOffset: 110}"
       :data="tableData"
       border
       style="width: 100%"
+      height="100px"
     >
       <el-table-column type="expand">
         <template slot-scope="props">
-          <el-form label-position="left" inline class="child-table-expand">
+          <el-form label-position="left" class="child-table-expand">
             <el-form-item label="用户角色：">
               <el-tag v-for="(item,index) in props.row.roles || []" :key="index" style="margin-right:5px;">
                 {{ item.roleName }}
@@ -34,6 +37,12 @@
             </el-form-item>
             <el-form-item label="用户描述：">
               <span>{{ props.row.desc }}</span>
+            </el-form-item>
+            <el-form-item label="创建用户：">
+              <span>{{ props.row.createName }}</span>
+            </el-form-item>
+            <el-form-item label="创建时间：">
+              <span>{{ props.row.createTime }}</span>
             </el-form-item>
           </el-form>
         </template>
@@ -84,7 +93,7 @@
           <el-button type="primary" size="mini" @click="handleAction(row)">
             编辑
           </el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(row,$index)">
+          <el-button size="mini" type="danger" @click="handleDelete(row)">
             删除
           </el-button>
         </template>
@@ -92,6 +101,115 @@
 
     </el-table>
     <pagination v-show="total>0" :total="total" :page.sync="tableQuery.page" :limit.sync="tableQuery.limit" @pagination="getList" />
+
+    <el-dialog
+      :title="dialogTitle"
+      :visible.sync="dialogVisible"
+    >
+      <div>
+        <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="100px">
+
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="用户名称" prop="userName">
+                <el-input v-model="ruleForm.userName" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="用户角色" prop="roleName">
+                <el-select
+                  v-model="ruleForm.roleName"
+                  style="width:100%;"
+                  multiple
+                  filterable
+                  allow-create
+                  default-first-option
+                  placeholder="请选择角色"
+                >
+                  <el-option
+                    v-for="item in roleList"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  />
+                </el-select>
+
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="用户电话" prop="userMobile">
+                <el-input v-model="ruleForm.userMobile" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="用户邮箱" prop="userEmali">
+                <el-input v-model="ruleForm.userEmali" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="用户状态">
+                <div class="swatch-body">
+                  <el-switch
+                    v-model="ruleForm.status"
+                    style="display: block;margin:auto auto auto 10px;"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949"
+                    active-text="启用"
+                    inactive-text="禁用"
+                  />
+                </div>
+
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="用户性别">
+                <div class="swatch-body">
+                  <el-switch
+                    v-model="ruleForm.userSex"
+                    style="display: block;margin:auto auto auto 10px;"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949"
+                    active-text="男"
+                    inactive-text="女"
+                  />
+                </div>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-row v-if="is_edit">
+            <el-col :span="12">
+              <el-form-item label="用户密码" prop="userPassword">
+                <el-input v-model="ruleForm.userPassword" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-row>
+            <el-col :span="24">
+              <el-form-item label="用户备注">
+                <el-input
+                  v-model="ruleForm.desc"
+                  type="textarea"
+                  :rows="2"
+                />
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+        </el-form>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="resetForm">取 消</el-button>
+        <el-button type="primary" @click="saveForm">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -104,40 +222,142 @@ export default {
   components: { Pagination },
   filters: {
     statusFilter(status) {
-      const statusMap = {
-        0: 'info',
-        1: 'success'
-      }
-      return statusMap[status]
+      return status ? 'success' : 'info'
     }
   },
   data() {
     return {
-      searchForm: {},
+      searchForm: {
+        userName: ''
+      },
       total: 0,
       tableQuery: {
         page: 1,
         limit: 20
       },
-      tableData: []
+      tableData: [],
+      roleList: [],
+      dialogTitle: '',
+      dialogVisible: false,
+      is_edit: false,
+      ruleForm: {
+        userName: '',
+        status: true,
+        userSex: true,
+        userPassword: '',
+        roleName: [],
+        desc: ''
+      },
+      rules: {
+        userName: [
+          { required: true, message: '请输入用户名称', trigger: 'blur' }
+        ],
+        userPassword: [
+          { required: true, message: '请输入密码', trigger: 'blur' }
+        ],
+        roleName: [
+          { required: true, message: '请选择用户角色', trigger: 'blur' }
+        ]
+      }
     }
   }, created() {
     this.getList()
+    this.getRole()
   },
 
   methods: {
     searchAction() {
-
+      this.getList()
+    },
+    resetSearch() {
+      this.tableQuery.page = 1
+      this.getList()
     },
     handleAction(row) {
+      this.dialogTitle = row ? '编辑用户' : '新增用户'
+      this.is_edit = !row
+      if (row) {
+        const roleArr = []
+        row.roles.map((item) => {
+          roleArr.push(item.roleId)
+        })
+        row.roleName = roleArr
+        this.ruleForm = JSON.parse(JSON.stringify(row))
+      } else {
+        this.ruleForm = {
+          userName: '',
+          status: true,
+          userSex: true,
+          userPassword: '',
+          roleName: [],
+          desc: ''
+        }
+      }
 
+      this.dialogVisible = true
     },
-    handleDelete() {
-
+    resetForm() {
+      this.$refs.ruleForm.resetFields()
+      this.dialogVisible = false
     },
+    saveForm() {
+      this.$refs.ruleForm.validate((valid) => {
+        if (valid) {
+          this.$store.dispatch('system/userMgt/handleAction', this.ruleForm)
+            .then((res) => {
+              if (res.code === 20000) {
+                this.dialogVisible = false
+              }
+            })
+            .catch(() => {
 
+            })
+        } else {
+          return false
+        }
+      })
+    },
+    handleDelete(row) {
+      this.$confirm(`是否删除【${row.userName}】用户?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$store.dispatch('system/userMgt/handleDelete', {
+          userId: row.userId
+        })
+          .then((res) => {
+            if (res.code === 20000) {
+              this.tableData = this.tableData.filter((item) => {
+                return item.userId !== row.userId
+              })
+              // this.getList()
+            }
+          })
+          .catch(() => {
+
+          })
+      })
+    },
+    getRole() {
+      this.$store.dispatch('system/roleMgt/getRolelist')
+        .then((res) => {
+          if (res.code === 20000) {
+            this.roleList = res.data.map((item) => {
+              return {
+                value: item.roleId,
+                label: item.roleName
+              }
+            })
+          }
+        })
+        .catch(() => {
+
+        })
+    },
     getList() {
-      this.$store.dispatch('system/userMgt/getList')
+      const parmas = Object.assign({}, this.tableQuery, this.searchForm)
+      this.$store.dispatch('system/userMgt/getUserlist', parmas)
         .then((res) => {
           if (res.code === 20000) {
             this.tableData = res.data
@@ -172,6 +392,11 @@ export default {
     margin-right: 0;
     margin-bottom: 0;
     width: 50%;
+  }
+  .swatch-body{
+    line-height: 36px;
+    height: 36px;
+    display: flex;
   }
 }
 </style>

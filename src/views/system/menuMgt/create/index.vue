@@ -1,14 +1,14 @@
 
 <template>
-  <article-detail :is-edit="false" />
+  <action-detail :is-edit="false" />
 </template>
 
 <script>
-import ArticleDetail from '../components/ArticleDetail'
+import actionDetail from '../components/actionDetail'
 
 export default {
-  name: 'CreateArticle',
-  components: { ArticleDetail }
+  name: 'MenusAddAction',
+  components: { actionDetail }
 }
 </script>
 

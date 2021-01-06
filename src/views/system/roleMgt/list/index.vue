@@ -7,10 +7,11 @@
     <div class="search-container">
       <el-form :inline="true" :model="searchForm">
         <el-form-item label="角色名称">
-          <el-input v-model="searchForm.user" placeholder="请输入角色名称" />
+          <el-input v-model="searchForm.roleName" placeholder="请输入角色名称" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="searchAction">查询</el-button>
+          <el-button @click="resetSearch">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -20,10 +21,28 @@
       </el-button>
     </div>
     <el-table
+      v-tableHeight="{bottomOffset: 110}"
       :data="tableData"
+      height="100px"
       border
       style="width: 100%"
     >
+
+      <el-table-column type="expand">
+        <template slot-scope="props">
+          <div style="margin-bottom: 5px;">授权菜单:</div>
+          <div>
+            <el-tree
+              :ref="`${props.row.id}_tree`"
+              :data="props.row.menusTree"
+              :props="defaultProps"
+              :show-checkbox="false"
+              node-key="id"
+              :check-strictly="true"
+            />
+          </div>
+        </template>
+      </el-table-column>
 
       <el-table-column
         label="角色ID"
@@ -46,6 +65,16 @@
         </template>
       </el-table-column>
 
+      <el-table-column
+        label="创建人"
+        prop="createName"
+      />
+
+      <el-table-column
+        label="创建时间"
+        prop="createTime"
+      />
+
       <el-table-column label="操作" align="center" width="220" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
           <el-button type="primary" size="mini" @click="handleAction(row)">
@@ -64,16 +93,27 @@
     <pagination v-show="total>0" :total="total" :page.sync="tableQuery.page" :limit.sync="tableQuery.limit" @pagination="getList" />
 
     <el-dialog
-      title="新增角色"
+      :title="dialogTitle"
       :visible.sync="dialogVisible"
+      class="role_mgt_dialog"
     >
       <div>
-        <el-form ref="dialog_form" :model="handleForm" label-width="80px">
-
-          <el-form-item label="角色名称">
+        <el-form ref="dialog_form" :model="handleForm" :rules="rules" label-width="80px">
+          <el-form-item label="角色名称" prop="roleName">
             <el-input v-model="handleForm.roleName" />
           </el-form-item>
-
+          <el-form-item label="角色状态">
+            <div class="swatch-body">
+              <el-switch
+                v-model="handleForm.status"
+                style="display: block;margin:auto auto auto 10px;"
+                active-color="#13ce66"
+                inactive-color="#ff4949"
+                active-text="启用"
+                inactive-text="禁用"
+              />
+            </div>
+          </el-form-item>
           <el-form-item label="角色描述">
             <el-input v-model="handleForm.desc" type="textarea" />
           </el-form-item>
@@ -81,8 +121,8 @@
         </el-form>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        <el-button @click="resetForm">取 消</el-button>
+        <el-button type="primary" @click="saveForm">确 定</el-button>
       </span>
     </el-dialog>
     <!-- 授权 -->
@@ -125,16 +165,14 @@ export default {
   components: { Pagination },
   filters: {
     statusFilter(status) {
-      const statusMap = {
-        0: 'info',
-        1: 'success'
-      }
-      return statusMap[status]
+      return status ? 'success' : 'info'
     }
   },
   data() {
     return {
-      searchForm: {},
+      searchForm: {
+        roleName: ''
+      },
       total: 0,
       tableQuery: {
         page: 1,
@@ -144,6 +182,7 @@ export default {
       dialogVisible: false,
       handleForm: {
         roleName: '',
+        status: true,
         desc: ''
       },
       dialogMenus: false,
@@ -154,7 +193,13 @@ export default {
         label: 'name'
       },
       searchKey: '',
-      roleId: ''
+      roleId: '',
+      dialogTitle: '',
+      rules: {
+        roleName: [
+          { required: true, message: '请输入角色名称', trigger: 'blur' }
+        ]
+      }
     }
   }, created() {
     this.getList()
@@ -163,15 +208,49 @@ export default {
   methods: {
 
     searchAction() {
-
+      this.getList()
+    },
+    resetSearch() {
+      this.tableQuery.page = 1
+      this.getList()
     },
 
     handleAction(row) {
+      this.dialogTitle = row ? '编辑角色' : '新增角色'
+      if (row) {
+        this.handleForm = JSON.parse(JSON.stringify(row))
+      } else {
+        this.handleForm = {
+          roleName: '',
+          status: true,
+          desc: ''
+        }
+      }
+
       this.dialogVisible = true
     },
 
-    handleDelete() {
+    handleDelete(row) {
+      this.$confirm(`是否删除【${row.roleName}】角色?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$store.dispatch('system/roleMgt/handleDelete', {
+          roleId: row.roleId
+        })
+          .then((res) => {
+            if (res.code === 20000) {
+              this.tableData = this.tableData.filter((item) => {
+                return item.roleId !== row.roleId
+              })
+              // this.getList()
+            }
+          })
+          .catch(() => {
 
+          })
+      }).catch(() => {})
     },
 
     rebuildData(value, arr) {
@@ -242,22 +321,69 @@ export default {
         })
     },
 
+    fiterMenusIds(ids, data) {
+      if (!data) return ids
+
+      for (const i in data) {
+        ids.push(data[i].id)
+        if (data[i].children && data[i].children.length) {
+          this.fiterMenusIds(ids, data[i].children)
+        }
+      }
+
+      return ids
+    },
+
     getList() {
-      this.$store.dispatch('system/roleMgt/getList')
+      const parmas = Object.assign({}, this.tableQuery, this.searchForm)
+      this.$store.dispatch('system/roleMgt/getRolelist', parmas)
         .then((res) => {
-          if (res.code === 20000) {
-            this.tableData = res.data
+          if ((res.code === 20000) && res.data) {
+            this.tableData = res.data.map((item) => {
+              const ids = []
+              return {
+                menuIds: this.fiterMenusIds(ids, item.menusTree),
+                ...item
+              }
+            })
             this.total = res.total
           }
         })
         .catch(() => {
 
         })
+    },
+    resetForm() {
+      this.$refs.dialog_form.resetFields()
+      this.dialogVisible = false
+    },
+    saveForm() {
+      this.$refs.dialog_form.validate((valid) => {
+        if (valid) {
+          this.$store.dispatch('system/roleMgt/handleAction', this.handleForm)
+            .then((res) => {
+              if (res.code === 20000) {
+                this.dialogVisible = false
+              }
+            })
+            .catch(() => {
+
+            })
+        } else {
+          return false
+        }
+      })
     }
   }
 }
 </script>
-
+<style lang="scss">
+  .role_mgt_dialog{
+    .el-dialog{
+      width: 500px;
+    }
+  }
+</style>
 <style scoped lang="scss">
 .page-warp {
   margin: 10px 20px 10px 20px;
@@ -278,6 +404,11 @@ export default {
     margin-right: 0;
     margin-bottom: 0;
     width: 50%;
+  }
+  .swatch-body{
+    line-height: 36px;
+    height: 36px;
+    display: flex;
   }
 }
 </style>

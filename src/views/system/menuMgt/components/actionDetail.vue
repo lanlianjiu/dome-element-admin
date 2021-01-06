@@ -237,17 +237,18 @@ export default {
       this.$refs.postForm.validate(valid => {
         if (valid) {
           this.loading = true
+          this.actionForm.meta = JSON.stringify(this.actionForm.meta)
+          const parmas = this.actionForm
+          this.$store.dispatch('system/menuMgt/handleAction', parmas)
+            .then((res) => {
+              if (res.code === 20000) {
+                this.loading = false
+                this.cancelForm()
+              }
+            })
+            .catch(() => {
 
-          this.$notify({
-            title: '成功',
-            message: '发布文章成功',
-            type: 'success',
-            duration: 2000
-          })
-
-          this.loading = false
-
-          this.cancelForm()
+            })
         } else {
           console.log('error submit!!')
           return false

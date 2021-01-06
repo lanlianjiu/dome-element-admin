@@ -1,5 +1,5 @@
 
-import { getList } from '@/api/system/menuMgt'
+import { getList, handleAction, handleDelete } from '@/api/system/menuMgt'
 const state = {
 
 }
@@ -9,9 +9,33 @@ const mutations = {
 }
 
 const actions = {
-  getList() {
+  getList(state, params) {
     return new Promise((resolve, reject) => {
-      getList().then(response => {
+      getList(params).then(response => {
+        if (!response) {
+          reject('Verification failed, please Login again.')
+        }
+        resolve(response)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+  handleAction(state, params) {
+    return new Promise((resolve, reject) => {
+      handleAction(params).then(response => {
+        if (!response) {
+          reject('Verification failed, please Login again.')
+        }
+        resolve(response)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+  handleDelete(state, params) {
+    return new Promise((resolve, reject) => {
+      handleDelete(params).then(response => {
         if (!response) {
           reject('Verification failed, please Login again.')
         }

@@ -1,3 +1,4 @@
+
 import Vue from 'vue'
 
 import Cookies from 'js-cookie'
@@ -20,6 +21,7 @@ import './utils/error-log' // error log
 
 import * as filters from './filters' // global filters
 import routerAction from '@/utils/routerAction.js' // global filters
+import tableHeight from '@/utils/tableHeigt'
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api
@@ -32,6 +34,11 @@ if (process.env.NODE_ENV === 'production') {
   const { mockXHR } = require('../mock')
   mockXHR()
 }
+
+// 这个是你刚刚写的index.js的路径
+
+// 表格自适应指令
+Vue.use(tableHeight)
 
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium', // set element-ui default size

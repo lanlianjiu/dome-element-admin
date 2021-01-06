@@ -6,20 +6,16 @@ const user = require('./user')
 const role = require('./role')
 const article = require('./article')
 const search = require('./remote-search')
-const menuMgt = require('./menuMgt')
-const userMgt = require('./userMgt')
-const roleMgt = require('./roleMgt')
+const sys_mgt = require('./sys_mgt')
 
 const mocks = [
   ...user,
   ...role,
   ...article,
   ...search,
-  ...menuMgt,
-  ...userMgt,
-  ...roleMgt
+  ...sys_mgt
 ]
-
+console.log(mocks)
 // for front mock
 // please use it cautiously, it will redefine XMLHttpRequest,
 // which will cause many of your third-party libraries to be invalidated(like progress event).
