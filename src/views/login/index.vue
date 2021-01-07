@@ -2,7 +2,7 @@
   <div class="login-container">
 
     <el-carousel :interval="5000" class="login_bg_carousel" indicator-position="none" arrow="never">
-      <el-carousel-item v-for="item in arrImg" :key="item">
+      <el-carousel-item v-for="item in arrImg" :key="item" class="login_bg_carousel_item">
         <img :src="item" alt="" style="height: 100vh;">
       </el-carousel-item>
     </el-carousel>
@@ -228,7 +228,7 @@ $cursor: #fff;
       padding: 12px 5px 12px 15px;
       color: #606266;
       height: 47px;
-      caret-color: $cursor;
+      caret-color: #606266;
 
       &:-webkit-autofill {
         box-shadow: 0 0 0px 1000px $bg inset !important;
@@ -249,6 +249,11 @@ $cursor: #fff;
     height: 100vh;
     .el-carousel__container{
       height: 100vh;
+    }
+    .login_bg_carousel_item{
+      img{
+        width: 100% !important;
+      }
     }
   }
 }
@@ -271,8 +276,8 @@ $light_gray:#eee;
     padding: 60px 35px 0;
     margin: 0 auto;
     overflow: hidden;
-    background-color: rgba(45,58,75,0.8);
-    margin-top: 100px;
+    background-color: #E8F0FE;
+    margin-top: 12%;
     border-radius: 4px;
     z-index: 999;
   }
@@ -302,7 +307,7 @@ $light_gray:#eee;
 
     .title {
       font-size: 26px;
-      color: $light_gray;
+      color: #606266;
       margin: 0px auto 40px auto;
       text-align: center;
       font-weight: bold;
