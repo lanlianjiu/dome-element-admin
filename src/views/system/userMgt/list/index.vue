@@ -327,6 +327,7 @@ export default {
         row.roles.map((item) => {
           roleArr.push(item.roleId)
         })
+        this.selectCompany(row)
         row.roleName = roleArr
         this.ruleForm = JSON.parse(JSON.stringify(row))
       } else {
@@ -456,7 +457,7 @@ export default {
 
         })
     },
-    selectCompany(node, instanceId) {
+    selectCompany(node) {
       this.getDepartList(node.companyId)
     },
     clearCompany() {

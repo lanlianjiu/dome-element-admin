@@ -1,5 +1,11 @@
 
 const list = [{
+  companyId: 1,
+  companyCode: 'c-code',
+  companyName: '深圳公司',
+  departId: 1,
+  departCode: 'd-code',
+  departName: '深圳部门',
   userId: 1,
   userName: '管理员用户',
   userMobile: 13543567678,
@@ -17,6 +23,12 @@ const list = [{
   }],
   desc: '系统管理员用户'
 }, {
+  companyId: 1,
+  companyCode: 'c-code',
+  companyName: '深圳公司',
+  departId: 2,
+  departCode: 'd-code-1',
+  departName: '深圳子部门1',
   userId: 2,
   userName: '普通用户',
   userMobile: 13543567678,
