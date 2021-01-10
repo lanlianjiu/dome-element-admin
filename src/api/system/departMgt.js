@@ -1,0 +1,25 @@
+
+import request from '@/utils/request'
+export function getList(data) {
+  return request({
+    url: '/vue-element-admin/sysDepart/list',
+    method: 'post',
+    data
+  })
+}
+
+export function handleAction(data) {
+  return request({
+    url: '/vue-element-admin/sysDepart/handleAction',
+    method: 'post',
+    data
+  })
+}
+
+export function handleDelete(data) {
+  return request({
+    url: '/vue-element-admin/sysDepart/handleDelete',
+    method: 'post',
+    data
+  })
+}

@@ -58,9 +58,14 @@
 
       <el-table-column
         label="菜单状态"
-        prop="stauts"
         width="90"
-      />
+      >
+        <template slot-scope="props">
+          <el-tag :type="props.row.status | statusFilter">
+            {{ props.row.status?'有效':'无效' }}
+          </el-tag>
+        </template>
+      </el-table-column>
 
       <el-table-column
         label="排序序号"
@@ -68,7 +73,7 @@
         width="80"
       />
 
-      <el-table-column label="操作" align="center" width="220" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" width="240" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
           <el-button type="primary" size="mini" @click="handleAction(row)">
             编辑
@@ -84,6 +89,7 @@
 
     </el-table>
     <pagination v-show="total>0" :total="total" :page.sync="tableQuery.page" :limit.sync="tableQuery.limit" @pagination="getList" />
+    <!-- 菜单信息 -->
     <el-dialog
       title="菜单信息"
       :visible.sync="dialogVisible"
@@ -164,6 +170,11 @@ import Item from '@/layout/components/Sidebar/Item'
 export default {
   name: 'MenuMgtList',
   components: { Pagination, Item },
+  filters: {
+    statusFilter(status) {
+      return status ? 'success' : 'info'
+    }
+  },
   data() {
     return {
       searchForm: {

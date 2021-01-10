@@ -111,6 +111,33 @@
 
           <el-row>
             <el-col :span="12">
+              <el-form-item label="用户公司" prop="userName">
+                <treeselect
+                  v-model="ruleForm.companyId"
+                  style="width: 100%;"
+                  :options="coptions"
+                  :normalizer="cnormalizer"
+                  placeholder="请选择公司"
+                  @select="selectCompany"
+                  @input="clearCompany"
+                />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="用户部门" prop="roleName">
+                <treeselect
+                  v-model="ruleForm.departId"
+                  style="width: 100%;"
+                  :options="doptions"
+                  :normalizer="dnormalizer"
+                  placeholder="请选择部门"
+                />
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-row>
+            <el-col :span="12">
               <el-form-item label="用户名称" prop="userName">
                 <el-input v-model="ruleForm.userName" />
               </el-form-item>
@@ -214,12 +241,13 @@
 </template>
 
 <script>
-
+import Treeselect from '@riophae/vue-treeselect'
+import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
 export default {
   name: 'UserMgtList',
-  components: { Pagination },
+  components: { Pagination, Treeselect },
   filters: {
     statusFilter(status) {
       return status ? 'success' : 'info'
@@ -258,11 +286,29 @@ export default {
         roleName: [
           { required: true, message: '请选择用户角色', trigger: 'blur' }
         ]
+      },
+      coptions: [],
+      cnormalizer(node) {
+        return {
+          id: node.companyId,
+          label: node.companyName,
+          children: node.children
+        }
+      },
+      doptions: [],
+      dnormalizer(node) {
+        return {
+          id: node.departId,
+          label: node.departName,
+          children: node.children
+        }
       }
     }
   }, created() {
     this.getList()
     this.getRole()
+    this.getCompanyList()
+    this.getDepartList()
   },
 
   methods: {
@@ -367,6 +413,56 @@ export default {
         .catch(() => {
 
         })
+    },
+    getCompanyList() {
+      this.$store.dispatch('system/companyMgt/getList')
+        .then((res) => {
+          if ((res.code === 20000) && res.data) {
+            this.coptions = res.data
+          }
+        })
+        .catch(() => {
+
+        })
+    },
+    rebuildData(value, arr) {
+      const newarr = []
+      arr.forEach(element => {
+        if (element.departId === value) {
+          newarr.push(element)
+        } else {
+          if (element.children && element.children.length > 0) {
+            const ab = this.rebuildData(value, element.children)
+            const obj = {
+              ...element,
+              children: ab
+            }
+            if (ab && ab.length > 0) {
+              newarr.push(obj)
+            }
+          }
+        }
+      })
+      return newarr
+    },
+    getDepartList(companyId) {
+      this.$store.dispatch('system/departMgt/getList', { companyId: companyId })
+        .then((res) => {
+          if ((res.code === 20000) && res.data) {
+            this.doptions = this.rebuildData(companyId, res.data)
+          }
+        })
+        .catch(() => {
+
+        })
+    },
+    selectCompany(node, instanceId) {
+      this.getDepartList(node.companyId)
+    },
+    clearCompany() {
+      if (!this.ruleForm.companyId) {
+        this.doptions = []
+      }
     }
   }
 }

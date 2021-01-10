@@ -20,6 +20,23 @@
 
         </el-form-item>
 
+        <el-form-item v-if="((actionForm.pid)&&$route.query.id) || (!$route.query.id)" label="路由名称">
+          <div class="input_body">
+            <div class="input_left">
+              <treeselect
+                v-model="actionForm.pid"
+                style="width: 300px;"
+                :options="options"
+                :normalizer="normalizer"
+                placeholder="请选择父级菜单"
+              />
+            </div>
+            <div class="input_right">
+              父级菜单
+            </div>
+          </div>
+        </el-form-item>
+
         <el-form-item label="路由名称">
           <div class="input_body">
             <div class="input_left">
@@ -68,7 +85,7 @@
 
           <div class="input_body">
             <div class="input_left">
-              <el-switch v-model="actionForm.stauts" :active-value="1" :inactive-value="0" />
+              <el-switch v-model="actionForm.stauts" />
             </div>
             <div class="input_right">
               菜单是否有效
@@ -185,7 +202,8 @@
 </template>
 
 <script>
-
+import Treeselect from '@riophae/vue-treeselect'
+import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 const defaultForm = {
   name: '',
   path: '',
@@ -194,7 +212,7 @@ const defaultForm = {
   hidden: false, // 当设置 true 的时候该路由不会在侧边栏出现
   alwaysShow: false, // 你可以设置 alwaysShow: true，这样它就会忽略之前定义的规则，一直显示根路由
   is_external_link: false, // 路由作为外链打开
-  stauts: 1, // 菜单状态
+  stauts: true, // 菜单状态
   meta: {
     title: '', // 设置该路由在侧边栏和面包屑中展示的名字
     icon: '', // 设置该路由的图标，支持 svg-class，也支持 el-icon-x element-ui 的 icon
@@ -208,7 +226,7 @@ const defaultForm = {
 export default {
   name: 'ArticleDetail',
   components: {
-
+    Treeselect
   },
   props: {
     isEdit: {
@@ -221,7 +239,15 @@ export default {
       actionForm: Object.assign({}, defaultForm),
       loading: false,
       userListOptions: [],
-      rules: {}
+      rules: {},
+      options: [],
+      normalizer(node) {
+        return {
+          id: node.id,
+          label: node.name,
+          children: node.children
+        }
+      }
     }
   },
   computed: {
@@ -231,6 +257,7 @@ export default {
     if (this.$route.query.id) {
       this.actionForm = this.$route.query
     }
+    this.getList()
   },
   methods: {
     submitForm() {
@@ -257,6 +284,17 @@ export default {
     },
     cancelForm() {
       this.router_go(this, 'list', { type: 'replace', closeTag: true })
+    },
+    getList() {
+      this.$store.dispatch('system/menuMgt/getList')
+        .then((res) => {
+          if ((res.code === 20000) && res.data) {
+            this.options = res.data
+          }
+        })
+        .catch(() => {
+
+        })
     }
   }
 }

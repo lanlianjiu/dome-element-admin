@@ -6,8 +6,8 @@
   <div class="page-warp">
     <div class="search-container">
       <el-form :inline="true" :model="searchForm">
-        <el-form-item label="角色名称">
-          <el-input v-model="searchForm.roleName" placeholder="请输入角色名称" />
+        <el-form-item label="公司名称">
+          <el-input v-model="searchForm.companyName" placeholder="请输入公司名称" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="searchAction">查询</el-button>
@@ -26,36 +26,25 @@
       height="100px"
       border
       style="width: 100%"
+      row-key="companyId"
     >
-
-      <el-table-column type="expand">
-        <template slot-scope="props">
-          <div style="margin-bottom: 5px;">授权菜单:</div>
-          <div>
-            <el-tree
-              :ref="`${props.row.id}_tree`"
-              :data="props.row.menusTree"
-              :props="defaultProps"
-              :show-checkbox="false"
-              node-key="id"
-              :check-strictly="true"
-            />
-          </div>
-        </template>
-      </el-table-column>
-
       <el-table-column
-        label="角色ID"
-        prop="roleId"
+        label="公司ID"
+        prop="companyId"
         width="180"
       />
       <el-table-column
-        label="角色名称"
-        prop="roleName"
+        label="公司编码"
+        prop="companyCode"
+        width="180"
+      />
+      <el-table-column
+        label="公司名称"
+        prop="companyName"
       />
 
       <el-table-column
-        label="角色状态"
+        label="公司状态"
         prop="status"
       >
         <template slot-scope="{row}">
@@ -75,13 +64,10 @@
         prop="createTime"
       />
 
-      <el-table-column label="操作" align="center" width="240" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
           <el-button type="primary" size="mini" @click="handleAction(row)">
             编 辑
-          </el-button>
-          <el-button type="primary" size="mini" @click="permissionsMenus(row)">
-            授 权
           </el-button>
           <el-button size="mini" type="danger" @click="handleDelete(row)">
             删 除
@@ -99,10 +85,22 @@
     >
       <div>
         <el-form ref="dialog_form" :model="handleForm" :rules="rules" label-width="80px">
-          <el-form-item label="角色名称" prop="roleName">
-            <el-input v-model="handleForm.roleName" />
+          <el-form-item v-if="handleForm.companypId" label="上级公司">
+            <treeselect
+              v-model="handleForm.companypId"
+              style="width: 100%;"
+              :options="options"
+              :normalizer="normalizer"
+              placeholder="请选择父级公司"
+            />
           </el-form-item>
-          <el-form-item label="角色状态">
+          <el-form-item label="公司编码" prop="companyCode">
+            <el-input v-model="handleForm.companyCode" :disabled="is_edit" />
+          </el-form-item>
+          <el-form-item label="公司名称" prop="companyName">
+            <el-input v-model="handleForm.companyName" />
+          </el-form-item>
+          <el-form-item label="公司状态">
             <div class="swatch-body">
               <el-switch
                 v-model="handleForm.status"
@@ -114,7 +112,7 @@
               />
             </div>
           </el-form-item>
-          <el-form-item label="角色描述">
+          <el-form-item label="公司描述">
             <el-input v-model="handleForm.desc" type="textarea" />
           </el-form-item>
 
@@ -125,44 +123,18 @@
         <el-button type="primary" @click="saveForm">确 定</el-button>
       </span>
     </el-dialog>
-    <!-- 授权 -->
-    <el-dialog
-      title="授权"
-      :visible.sync="dialogMenus"
-    >
-      <div>
-        <el-input
-          v-model="searchKey"
-          placeholder="请输入内容"
-          clearable
-          @input="searchKeyFn"
-        />
-        <el-tree
-          ref="tree"
-          style="height:50vh;overflow: auto;"
-          :data="treeList"
-          :props="defaultProps"
-          :show-checkbox="true"
-          node-key="id"
-          :check-strictly="true"
-          @node-click="handleNodeClick"
-        />
-      </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogMenus = false">取 消</el-button>
-        <el-button type="primary" @click="confirmMenus">确 定</el-button>
-      </span>
-    </el-dialog>
+
   </div>
 </template>
 
 <script>
-
+import Treeselect from '@riophae/vue-treeselect'
+import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
 export default {
   name: 'RoleMgtList',
-  components: { Pagination },
+  components: { Pagination, Treeselect },
   filters: {
     statusFilter(status) {
       return status ? 'success' : 'info'
@@ -171,7 +143,8 @@ export default {
   data() {
     return {
       searchForm: {
-        roleName: ''
+        companyName: '',
+        companyCode: ''
       },
       total: 0,
       tableQuery: {
@@ -181,25 +154,35 @@ export default {
       tableData: [],
       dialogVisible: false,
       handleForm: {
-        roleName: '',
+        companyName: '',
+        companyCode: '',
         status: true,
         desc: ''
       },
-      dialogMenus: false,
-      treeList: [],
       pageTreedata: [],
       defaultProps: {
         children: 'children',
         label: 'name'
       },
-      searchKey: '',
       roleId: '',
       dialogTitle: '',
       rules: {
-        roleName: [
-          { required: true, message: '请输入角色名称', trigger: 'blur' }
+        companyName: [
+          { required: true, message: '请输入公司名称', trigger: 'blur' }
+        ],
+        companyCode: [
+          { required: true, message: '请输入公司编码', trigger: 'blur' }
         ]
-      }
+      },
+      options: [],
+      normalizer(node) {
+        return {
+          id: node.companyId,
+          label: node.companyName,
+          children: node.children
+        }
+      },
+      is_edit: false
     }
   }, created() {
     this.getList()
@@ -216,12 +199,13 @@ export default {
     },
 
     handleAction(row) {
-      this.dialogTitle = row ? '编辑角色' : '新增角色'
+      this.dialogTitle = row ? '编辑公司' : '新增公司'
+      this.is_edit = !!row
       if (row) {
         this.handleForm = JSON.parse(JSON.stringify(row))
       } else {
         this.handleForm = {
-          roleName: '',
+          companyName: '',
           status: true,
           desc: ''
         }
@@ -231,18 +215,18 @@ export default {
     },
 
     handleDelete(row) {
-      this.$confirm(`是否删除【${row.roleName}】角色?`, '提示', {
+      this.$confirm(`是否删除【${row.companyName}】的公司?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$store.dispatch('system/roleMgt/handleDelete', {
+        this.$store.dispatch('system/companyMgt/handleDelete', {
           roleId: row.roleId
         })
           .then((res) => {
             if (res.code === 20000) {
               this.tableData = this.tableData.filter((item) => {
-                return item.roleId !== row.roleId
+                return item.companyId !== row.companyId
               })
               // this.getList()
             }
@@ -274,78 +258,13 @@ export default {
       return newarr
     },
 
-    searchKeyFn() {
-      if (this.searchKey) {
-        const key = this.searchKey
-        const data = JSON.parse(JSON.stringify(this.treeList))
-        this.treeList = this.rebuildData(key, data)
-      } else {
-        this.treeList = this.pageTreedata
-      }
-    },
-
-    permissionsMenus(row) {
-      this.dialogMenus = true
-      this.roleId = row.roleId
-      this.getMenus(row)
-    },
-
-    handleNodeClick(v) {
-      console.log(v)
-    },
-
-    confirmMenus() {
-      const res = this.$refs.tree.getCheckedKeys()
-      this.$store.dispatch('system/roleMgt/setRolemenus', {
-        roleId: this.roleId,
-        menuIds: res
-      })
-        .then((res) => {
-          this.dialogMenus = false
-        })
-        .catch(() => {
-
-        })
-    },
-
-    getMenus(row) {
-      this.$store.dispatch('system/roleMgt/getMenus')
-        .then((res) => {
-          if (res.code === 20000) {
-            this.treeList = res.data
-            this.pageTreedata = res.data
-            this.$refs.tree.setCheckedKeys(row.menuIds)
-          }
-        }).catch(() => {
-
-        })
-    },
-
-    fiterMenusIds(ids, data) {
-      if (!data) return ids
-
-      for (const i in data) {
-        ids.push(data[i].id)
-        if (data[i].children && data[i].children.length) {
-          this.fiterMenusIds(ids, data[i].children)
-        }
-      }
-
-      return ids
-    },
-
     getList() {
       const parmas = Object.assign({}, this.tableQuery, this.searchForm)
-      this.$store.dispatch('system/roleMgt/getRolelist', parmas)
+      this.$store.dispatch('system/companyMgt/getList', parmas)
         .then((res) => {
           if ((res.code === 20000) && res.data) {
-            this.tableData = res.data.map((item) => {
-              const ids = []
-              return {
-                menuIds: this.fiterMenusIds(ids, item.menusTree),
-                ...item
-              }
-            })
+            this.options = res.data
+            this.tableData = res.data
             this.total = res.total
           }
         })
@@ -360,7 +279,7 @@ export default {
     saveForm() {
       this.$refs.dialog_form.validate((valid) => {
         if (valid) {
-          this.$store.dispatch('system/roleMgt/handleAction', this.handleForm)
+          this.$store.dispatch('system/companyMgt/handleAction', this.handleForm)
             .then((res) => {
               if (res.code === 20000) {
                 this.dialogVisible = false

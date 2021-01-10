@@ -94,12 +94,88 @@ const list = [{
           }]
       },
       {
+        component: '/system/companyMgt/index',
+        redirect: '/system/companyMgt/list',
+        hidden: false,
+        id: 13,
+        status: true,
+        sortNo: 2,
+        meta: {
+          title: '公司管理',
+          icon: '',
+          noCache: false,
+          breadcrumb: true,
+          affix: false,
+          activeMenu: ''
+        },
+        name: '公司管理',
+        path: 'companyMgt',
+        pid: 1,
+        children: [
+          {
+            component: '/system/companyMgt/list',
+            hidden: true,
+            id: 14,
+            status: true,
+            sortNo: 3,
+            meta: {
+              title: '公司列表',
+              noCache: true,
+              activeMenu: '/system/companyMgt',
+              icon: '',
+              breadcrumb: true,
+              affix: false
+            },
+            name: '公司列表',
+            path: 'list',
+            pid: 3
+          }]
+      },
+      {
+        component: '/system/departMgt/index',
+        redirect: '/system/departMgt/list',
+        hidden: false,
+        id: 15,
+        status: true,
+        sortNo: 4,
+        meta: {
+          title: '部门管理',
+          icon: '',
+          noCache: false,
+          breadcrumb: true,
+          affix: false,
+          activeMenu: ''
+        },
+        name: '部门管理',
+        path: 'departMgt',
+        pid: 1,
+        children: [
+          {
+            component: '/system/departMgt/list',
+            hidden: true,
+            id: 16,
+            status: true,
+            sortNo: 1,
+            meta: {
+              title: '部门列表',
+              noCache: true,
+              activeMenu: '/system/departMgt',
+              icon: '',
+              breadcrumb: true,
+              affix: false
+            },
+            name: '部门列表',
+            path: 'list',
+            pid: 3
+          }]
+      },
+      {
         component: '/system/userMgt/index',
         redirect: '/system/userMgt/list',
         hidden: false,
         id: 3,
         stauts: 1,
-        sortNo: 2,
+        sortNo: 5,
         meta: {
           title: '用户管理',
           icon: '',
@@ -128,41 +204,6 @@ const list = [{
             },
             name: '用户列表',
             path: 'list',
-            pid: 3
-          },
-          {
-            component: '/system/userMgt/edit',
-            hidden: true,
-            id: 9,
-            stauts: 1,
-            sortNo: 2,
-            meta: {
-              title: '编辑用户',
-              noCache: true,
-              icon: '',
-              breadcrumb: true,
-              affix: false,
-              activeMenu: ''
-            },
-            name: '编辑用户',
-            path: 'edit',
-            pid: 3
-          }, {
-            component: '/system/userMgt/create',
-            hidden: true,
-            id: 10,
-            stauts: 1,
-            sortNo: 3,
-            meta: {
-              title: '添加用户',
-              activeMenu: '/system/userMgt',
-              icon: '',
-              noCache: false,
-              breadcrumb: true,
-              affix: false
-            },
-            name: '添加用户',
-            path: 'create',
             pid: 3
           }]
       },

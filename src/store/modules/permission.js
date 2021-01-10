@@ -17,7 +17,13 @@ function hasPermission(roles, route) {
 }
 
 export const loadView = (view) => {
-  return (resolve) => require([`@/views${view}`], resolve)
+  return (resolve) => {
+    try {
+      return require([`@/views${view}`], resolve)
+    } catch (err) {
+      console.log(err)
+    }
+  }
 }
 
 /**
