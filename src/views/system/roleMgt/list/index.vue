@@ -38,7 +38,6 @@
               :props="defaultProps"
               :show-checkbox="false"
               node-key="id"
-              :check-strictly="true"
             />
           </div>
         </template>
@@ -47,6 +46,11 @@
       <el-table-column
         label="角色ID"
         prop="roleId"
+        width="180"
+      />
+      <el-table-column
+        label="角色编码"
+        prop="roleCode"
         width="180"
       />
       <el-table-column
@@ -77,13 +81,13 @@
 
       <el-table-column label="操作" align="center" width="240" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
-          <el-button type="primary" size="mini" @click="handleAction(row)">
+          <el-button type="text" size="mini" @click="handleAction(row)">
             编 辑
           </el-button>
-          <el-button type="primary" size="mini" @click="permissionsMenus(row)">
+          <el-button type="text" size="mini" @click="permissionsMenus(row)">
             授 权
           </el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(row)">
+          <el-button size="mini" type="text" class="danger-color" @click="handleDelete(row)">
             删 除
           </el-button>
         </template>
@@ -99,6 +103,9 @@
     >
       <div>
         <el-form ref="dialog_form" :model="handleForm" :rules="rules" label-width="80px">
+          <el-form-item label="角色编码" prop="roleCode">
+            <el-input v-model="handleForm.roleCode" />
+          </el-form-item>
           <el-form-item label="角色名称" prop="roleName">
             <el-input v-model="handleForm.roleName" />
           </el-form-item>
@@ -142,9 +149,10 @@
           style="height:50vh;overflow: auto;"
           :data="treeList"
           :props="defaultProps"
+          :default-expanded-keys="expandedKeys"
           :show-checkbox="true"
           node-key="id"
-          :check-strictly="true"
+          :check-strictly="false"
           @node-click="handleNodeClick"
         />
       </div>
@@ -187,6 +195,7 @@ export default {
       },
       dialogMenus: false,
       treeList: [],
+      expandedKeys: [],
       pageTreedata: [],
       defaultProps: {
         children: 'children',
@@ -198,6 +207,9 @@ export default {
       rules: {
         roleName: [
           { required: true, message: '请输入角色名称', trigger: 'blur' }
+        ],
+        roleCode: [
+          { required: true, message: '请输入角色编码', trigger: 'blur' }
         ]
       }
     }
@@ -210,6 +222,7 @@ export default {
     searchAction() {
       this.getList()
     },
+
     resetSearch() {
       this.tableQuery.page = 1
       this.getList()
@@ -314,6 +327,10 @@ export default {
           if (res.code === 20000) {
             this.treeList = res.data
             this.pageTreedata = res.data
+            this.expandedKeys = []
+            for (const i in res.data) {
+              this.expandedKeys.push(res.data[i].id)
+            }
             this.$refs.tree.setCheckedKeys(row.menuIds)
           }
         }).catch(() => {
@@ -321,31 +338,12 @@ export default {
         })
     },
 
-    fiterMenusIds(ids, data) {
-      if (!data) return ids
-
-      for (const i in data) {
-        ids.push(data[i].id)
-        if (data[i].children && data[i].children.length) {
-          this.fiterMenusIds(ids, data[i].children)
-        }
-      }
-
-      return ids
-    },
-
     getList() {
       const parmas = Object.assign({}, this.tableQuery, this.searchForm)
       this.$store.dispatch('system/roleMgt/getRolelist', parmas)
         .then((res) => {
           if ((res.code === 20000) && res.data) {
-            this.tableData = res.data.map((item) => {
-              const ids = []
-              return {
-                menuIds: this.fiterMenusIds(ids, item.menusTree),
-                ...item
-              }
-            })
+            this.tableData = res.data
             this.total = res.total
           }
         })
@@ -353,10 +351,12 @@ export default {
 
         })
     },
+
     resetForm() {
       this.$refs.dialog_form.resetFields()
       this.dialogVisible = false
     },
+
     saveForm() {
       this.$refs.dialog_form.validate((valid) => {
         if (valid) {

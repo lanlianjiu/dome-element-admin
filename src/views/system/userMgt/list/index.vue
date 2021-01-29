@@ -7,7 +7,7 @@
     <div class="search-container">
       <el-form :inline="true" :model="searchForm">
         <el-form-item label="用户名称">
-          <el-input v-model="searchForm.userName" placeholder="请输入用户名称" />
+          <el-input v-model="searchForm.name" placeholder="请输入用户名称" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="searchAction">查询</el-button>
@@ -30,20 +30,48 @@
       <el-table-column type="expand">
         <template slot-scope="props">
           <el-form label-position="left" class="child-table-expand">
-            <el-form-item label="用户角色：">
-              <el-tag v-for="(item,index) in props.row.roles || []" :key="index" style="margin-right:5px;">
-                {{ item.roleName }}
-              </el-tag>
-            </el-form-item>
-            <el-form-item label="用户描述：">
-              <span>{{ props.row.desc }}</span>
-            </el-form-item>
-            <el-form-item label="创建用户：">
-              <span>{{ props.row.createName }}</span>
-            </el-form-item>
-            <el-form-item label="创建时间：">
-              <span>{{ props.row.createTime }}</span>
-            </el-form-item>
+
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="所属公司：">
+                  <span>{{ props.row.companyName }}</span>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="所属部门：">
+                  <span>{{ props.row.departName }}</span>
+                </el-form-item>
+              </el-col>
+            </el-row>
+
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="用户角色：">
+                  <el-tag v-for="(item,index) in props.row.roles || []" :key="index" style="margin-right:5px;">
+                    {{ item.roleName }}
+                  </el-tag>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="用户描述：">
+                  <span>{{ props.row.introduction }}</span>
+                </el-form-item>
+              </el-col>
+            </el-row>
+
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="创建用户：">
+                  <span>{{ props.row.createName }}</span>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="创建时间：">
+                  <span>{{ props.row.createTime }}</span>
+                </el-form-item>
+              </el-col>
+            </el-row>
+
           </el-form>
         </template>
       </el-table-column>
@@ -53,8 +81,12 @@
         width="80"
       />
       <el-table-column
-        label="用户名称"
+        label="用户账号"
         prop="userName"
+      />
+      <el-table-column
+        label="用户昵称"
+        prop="nickName"
       />
 
       <el-table-column
@@ -88,13 +120,16 @@
         prop="userEmali"
       />
 
-      <el-table-column label="操作" align="center" width="180" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" width="240" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
-          <el-button type="primary" size="mini" @click="handleAction(row)">
-            编辑
+          <el-button type="text" size="mini" @click="handleAction(row)">
+            编 辑
           </el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(row)">
-            删除
+          <el-button type="text" size="mini">
+            修改密码
+          </el-button>
+          <el-button size="mini" type="text" class="danger-color" @click="handleDelete(row)">
+            删 除
           </el-button>
         </template>
       </el-table-column>
@@ -105,124 +140,145 @@
     <el-dialog
       :title="dialogTitle"
       :visible.sync="dialogVisible"
+      custom-class="userMgt-dialog-body"
     >
       <div>
         <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="100px">
-
           <el-row>
-            <el-col :span="12">
-              <el-form-item label="用户公司" prop="userName">
-                <treeselect
-                  v-model="ruleForm.companyId"
-                  style="width: 100%;"
-                  :options="coptions"
-                  :normalizer="cnormalizer"
-                  placeholder="请选择公司"
-                  @select="selectCompany"
-                  @input="clearCompany"
-                />
-              </el-form-item>
+            <el-col :span="6">
+              <el-upload
+                class="avatar-uploader"
+                action="https://jsonplaceholder.typicode.com/posts/"
+                :show-file-list="false"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload"
+              >
+                <img v-if="ruleForm.avatar" :src="ruleForm.avatar" class="avatar">
+                <i v-else class="el-icon-plus avatar-uploader-icon" />
+              </el-upload>
             </el-col>
-            <el-col :span="12">
-              <el-form-item label="用户部门" prop="roleName">
-                <treeselect
-                  v-model="ruleForm.departId"
-                  style="width: 100%;"
-                  :options="doptions"
-                  :normalizer="dnormalizer"
-                  placeholder="请选择部门"
-                />
-              </el-form-item>
+            <el-col :span="18">
+              <el-row>
+                <el-col>
+                  <el-form-item label="用户公司" prop="companyId">
+                    <treeselect
+                      v-model="ruleForm.companyId"
+                      style="width: 100%;"
+                      :options="coptions"
+                      :normalizer="cnormalizer"
+                      placeholder="请选择公司"
+                      @select="selectCompany"
+                      @input="clearCompany"
+                    />
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+
+                <el-col>
+                  <el-form-item label="用户部门" prop="departId">
+                    <treeselect
+                      v-model="ruleForm.departId"
+                      style="width: 100%;"
+                      :options="doptions"
+                      :normalizer="dnormalizer"
+                      placeholder="请选择部门"
+                    />
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col>
+                  <el-form-item label="用户角色" prop="roleName">
+                    <el-select
+                      v-model="ruleForm.roleName"
+                      style="width:100%;"
+                      multiple
+                      filterable
+                      allow-create
+                      default-first-option
+                      placeholder="请选择角色"
+                    >
+                      <el-option
+                        v-for="item in roleList"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                      />
+                    </el-select>
+
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12">
+                  <el-form-item label="用户账号" prop="userName">
+                    <el-input v-model="ruleForm.userName" :disabled="!is_edit" />
+                  </el-form-item>
+                </el-col>
+                <el-col v-if="is_edit" :span="12">
+                  <el-form-item label="用户密码" prop="userPassword">
+                    <el-input v-model="ruleForm.userPassword" />
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="用户昵称" prop="nickName">
+                    <el-input v-model="ruleForm.nickName" />
+                  </el-form-item>
+                </el-col>
+
+                <el-col :span="12">
+                  <el-form-item label="用户电话" prop="userMobile">
+                    <el-input v-model="ruleForm.userMobile" />
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="用户邮箱" prop="userEmali">
+                    <el-input v-model="ruleForm.userEmali" />
+                  </el-form-item>
+                </el-col>
+
+              </el-row>
+
+              <el-row>
+                <el-col :span="12">
+                  <el-form-item label="用户状态">
+                    <div class="swatch-body">
+                      <el-switch
+                        v-model="ruleForm.status"
+                        style="display: block;margin:auto auto auto 10px;"
+                        active-color="#13ce66"
+                        inactive-color="#ff4949"
+                        active-text="启用"
+                        inactive-text="禁用"
+                      />
+                    </div>
+
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="用户性别">
+                    <div class="swatch-body">
+                      <el-switch
+                        v-model="ruleForm.userSex"
+                        style="display: block;margin:auto auto auto 10px;"
+                        active-color="#13ce66"
+                        inactive-color="#ff4949"
+                        active-text="男"
+                        inactive-text="女"
+                      />
+                    </div>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+
             </el-col>
           </el-row>
-
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="用户名称" prop="userName">
-                <el-input v-model="ruleForm.userName" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="用户角色" prop="roleName">
-                <el-select
-                  v-model="ruleForm.roleName"
-                  style="width:100%;"
-                  multiple
-                  filterable
-                  allow-create
-                  default-first-option
-                  placeholder="请选择角色"
-                >
-                  <el-option
-                    v-for="item in roleList"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  />
-                </el-select>
-
-              </el-form-item>
-            </el-col>
-          </el-row>
-
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="用户电话" prop="userMobile">
-                <el-input v-model="ruleForm.userMobile" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="用户邮箱" prop="userEmali">
-                <el-input v-model="ruleForm.userEmali" />
-              </el-form-item>
-            </el-col>
-          </el-row>
-
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="用户状态">
-                <div class="swatch-body">
-                  <el-switch
-                    v-model="ruleForm.status"
-                    style="display: block;margin:auto auto auto 10px;"
-                    active-color="#13ce66"
-                    inactive-color="#ff4949"
-                    active-text="启用"
-                    inactive-text="禁用"
-                  />
-                </div>
-
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="用户性别">
-                <div class="swatch-body">
-                  <el-switch
-                    v-model="ruleForm.userSex"
-                    style="display: block;margin:auto auto auto 10px;"
-                    active-color="#13ce66"
-                    inactive-color="#ff4949"
-                    active-text="男"
-                    inactive-text="女"
-                  />
-                </div>
-              </el-form-item>
-            </el-col>
-          </el-row>
-
-          <el-row v-if="is_edit">
-            <el-col :span="12">
-              <el-form-item label="用户密码" prop="userPassword">
-                <el-input v-model="ruleForm.userPassword" />
-              </el-form-item>
-            </el-col>
-          </el-row>
-
           <el-row>
             <el-col :span="24">
-              <el-form-item label="用户备注">
+              <el-form-item label="用户备注" style="margin-bottom:0;">
                 <el-input
-                  v-model="ruleForm.desc"
+                  v-model="ruleForm.introduction"
                   type="textarea"
                   :rows="2"
                 />
@@ -256,7 +312,7 @@ export default {
   data() {
     return {
       searchForm: {
-        userName: ''
+        nickName: ''
       },
       total: 0,
       tableQuery: {
@@ -269,15 +325,24 @@ export default {
       dialogVisible: false,
       is_edit: false,
       ruleForm: {
-        userName: '',
+        nickName: '',
         status: true,
         userSex: true,
         userPassword: '',
         roleName: [],
-        desc: ''
+        introduction: ''
       },
       rules: {
+        companyId: [
+          { required: true, message: '请选择公司', trigger: 'blur' }
+        ],
+        departId: [
+          { required: true, message: '请选择部门', trigger: 'blur' }
+        ],
         userName: [
+          { required: true, message: '请输入用户账号', trigger: 'blur' }
+        ],
+        nickName: [
           { required: true, message: '请输入用户名称', trigger: 'blur' }
         ],
         userPassword: [
@@ -312,6 +377,21 @@ export default {
   },
 
   methods: {
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw)
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg'
+      const isLt2M = file.size / 1024 / 1024 < 2
+
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!')
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!')
+      }
+      return isJPG && isLt2M
+    },
     searchAction() {
       this.getList()
     },
@@ -332,12 +412,12 @@ export default {
         this.ruleForm = JSON.parse(JSON.stringify(row))
       } else {
         this.ruleForm = {
-          userName: '',
+          nickName: '',
           status: true,
           userSex: true,
           userPassword: '',
           roleName: [],
-          desc: ''
+          introduction: ''
         }
       }
 
@@ -365,7 +445,7 @@ export default {
       })
     },
     handleDelete(row) {
-      this.$confirm(`是否删除【${row.userName}】用户?`, '提示', {
+      this.$confirm(`是否删除【${row.nickName}】用户?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -429,7 +509,7 @@ export default {
     rebuildData(value, arr) {
       const newarr = []
       arr.forEach(element => {
-        if (element.departId === value) {
+        if (element.companyId === value) {
           newarr.push(element)
         } else {
           if (element.children && element.children.length > 0) {
@@ -458,17 +538,28 @@ export default {
         })
     },
     selectCompany(node) {
+      if (this.ruleForm.companyId !== node.companyId) {
+        delete this.ruleForm.departId
+      }
       this.getDepartList(node.companyId)
     },
     clearCompany() {
       if (!this.ruleForm.companyId) {
         this.doptions = []
+        delete this.ruleForm.departId
       }
     }
   }
 }
 </script>
-
+<style lang="scss">
+   .userMgt-dialog-body{
+    width: 700px;
+    .el-dialog__body{
+      padding: 20px;
+    }
+  }
+</style>
 <style scoped lang="scss">
 .page-warp {
   margin: 10px 20px 10px 20px;
@@ -495,5 +586,30 @@ export default {
     height: 36px;
     display: flex;
   }
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+    border: 1px dashed #d9d9d9;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+  }
+
 }
 </style>

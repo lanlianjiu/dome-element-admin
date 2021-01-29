@@ -20,6 +20,14 @@ export function validUsername(str) {
 }
 
 /**
+ * @param {string} str
+ * @returns {Boolean}
+ */
+export function validCompanycode(str) {
+  return !!str.trim()
+}
+
+/**
  * @param {string} url
  * @returns {Boolean}
  */

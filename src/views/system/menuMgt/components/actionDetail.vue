@@ -20,13 +20,14 @@
 
         </el-form-item>
 
-        <el-form-item v-if="((actionForm.pid)&&$route.query.id) || (!$route.query.id)" label="路由名称">
+        <el-form-item v-if="(($route.query.pid != 0)&&$route.query.id) || (!$route.query.id)" label="父级菜单">
           <div class="input_body">
             <div class="input_left">
               <treeselect
                 v-model="actionForm.pid"
                 style="width: 300px;"
                 :options="options"
+                :default-expand-level="1"
                 :normalizer="normalizer"
                 placeholder="请选择父级菜单"
               />
@@ -37,7 +38,7 @@
           </div>
         </el-form-item>
 
-        <el-form-item label="路由名称">
+        <el-form-item label="路由名称" prop="name">
           <div class="input_body">
             <div class="input_left">
               <el-input v-model="actionForm.name" class="input_w" placeholder="请输入路由名称" />
@@ -48,7 +49,7 @@
           </div>
         </el-form-item>
 
-        <el-form-item label="路由标签名">
+        <!-- <el-form-item label="路由标签名">
           <div class="input_body">
             <div class="input_left">
               <el-input v-model="actionForm.meta.title" class="input_w" placeholder="请输入路由标签名" />
@@ -57,9 +58,9 @@
               路由标签，用于侧边栏以及面包屑显示名称
             </div>
           </div>
-        </el-form-item>
+        </el-form-item> -->
 
-        <el-form-item label="路由路径">
+        <el-form-item label="路由路径" prop="path">
           <div class="input_body">
             <div class="input_left">
               <el-input v-model="actionForm.path" class="input_w" placeholder="请输入路由路径" />
@@ -70,7 +71,7 @@
           </div>
         </el-form-item>
 
-        <el-form-item label="页面路径">
+        <el-form-item label="页面路径" prop="component">
           <div class="input_body">
             <div class="input_left">
               <el-input v-model="actionForm.component" class="input_w" placeholder="请输入页面路径" />
@@ -239,7 +240,17 @@ export default {
       actionForm: Object.assign({}, defaultForm),
       loading: false,
       userListOptions: [],
-      rules: {},
+      rules: {
+        name: [
+          { required: true, message: '请输入路由名称', trigger: 'blur' }
+        ],
+        path: [
+          { required: true, message: '请输入路由路径', trigger: 'blur' }
+        ],
+        component: [
+          { required: true, message: '请输入组件路径', trigger: 'blur' }
+        ]
+      },
       options: [],
       normalizer(node) {
         return {
@@ -264,8 +275,10 @@ export default {
       this.$refs.postForm.validate(valid => {
         if (valid) {
           this.loading = true
+          this.actionForm.meta.title = this.actionForm.name
           this.actionForm.meta = JSON.stringify(this.actionForm.meta)
           const parmas = this.actionForm
+          console.log(parmas)
           this.$store.dispatch('system/menuMgt/handleAction', parmas)
             .then((res) => {
               if (res.code === 20000) {

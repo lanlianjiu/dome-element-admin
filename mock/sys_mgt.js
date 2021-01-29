@@ -4,6 +4,7 @@ const { role_list } = require('./roleMgt_data.js')
 const { meuns_list } = require('./menuMgt_data.js')
 const { company_list } = require('./company_data.js')
 const { depart_list } = require('./departMgt_data.js')
+const { api_list } = require('./apiMgt_data.js')
 
 const menusList = {
   code: 20000,
@@ -32,6 +33,12 @@ const roleList = {
   code: 20000,
   total: role_list.length,
   data: role_list
+}
+
+const apiList = {
+  code: 20000,
+  total: api_list.length,
+  data: api_list
 }
 
 module.exports = [
@@ -170,6 +177,32 @@ module.exports = [
   },
   {
     url: '/vue-element-admin/sysDepart/handleDelete',
+    type: 'post',
+    response: _ => {
+      return {
+        code: 20000,
+        msg: '操作成功'
+      }
+    }
+  },
+  {
+    url: '/vue-element-admin/sysApi/list',
+    type: 'post',
+    response: _ => {
+      return apiList
+    }
+  }, {
+    url: '/vue-element-admin/sysApi/handleAction',
+    type: 'post',
+    response: _ => {
+      return {
+        code: 20000,
+        msg: '操作成功'
+      }
+    }
+  },
+  {
+    url: '/vue-element-admin/sysApi/handleDelete',
     type: 'post',
     response: _ => {
       return {

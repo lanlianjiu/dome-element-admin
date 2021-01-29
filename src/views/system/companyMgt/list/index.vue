@@ -4,6 +4,7 @@
 
 <template>
   <div class="page-warp">
+
     <div class="search-container">
       <el-form :inline="true" :model="searchForm">
         <el-form-item label="公司名称">
@@ -15,11 +16,13 @@
         </el-form-item>
       </el-form>
     </div>
+
     <div class="table-action-body">
       <el-button type="primary" @click="handleAction()">
         新增
       </el-button>
     </div>
+
     <el-table
       v-tableHeight="{bottomOffset: 110}"
       :data="tableData"
@@ -66,29 +69,34 @@
 
       <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
-          <el-button type="primary" size="mini" @click="handleAction(row)">
+          <el-button type="text" size="mini" @click="handleAction(row)">
             编 辑
           </el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(row)">
+          <el-button size="mini" type="text" class="danger-color" @click="handleDelete(row)">
             删 除
           </el-button>
         </template>
       </el-table-column>
 
     </el-table>
+
     <pagination v-show="total>0" :total="total" :page.sync="tableQuery.page" :limit.sync="tableQuery.limit" @pagination="getList" />
 
+    <!-- 新增、编辑 -->
     <el-dialog
       :title="dialogTitle"
       :visible.sync="dialogVisible"
       class="role_mgt_dialog"
+      @closed="resetForm"
     >
       <div>
         <el-form ref="dialog_form" :model="handleForm" :rules="rules" label-width="80px">
-          <el-form-item v-if="handleForm.companypId" label="上级公司">
+          <el-form-item v-if="(handleForm.companypId&&is_edit) || (!is_edit)" label="上级公司">
             <treeselect
               v-model="handleForm.companypId"
+              :disabled="is_edit"
               style="width: 100%;"
+              :default-expand-level="1"
               :options="options"
               :normalizer="normalizer"
               placeholder="请选择父级公司"

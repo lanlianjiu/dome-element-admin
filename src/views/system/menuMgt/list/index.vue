@@ -14,10 +14,14 @@
     </div>
     <div class="table-action-body">
       <el-button type="primary" @click="handleAction()">
-        新增
+        新 增
+      </el-button>
+      <el-button type="text" @click="sortAction()">
+        排 序
       </el-button>
     </div>
     <el-table
+
       v-tableHeight="{bottomOffset: 110}"
       :data="tableData"
       border
@@ -75,14 +79,17 @@
 
       <el-table-column label="操作" align="center" width="240" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
-          <el-button type="primary" size="mini" @click="handleAction(row)">
-            编辑
+          <el-button type="text" size="mini" @click="handleAction(row)">
+            编 辑
           </el-button>
-          <el-button type="primary" size="mini" @click="showMore(row)">
-            更多
+          <el-button type="text" size="mini" @click="showMore(row)">
+            更 多
           </el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(row)">
-            删除
+          <el-button v-if="row.children&&(row.children.length>1)" type="text" size="mini" @click="sortAction(row)">
+            排 序
+          </el-button>
+          <el-button size="mini" type="text" class="danger-color" @click="handleDelete(row)">
+            删 除
           </el-button>
         </template>
       </el-table-column>
@@ -93,19 +100,22 @@
     <el-dialog
       title="菜单信息"
       :visible.sync="dialogVisible"
+      custom-class="meunsMgt-dialog"
     >
       <div>
         <el-row :gutter="20" class="row-body">
           <el-col class="row-title">
             标签名称：
           </el-col>
-          <el-col :span="6">
+          <el-col :span="16">
             <span>{{ detailData.title }}</span>
           </el-col>
+        </el-row>
+        <el-row :gutter="20" class="row-body">
           <el-col class="row-title">
             高亮路径：
           </el-col>
-          <el-col :span="6">
+          <el-col :span="16">
             <span>{{ detailData.activeMenu }}</span>
           </el-col>
         </el-row>
@@ -114,13 +124,15 @@
           <el-col class="row-title">
             显示根路由：
           </el-col>
-          <el-col :span="6">
+          <el-col :span="16">
             <span>{{ detailData.alwaysShow?'一直显示':'不显示' }}</span>
           </el-col>
+        </el-row>
+        <el-row :gutter="20" class="row-body">
           <el-col class="row-title">
             隐藏菜单：
           </el-col>
-          <el-col :span="6">
+          <el-col :span="16">
             <span>{{ detailData.hidden ?'隐藏':'显示' }}</span>
           </el-col>
         </el-row>
@@ -129,13 +141,15 @@
           <el-col class="row-title">
             是否是外链：
           </el-col>
-          <el-col :span="6">
+          <el-col :span="16">
             <span>{{ detailData.is_external_link?'是':'不是' }}</span>
           </el-col>
+        </el-row>
+        <el-row :gutter="20" class="row-body">
           <el-col class="row-title">
             重定向路径：
           </el-col>
-          <el-col :span="6">
+          <el-col :span="16">
             <span>{{ detailData.redirect }}</span>
           </el-col>
         </el-row>
@@ -144,20 +158,62 @@
           <el-col class="row-title">
             是否是固定标签：
           </el-col>
-          <el-col :span="6">
+          <el-col :span="16">
             <span>{{ detailData.affix?'是':'不是' }}</span>
           </el-col>
+        </el-row>
+        <el-row :gutter="20" class="row-body">
           <el-col class="row-title">
             keep-alive 缓存：
           </el-col>
-          <el-col :span="6">
+          <el-col :span="16">
             <span>{{ detailData.noCache?'缓存':'不缓存' }}</span>
           </el-col>
         </el-row>
 
       </div>
+    </el-dialog>
+
+    <!-- 排序 -->
+    <el-dialog
+      title="子菜单排序"
+      :visible.sync="sortVisible"
+      custom-class="sortMgt-dialog"
+    >
+      <div>
+        <el-table
+          ref="dragTable"
+          :data="list"
+          border
+          style="width: 100%"
+        >
+          <el-table-column
+            label="菜单名称"
+            prop="name"
+          />
+          <el-table-column
+            label="排序序号"
+            prop="sortNo"
+          >
+            <template slot-scope="{row}">
+              {{ row.sortNo }}
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
+            <template slot-scope="{row}">
+              <el-button type="text" size="mini" @click="sortUpDown(row,'up')">
+                上 移
+              </el-button>
+              <el-button type="text" size="mini" @click="sortUpDown(row,'down')">
+                下 移
+              </el-button></template>
+          </el-table-column>
+        </el-table>
+
+      </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">关 闭</el-button>
+        <el-button @click="sortVisible = false">取 消</el-button>
+        <el-button type="primary" @click="saveSort">保 存</el-button>
       </span>
     </el-dialog>
   </div>
@@ -167,6 +223,7 @@
 
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 import Item from '@/layout/components/Sidebar/Item'
+import Sortable from 'sortablejs'
 export default {
   name: 'MenuMgtList',
   components: { Pagination, Item },
@@ -187,7 +244,12 @@ export default {
       },
       tableData: [],
       dialogVisible: false,
-      detailData: {}
+      detailData: {},
+      sortVisible: false,
+      sortable: null,
+      list: [],
+      oldList: [],
+      newList: []
     }
   }, created() {
     this.getList()
@@ -247,11 +309,63 @@ export default {
         .catch(() => {
 
         })
+    },
+    sortUpDown(row, type) {
+
+    },
+    sortAction(row) {
+      this.sortVisible = true
+      let res = []
+      if (row) {
+        res = row.children.filter((item) => {
+          return !item.hidden
+        })
+      } else {
+        res = this.tableData || []
+      }
+
+      this.list = JSON.parse(JSON.stringify(res))
+      this.oldList = this.list.map(v => v.id)
+      this.newList = this.oldList.slice()
+      this.$nextTick(() => {
+        this.setSort()
+      })
+      this.$forceUpdate()
+    },
+    setSort() {
+      const el = this.$refs.dragTable.$el.querySelectorAll('.el-table__body-wrapper > table > tbody')[0]
+      this.sortable = Sortable.create(el, {
+        ghostClass: 'sortable-ghost',
+        setData: function(dataTransfer) {
+          dataTransfer.setData('Text', '')
+        },
+        onEnd: evt => {
+          const targetRow = this.list.splice(evt.oldIndex, 1)[0]
+          this.list.splice(evt.newIndex, 0, targetRow)
+          const tempIndex = this.newList.splice(evt.oldIndex, 1)[0]
+          this.newList.splice(evt.newIndex, 0, tempIndex)
+        }
+      })
+    },
+    saveSort() {
+
     }
   }
 }
 </script>
-
+<style lang="scss">
+  .meunsMgt-dialog{
+    width: 500px;
+    .el-dialog__body{
+      padding: 20px;
+    }
+  }
+  .sortable-ghost{
+    opacity: .8;
+    color: #fff!important;
+    background: #1890ff!important;
+  }
+</style>
 <style scoped lang="scss">
 .page-warp {
   margin: 10px 20px 10px 20px;

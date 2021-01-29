@@ -38,8 +38,8 @@
 
 <script>
 import clipboard from '@/utils/clipboard'
-import svgIcons from './svg-icons'
-import elementIcons from './element-icons'
+import svgIcons from '@/utils/icon/svg-icons'
+import elementIcons from '@/utils/icon/element-icons'
 
 export default {
   name: 'Icons',

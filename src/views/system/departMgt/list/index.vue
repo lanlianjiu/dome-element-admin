@@ -72,13 +72,13 @@
       <el-table-column label="操作" align="center" width="260" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
 
-          <el-button type="primary" size="mini" @click="handleAction(row)">
+          <el-button type="text" size="mini" @click="handleAction(row)">
             编 辑
           </el-button>
-          <el-button type="primary" size="mini" @click="handleAction(row,true)">
+          <el-button type="text" size="mini" @click="handleAction(row,true)">
             新增子部门
           </el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(row)">
+          <el-button size="mini" type="text" class="danger-color" @click="handleDelete(row)">
             删 除
           </el-button>
         </template>
@@ -86,20 +86,22 @@
 
     </el-table>
     <pagination v-show="total>0" :total="total" :page.sync="tableQuery.page" :limit.sync="tableQuery.limit" @pagination="getList" />
-
+    <!-- 新增、编辑 -->
     <el-dialog
       :title="dialogTitle"
       :visible.sync="dialogVisible"
       class="role_mgt_dialog"
+      @closed="resetForm"
     >
       <div>
         <el-form ref="dialog_form" :model="handleForm" :rules="rules" label-width="80px">
-          <el-form-item label="所属公司">
+          <el-form-item label="所属公司" prop="companyId">
             <treeselect
               v-model="handleForm.companyId"
               :disabled="is_child"
               style="width: 100%;"
               :options="options"
+              :default-expand-level="1"
               :normalizer="normalizer"
               placeholder="请选择所属公司"
             />
@@ -155,31 +157,34 @@ export default {
   },
   data() {
     return {
-      searchForm: {
+      searchForm: { // 表格搜素对象
         departName: '',
         departCode: ''
       },
-      total: 0,
-      tableQuery: {
+      total: 0, // 总页数
+      tableQuery: { // 分页参数对象
         page: 1,
         limit: 20
       },
-      tableData: [],
-      dialogVisible: false,
-      handleForm: {
+      tableData: [], // 表格数据
+      dialogVisible: false, // 弹窗开启关闭标识
+      handleForm: { // 提交信息对象
         departName: '',
         departCode: '',
         status: true,
         desc: ''
       },
-      pageTreedata: [],
-      defaultProps: {
+      pageTreedata: [], // 公司树图数组
+      defaultProps: { // 树图配置选项
         children: 'children',
         label: 'name'
       },
-      roleId: '',
-      dialogTitle: '',
-      rules: {
+      departpId: '', // 用于存储点击列表的部门
+      dialogTitle: '', // 弹窗标题
+      rules: { // 表单校验规则
+        companyId: [
+          { required: true, message: '请选择公司', trigger: 'blur' }
+        ],
         departName: [
           { required: true, message: '请输入部门名称', trigger: 'blur' }
         ],
@@ -187,16 +192,17 @@ export default {
           { required: true, message: '请输入部门编码', trigger: 'blur' }
         ]
       },
-      options: [],
-      normalizer(node) {
+      options: [], // 树图数据
+      expandedKeys: [], // 默认展开id
+      normalizer(node) { // 树图自定义展示键名
         return {
           id: node.companyId,
           label: node.companyName,
           children: node.children
         }
       },
-      is_edit: false,
-      is_child: false
+      is_edit: false, // 是否是编辑标识
+      is_child: false // 是否是子级标识
     }
   }, created() {
     this.getList()
@@ -205,22 +211,28 @@ export default {
 
   methods: {
 
+    // 搜索
     searchAction() {
       this.getList()
     },
+
+    // 重置
     resetSearch() {
       this.tableQuery.page = 1
       this.getList()
     },
 
+    // 新增、编辑操作
     handleAction(row, type) {
       if (type) {
         this.dialogTitle = '新增子部门'
       } else {
         this.dialogTitle = row ? '编辑部门' : '新增部门'
       }
-      if (type || row.departpId) {
+      if (type || (row && row.departpId)) {
         this.is_child = true
+      } else {
+        this.is_child = false
       }
 
       this.is_edit = !!row
@@ -249,6 +261,7 @@ export default {
       this.dialogVisible = true
     },
 
+    // 删除操作
     handleDelete(row) {
       this.$confirm(`是否删除【${row.companyName}】的部门?`, '提示', {
         confirmButtonText: '确定',
@@ -256,7 +269,7 @@ export default {
         type: 'warning'
       }).then(() => {
         this.$store.dispatch('system/departMgt/handleDelete', {
-          roleId: row.roleId
+          departpId: row.departpId
         })
           .then((res) => {
             if (res.code === 20000) {
@@ -272,6 +285,7 @@ export default {
       }).catch(() => {})
     },
 
+    // 获取部门列表数据
     getList() {
       const parmas = Object.assign({}, this.tableQuery, this.searchForm)
       this.$store.dispatch('system/departMgt/getList', parmas)
@@ -285,37 +299,39 @@ export default {
 
         })
     },
+
+    // 取消弹窗操作
     resetForm() {
       this.$refs.dialog_form.resetFields()
       this.dialogVisible = false
     },
+
+    // 弹窗保存操作
     saveForm() {
       this.$refs.dialog_form.validate((valid) => {
         if (valid) {
-          this.$store.dispatch('system/departMgt/handleAction', this.handleForm)
-            .then((res) => {
-              if (res.code === 20000) {
-                this.dialogVisible = false
-              }
-            })
-            .catch(() => {
-
-            })
+          this.$store.dispatch('system/departMgt/handleAction', this.handleForm).then((res) => {
+            if (res.code === 20000) {
+              this.dialogVisible = false
+            }
+          }).catch(() => {})
         } else {
           return false
         }
       })
     },
-    getCompanyList() {
-      this.$store.dispatch('system/companyMgt/getList')
-        .then((res) => {
-          if ((res.code === 20000) && res.data) {
-            this.options = res.data
-          }
-        })
-        .catch(() => {
 
-        })
+    // 获取树图数据
+    getCompanyList() {
+      this.$store.dispatch('system/companyMgt/getList').then((res) => {
+        if ((res.code === 20000) && res.data) {
+          this.options = res.data
+          this.expandedKeys = []
+          for (const i in res.data) {
+            this.expandedKeys.push(res.data[i].companyId)
+          }
+        }
+      }).catch(() => {})
     }
   }
 }

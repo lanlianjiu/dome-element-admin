@@ -36,7 +36,7 @@ const baseArr = [
         {
           component: '/system/menuMgt/list',
           hidden: true,
-          id: 5,
+          id: 3,
           status: true,
           sortNo: 1,
           meta: {
@@ -54,7 +54,7 @@ const baseArr = [
         {
           component: '/system/menuMgt/edit',
           hidden: true,
-          id: 96,
+          id: 4,
           status: true,
           sortNo: 2,
           meta: {
@@ -71,7 +71,7 @@ const baseArr = [
         }, {
           component: '/system/menuMgt/create',
           hidden: true,
-          id: 7,
+          id: 5,
           status: true,
           sortNo: 3,
           meta: {
@@ -91,7 +91,7 @@ const baseArr = [
       component: '/system/userMgt/index',
       redirect: '/system/userMgt/list',
       hidden: false,
-      id: 3,
+      id: 6,
       status: true,
       sortNo: 2,
       meta: {
@@ -109,7 +109,7 @@ const baseArr = [
         {
           component: '/system/userMgt/list',
           hidden: true,
-          id: 8,
+          id: 7,
           status: true,
           sortNo: 1,
           meta: {
@@ -122,14 +122,14 @@ const baseArr = [
           },
           name: '用户列表',
           path: 'list',
-          pid: 3
+          pid: 6
         }]
     },
     {
       component: '/system/companyMgt/index',
       redirect: '/system/companyMgt/list',
       hidden: false,
-      id: 13,
+      id: 8,
       status: true,
       sortNo: 2,
       meta: {
@@ -147,7 +147,7 @@ const baseArr = [
         {
           component: '/system/companyMgt/list',
           hidden: true,
-          id: 14,
+          id: 9,
           status: true,
           sortNo: 1,
           meta: {
@@ -160,14 +160,14 @@ const baseArr = [
           },
           name: '公司列表',
           path: 'list',
-          pid: 3
+          pid: 8
         }]
     },
     {
       component: '/system/departMgt/index',
       redirect: '/system/departMgt/list',
       hidden: false,
-      id: 15,
+      id: 10,
       status: true,
       sortNo: 3,
       meta: {
@@ -185,7 +185,7 @@ const baseArr = [
         {
           component: '/system/departMgt/list',
           hidden: true,
-          id: 16,
+          id: 11,
           status: true,
           sortNo: 1,
           meta: {
@@ -198,14 +198,14 @@ const baseArr = [
           },
           name: '部门列表',
           path: 'list',
-          pid: 3
+          pid: 10
         }]
     },
     {
       component: '/system/roleMgt/index',
       redirect: '/system/roleMgt/list',
       hidden: false,
-      id: 4,
+      id: 12,
       status: true,
       sortNo: 4,
       meta: {
@@ -222,7 +222,7 @@ const baseArr = [
       children: [{
         component: '/system/roleMgt/list',
         hidden: true,
-        id: 12,
+        id: 13,
         status: true,
         sortNo: 1,
         meta: {
@@ -235,7 +235,7 @@ const baseArr = [
         },
         name: '角色列表',
         path: 'list',
-        pid: 4
+        pid: 12
       }]
     }
     ]
@@ -245,7 +245,7 @@ const baseArr = [
     component: '',
     redirect: 'noRedirect',
     hidden: false,
-    id: 88,
+    id: 14,
     status: true,
     sortNo: 2,
     meta: {
@@ -264,7 +264,7 @@ const baseArr = [
         component: '/systemTools/iconsMgt/index',
         redirect: '/systemTools/iconsMgt/list',
         hidden: false,
-        id: 89,
+        id: 15,
         status: true,
         sortNo: 1,
         meta: {
@@ -277,11 +277,11 @@ const baseArr = [
         },
         name: '图标管理',
         path: 'iconsMgt',
-        pid: 88,
+        pid: 14,
         children: [{
           component: '/systemTools/iconsMgt/list',
           hidden: true,
-          id: 90,
+          id: 16,
           status: true,
           sortNo: 1,
           meta: {
@@ -294,7 +294,61 @@ const baseArr = [
           },
           name: '图标列表',
           path: 'list',
-          pid: 89
+          pid: 15
+        }]
+      },
+      {
+        component: '/systemTools/apiMgt/index',
+        redirect: '/systemTools/apiMgt/list',
+        hidden: false,
+        id: 17,
+        status: true,
+        sortNo: 2,
+        meta: {
+          title: '接口管理',
+          icon: '',
+          noCache: false,
+          breadcrumb: true,
+          affix: false,
+          activeMenu: ''
+        },
+        name: '接口管理',
+        path: 'apiMgt',
+        pid: 12,
+        children: [{
+          component: '/systemTools/apiMgt/list',
+          hidden: true,
+          id: 18,
+          status: true,
+          sortNo: 1,
+          meta: {
+            title: '接口列表',
+            noCache: true,
+            activeMenu: '/systemTools/apiMgt',
+            icon: '',
+            breadcrumb: true,
+            affix: false
+          },
+          name: '接口列表',
+          path: 'list',
+          pid: 17
+        }, {
+          component: '/systemTools/apiMgt/detail',
+          hidden: true,
+          id: 19,
+          status: true,
+          sortNo: 2,
+          meta: {
+            title: '接口详情',
+            noCache: true,
+            activeMenu: '/systemTools/apiMgt',
+            icon: '',
+            breadcrumb: true,
+            affix: false
+          },
+          name: '接口详情',
+          path: 'detail',
+          pid: 17
         }]
       }
     ]

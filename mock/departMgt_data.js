@@ -32,7 +32,7 @@ const list = [{
     createTime: '2021-01-05 09:00:00'
   }]
 }, {
-  companyId: 2,
+  companyId: 4,
   companyName: '广州公司',
   departId: 4,
   departpId: 0,
@@ -43,7 +43,7 @@ const list = [{
   createTime: '2021-01-05 09:00:00',
   desc: '部门描述',
   children: [{
-    companyId: 2,
+    companyId: 4,
     companyName: '广州公司',
     departId: 5,
     departypId: 4,
@@ -54,7 +54,7 @@ const list = [{
     createTime: '2021-01-05 09:00:00',
     desc: '部门描述'
   }, {
-    companyId: 2,
+    companyId: 4,
     companyName: '广州公司',
     departId: 6,
     departpId: 4,
@@ -66,7 +66,7 @@ const list = [{
     desc: '部门描述'
   }]
 }, {
-  companyId: 3,
+  companyId: 7,
   companyName: '东莞公司',
   departId: 7,
   departpId: 0,
@@ -77,7 +77,7 @@ const list = [{
   createTime: '2021-01-05 09:00:00',
   desc: '部门描述',
   children: [{
-    companyId: 3,
+    companyId: 7,
     companyName: '东莞公司',
     departId: 8,
     departpId: 7,
@@ -88,7 +88,7 @@ const list = [{
     createName: '管理员用户',
     createTime: '2021-01-05 09:00:00'
   }, {
-    companyId: 3,
+    companyId: 7,
     companyName: '东莞公司',
     departId: 9,
     departpId: 7,

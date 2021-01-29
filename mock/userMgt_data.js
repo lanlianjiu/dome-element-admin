@@ -7,7 +7,8 @@ const list = [{
   departCode: 'd-code',
   departName: '深圳部门',
   userId: 1,
-  userName: '管理员用户',
+  userName: 'admin',
+  nickName: '管理员用户',
   userMobile: 13543567678,
   userEmali: '123456@qq.com',
   userSex: true,
@@ -21,7 +22,8 @@ const list = [{
     roleId: 2,
     roleName: '普通用户'
   }],
-  desc: '系统管理员用户'
+  introduction: '系统管理员用户',
+  avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'
 }, {
   companyId: 1,
   companyCode: 'c-code',
@@ -30,7 +32,8 @@ const list = [{
   departCode: 'd-code-1',
   departName: '深圳子部门1',
   userId: 2,
-  userName: '普通用户',
+  userName: 'edit',
+  nickName: '普通用户',
   userMobile: 13543567678,
   userEmali: '123456@qq.com',
   userSex: false,
@@ -41,7 +44,8 @@ const list = [{
     roleId: 2,
     roleName: '普通用户'
   }],
-  desc: '系统普通用户'
+  introduction: '系统普通用户',
+  avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'
 }
 ]
 module.exports = {
