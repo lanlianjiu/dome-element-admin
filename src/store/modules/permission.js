@@ -31,7 +31,11 @@ export const loadView = (view) => {
  * @param routes
  */
 export function generaMenu(routes, data) {
-  data.forEach(item => {
+  const filterData = data.filter((item) => {
+    return ((process.env.NODE_ENV === 'development') || ((process.env.NODE_ENV !== 'development') && (!item.is_local)))
+  })
+
+  filterData.forEach(item => {
     const menu = {
       name: item.name,
       path: item.path,
@@ -47,7 +51,6 @@ export function generaMenu(routes, data) {
     if (item.children && (!item.is_external_link)) {
       generaMenu(menu.children, item.children)
     }
-
     routes.push(menu)
   })
 }

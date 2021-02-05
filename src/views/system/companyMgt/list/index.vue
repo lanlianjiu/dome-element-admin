@@ -3,8 +3,7 @@
 -->
 
 <template>
-  <div class="page-warp">
-
+  <div>
     <div class="search-container">
       <el-form :inline="true" :model="searchForm">
         <el-form-item label="公司名称">
@@ -17,121 +16,134 @@
       </el-form>
     </div>
 
-    <div class="table-action-body">
-      <el-button type="primary" @click="handleAction()">
-        新增
-      </el-button>
-    </div>
+    <div class="page-warp">
 
-    <el-table
-      v-tableHeight="{bottomOffset: 110}"
-      :data="tableData"
-      height="100px"
-      border
-      style="width: 100%"
-      row-key="companyId"
-    >
-      <el-table-column
-        label="公司ID"
-        prop="companyId"
-        width="180"
-      />
-      <el-table-column
-        label="公司编码"
-        prop="companyCode"
-        width="180"
-      />
-      <el-table-column
-        label="公司名称"
-        prop="companyName"
-      />
-
-      <el-table-column
-        label="公司状态"
-        prop="status"
-      >
-        <template slot-scope="{row}">
-          <el-tag :type="row.status | statusFilter">
-            {{ row.status?'有效':'无效' }}
-          </el-tag>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-        label="创建人"
-        prop="createName"
-      />
-
-      <el-table-column
-        label="创建时间"
-        prop="createTime"
-      />
-
-      <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">
-        <template slot-scope="{row}">
-          <el-button type="text" size="mini" @click="handleAction(row)">
-            编 辑
-          </el-button>
-          <el-button size="mini" type="text" class="danger-color" @click="handleDelete(row)">
-            删 除
-          </el-button>
-        </template>
-      </el-table-column>
-
-    </el-table>
-
-    <pagination v-show="total>0" :total="total" :page.sync="tableQuery.page" :limit.sync="tableQuery.limit" @pagination="getList" />
-
-    <!-- 新增、编辑 -->
-    <el-dialog
-      :title="dialogTitle"
-      :visible.sync="dialogVisible"
-      class="role_mgt_dialog"
-      @closed="resetForm"
-    >
-      <div>
-        <el-form ref="dialog_form" :model="handleForm" :rules="rules" label-width="80px">
-          <el-form-item v-if="(handleForm.companypId&&is_edit) || (!is_edit)" label="上级公司">
-            <treeselect
-              v-model="handleForm.companypId"
-              :disabled="is_edit"
-              style="width: 100%;"
-              :default-expand-level="1"
-              :options="options"
-              :normalizer="normalizer"
-              placeholder="请选择父级公司"
-            />
-          </el-form-item>
-          <el-form-item label="公司编码" prop="companyCode">
-            <el-input v-model="handleForm.companyCode" :disabled="is_edit" />
-          </el-form-item>
-          <el-form-item label="公司名称" prop="companyName">
-            <el-input v-model="handleForm.companyName" />
-          </el-form-item>
-          <el-form-item label="公司状态">
-            <div class="swatch-body">
-              <el-switch
-                v-model="handleForm.status"
-                style="display: block;margin:auto auto auto 10px;"
-                active-color="#13ce66"
-                inactive-color="#ff4949"
-                active-text="启用"
-                inactive-text="禁用"
-              />
-            </div>
-          </el-form-item>
-          <el-form-item label="公司描述">
-            <el-input v-model="handleForm.desc" type="textarea" />
-          </el-form-item>
-
-        </el-form>
+      <div class="table-action-body">
+        <el-button type="primary" @click="handleAction()">
+          新增
+        </el-button>
       </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="resetForm">取 消</el-button>
-        <el-button type="primary" @click="saveForm">确 定</el-button>
-      </span>
-    </el-dialog>
 
+      <el-table
+        v-tableHeight="{bottomOffset: 80}"
+        :data="tableData"
+        height="100px"
+        border
+        style="width: 100%"
+        row-key="companyId"
+      >
+        <el-table-column
+          label="公司ID"
+          prop="companyId"
+          width="180"
+        />
+        <el-table-column
+          label="公司编码"
+          prop="companyCode"
+          width="180"
+        />
+        <el-table-column
+          label="公司名称"
+          prop="companyName"
+        />
+
+        <el-table-column
+          label="公司状态"
+          prop="status"
+          align="center"
+          width="90"
+        >
+          <template slot-scope="{row}">
+            <el-tag :type="row.status | statusFilter">
+              {{ statusMap[row.status] ||'' }}
+            </el-tag>
+          </template>
+        </el-table-column>
+
+        <el-table-column
+          label="创建人"
+          prop="createName"
+        />
+
+        <el-table-column
+          label="创建时间"
+          prop="createTime"
+        />
+
+        <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">
+          <template slot-scope="{row}">
+            <el-button type="text" size="mini" @click="handleAction(row)">
+              编 辑
+            </el-button>
+            <el-button size="mini" type="text" class="danger-color" @click="handleDelete(row)">
+              删 除
+            </el-button>
+          </template>
+        </el-table-column>
+
+      </el-table>
+
+      <pagination
+        v-show="total>0"
+        :total="total"
+        :page.sync="tableQuery.page"
+        :limit.sync="tableQuery.limit"
+        @pagination="getList"
+      />
+
+      <!-- 新增、编辑 -->
+      <el-dialog
+        :title="dialogTitle"
+        :visible.sync="dialogVisible"
+        class="role_mgt_dialog"
+        @closed="resetForm"
+      >
+        <div>
+          <el-form ref="dialog_form" :model="handleForm" :rules="rules" label-width="80px">
+            <el-form-item v-if="(handleForm.companypId&&is_edit) || (!is_edit)" label="上级公司">
+              <treeselect
+                v-model="handleForm.companypId"
+                :disabled="is_edit"
+                style="width: 100%;"
+                :default-expand-level="1"
+                :options="options"
+                :normalizer="normalizer"
+                placeholder="请选择父级公司，不填默认为一级公司"
+              />
+            </el-form-item>
+            <el-form-item label="公司编码" prop="companyCode">
+              <el-input v-model="handleForm.companyCode" :disabled="is_edit" />
+            </el-form-item>
+            <el-form-item label="公司名称" prop="companyName">
+              <el-input v-model="handleForm.companyName" />
+            </el-form-item>
+            <el-form-item label="公司状态">
+              <div class="swatch-body">
+                <el-switch
+                  v-model="handleForm.status"
+                  style="display: block;margin:auto auto auto 10px;"
+                  active-color="#13ce66"
+                  inactive-color="#ff4949"
+                  active-text="启用"
+                  inactive-text="禁用"
+                  :active-value="1"
+                  :inactive-value="2"
+                />
+              </div>
+            </el-form-item>
+            <el-form-item label="公司描述">
+              <el-input v-model="handleForm.desc" type="textarea" />
+            </el-form-item>
+
+          </el-form>
+        </div>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="resetForm">取 消</el-button>
+          <el-button type="primary" @click="saveForm">确 定</el-button>
+        </span>
+      </el-dialog>
+
+    </div>
   </div>
 </template>
 
@@ -145,36 +157,39 @@ export default {
   components: { Pagination, Treeselect },
   filters: {
     statusFilter(status) {
-      return status ? 'success' : 'info'
+      const map = {
+        1: 'success',
+        2: 'info'
+      }
+      return map[status] || ''
     }
   },
   data() {
     return {
-      searchForm: {
+      searchForm: { // 搜索参数对象
         companyName: '',
         companyCode: ''
       },
-      total: 0,
-      tableQuery: {
+      total: 0, // 总页数
+      tableQuery: { // 表格分页参数
         page: 1,
         limit: 20
       },
-      tableData: [],
+      tableData: [], // 表格数据
       dialogVisible: false,
-      handleForm: {
+      handleForm: { // 表单对象
         companyName: '',
         companyCode: '',
-        status: true,
+        status: 1,
         desc: ''
       },
-      pageTreedata: [],
-      defaultProps: {
+      pageTreedata: [], // 树图数组
+      defaultProps: { // 树图默认参数
         children: 'children',
         label: 'name'
       },
-      roleId: '',
-      dialogTitle: '',
-      rules: {
+      dialogTitle: '', // 弹窗标题
+      rules: { // 表单校验规则
         companyName: [
           { required: true, message: '请输入公司名称', trigger: 'blur' }
         ],
@@ -182,15 +197,19 @@ export default {
           { required: true, message: '请输入公司编码', trigger: 'blur' }
         ]
       },
-      options: [],
-      normalizer(node) {
+      options: [], // 父级公司数组
+      normalizer(node) { // 下拉树图自定义字段
         return {
           id: node.companyId,
           label: node.companyName,
           children: node.children
         }
       },
-      is_edit: false
+      is_edit: false, // 是否为编辑标识
+      statusMap: { // 状态字典数据
+        1: '有效',
+        2: '无效'
+      }
     }
   }, created() {
     this.getList()
@@ -198,14 +217,18 @@ export default {
 
   methods: {
 
+    // 搜索
     searchAction() {
       this.getList()
     },
+
+    // 重置
     resetSearch() {
       this.tableQuery.page = 1
       this.getList()
     },
 
+    // 新增、编辑操作
     handleAction(row) {
       this.dialogTitle = row ? '编辑公司' : '新增公司'
       this.is_edit = !!row
@@ -214,7 +237,7 @@ export default {
       } else {
         this.handleForm = {
           companyName: '',
-          status: true,
+          status: 1,
           desc: ''
         }
       }
@@ -222,6 +245,7 @@ export default {
       this.dialogVisible = true
     },
 
+    // 删除操作
     handleDelete(row) {
       this.$confirm(`是否删除【${row.companyName}】的公司?`, '提示', {
         confirmButtonText: '确定',
@@ -229,43 +253,24 @@ export default {
         type: 'warning'
       }).then(() => {
         this.$store.dispatch('system/companyMgt/handleDelete', {
-          roleId: row.roleId
-        })
-          .then((res) => {
-            if (res.code === 20000) {
-              this.tableData = this.tableData.filter((item) => {
-                return item.companyId !== row.companyId
-              })
-              // this.getList()
-            }
-          })
-          .catch(() => {
-
-          })
+          companyId: row.companyId
+        }).then((res) => {
+          if (res.code === 20000) {
+            this.tableData = this.tableData.filter((item) => {
+              return item.companyId !== row.companyId
+            })
+            // this.getList()
+          } else {
+            this.$message({
+              message: res.msg,
+              type: 'error'
+            })
+          }
+        }).catch(() => {})
       }).catch(() => {})
     },
 
-    rebuildData(value, arr) {
-      const newarr = []
-      arr.forEach(element => {
-        if (element.name.indexOf(value) > -1) {
-          newarr.push(element)
-        } else {
-          if (element.children && element.children.length > 0) {
-            const ab = this.rebuildData(value, element.children)
-            const obj = {
-              ...element,
-              children: ab
-            }
-            if (ab && ab.length > 0) {
-              newarr.push(obj)
-            }
-          }
-        }
-      })
-      return newarr
-    },
-
+    // 获取列表数据
     getList() {
       const parmas = Object.assign({}, this.tableQuery, this.searchForm)
       this.$store.dispatch('system/companyMgt/getList', parmas)
@@ -273,17 +278,23 @@ export default {
           if ((res.code === 20000) && res.data) {
             this.options = res.data
             this.tableData = res.data
-            this.total = res.total
+            this.total = res.pageTotal
+          } else {
+            this.$message({
+              message: res.msg,
+              type: 'error'
+            })
           }
-        })
-        .catch(() => {
-
-        })
+        }).catch(() => {})
     },
+
+    // 重置表单
     resetForm() {
       this.$refs.dialog_form.resetFields()
       this.dialogVisible = false
     },
+
+    // 保存表单
     saveForm() {
       this.$refs.dialog_form.validate((valid) => {
         if (valid) {
@@ -291,9 +302,13 @@ export default {
             .then((res) => {
               if (res.code === 20000) {
                 this.dialogVisible = false
+              } else {
+                this.$message({
+                  message: res.msg,
+                  type: 'error'
+                })
               }
-            })
-            .catch(() => {
+            }).catch(() => {
 
             })
         } else {
@@ -312,11 +327,21 @@ export default {
   }
 </style>
 <style scoped lang="scss">
-.page-warp {
-  margin: 10px 20px 10px 20px;
-  padding: 20px;
+.search-container{
+  margin: 10px 15px 0px 15px;
+  padding: 15px 20px 0 20px;
   background-color: #FFF;
-  border-radius: 4px;
+  border-radius: 2px;
+  .el-form-item{
+      margin-bottom: 15px;
+  }
+
+}
+.page-warp {
+  margin: 5px 15px 0px 15px;
+  padding: 10px 20px 0px 20px;
+  background-color: #FFF;
+  border-radius: 2px;
   .table-action-body{
     margin-bottom: 10px;
   }

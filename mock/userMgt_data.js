@@ -11,8 +11,8 @@ const list = [{
   nickName: '管理员用户',
   userMobile: 13543567678,
   userEmali: '123456@qq.com',
-  userSex: true,
-  status: true,
+  userSex: 1,
+  status: 1,
   createName: '用户管理员',
   createTime: '2021-01-05 09:00:00',
   roles: [{
@@ -36,8 +36,8 @@ const list = [{
   nickName: '普通用户',
   userMobile: 13543567678,
   userEmali: '123456@qq.com',
-  userSex: false,
-  status: false,
+  userSex: 0,
+  status: 2,
   createName: '普通用户',
   createTime: '2021-01-05 09:00:00',
   roles: [{

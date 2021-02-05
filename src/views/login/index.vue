@@ -1,11 +1,6 @@
 <template>
   <div class="login-container">
-
-    <el-carousel :interval="5000" class="login_bg_carousel" indicator-position="none" arrow="never">
-      <el-carousel-item v-for="item in arrImg" :key="item" class="login_bg_carousel_item">
-        <img :src="item" alt="" style="height: 100vh;">
-      </el-carousel-item>
-    </el-carousel>
+    <canvas id="login-canvas-tree" width="1000" height="600" class="canvas-body" />
     <div class="login-form-body">
       <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left">
 
@@ -69,11 +64,11 @@
 
         <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;padding: 15px 20px;" @click.native.prevent="handleLogin">Login</el-button>
 
-        <div style="position:relative;height: 36px;">
+        <!-- <div style="position:relative;height: 36px;">
           <el-button class="thirdparty-button" type="primary" @click="showDialog=true">
             Or connect with
           </el-button>
-        </div>
+        </div> -->
       </el-form>
     </div>
     <el-dialog title="Or connect with" :visible.sync="showDialog">
@@ -161,6 +156,7 @@ export default {
     } else if (this.loginForm.passWord === '') {
       this.$refs.passWord.focus()
     }
+    this.canvasTree()
   },
   destroyed() {
     // window.removeEventListener('storage', this.afterQRScan)
@@ -184,6 +180,7 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
+
           this.$store.dispatch('user/login', this.loginForm)
             .then(() => {
               this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
@@ -205,6 +202,49 @@ export default {
         }
         return acc
       }, {})
+    },
+    canvasTree() {
+      const drawtree = function(ctx, startx, starty, length, angle, depth, branchWidth) {
+        var rand = Math.random
+        var n_length; var n_angle; var n_depth; var maxbranch = 4
+        var endx; var endy; var maxangle = 2 * Math.PI / 4
+        var subbranch
+        ctx.beginPath()
+        ctx.moveTo(startx, starty)
+        endx = startx + length * Math.cos(angle)
+        endy = starty + length * Math.sin(angle)
+        ctx.lineCap = 'round'
+        ctx.lineWidth = branchWidth
+        ctx.lineTo(endx, endy)
+        if (depth <= 2) {
+        // 树的枝干
+          ctx.strokeStyle = 'rgb(0,' + (((rand() * 64) + 128) >> 0) + ',0)'
+        } else {
+        // 树的叶子
+          ctx.strokeStyle = 'rgb(0,' + (((rand() * 64) + 64) >> 0) + ',50,25)'
+        }
+        ctx.stroke()
+        n_depth = depth - 1
+        // 判断树是否结束
+        if (!n_depth) {
+          return
+        }
+        subbranch = (rand() * (maxbranch - 1)) + 1
+        branchWidth *= 0.5
+        for (var i = 0; i < subbranch; i++) {
+          n_angle = angle + rand() * maxangle - maxangle * 0.5
+          n_length = length * (0.5 + rand() * 0.5)
+          setTimeout(function() {
+            drawtree(ctx, endx, endy, n_length, n_angle, n_depth, branchWidth)
+            return
+          }, 500)
+        }
+      }
+
+      const canvasdom = document.getElementById('login-canvas-tree')
+      const context = canvasdom.getContext('2d')
+      // 初始化的树
+      drawtree(context, 300, 700, 200, -Math.PI / 2, 12, 12)
     }
     // afterQRScan() {
     //   if (e.key === 'x-admin-oauth-code') {
@@ -244,6 +284,8 @@ $cursor: #fff;
 
 /* reset element-ui css */
 .login-container {
+  background:url('../../assets/images/bg_icon_1.jpg');
+  background-size: cover;
   .el-input {
     display: inline-block;
     height: 47px;
@@ -292,6 +334,13 @@ $cursor: #fff;
 $bg:#2d3a4b;
 $dark_gray:#889aa4;
 $light_gray:#eee;
+
+.canvas-body{
+  left: 0;
+  position:absolute;
+  z-index:2;
+  opacity:0.5;
+}
 
 .login-container {
   min-height: 100%;

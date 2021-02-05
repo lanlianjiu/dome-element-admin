@@ -1,5 +1,5 @@
 <template>
-  <div class="navbar">
+  <div class="navbar" :style="needTagsView?'border-bottom: 1px solid #dfe6ec;':'box-shadow: 0 1px 4px rgba(0,21,41,.08);'">
     <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
 
     <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
@@ -62,8 +62,12 @@ export default {
     ...mapGetters([
       'sidebar',
       'avatar',
-      'device'
-    ])
+      'device',
+      ''
+    ]),
+    needTagsView() {
+      return this.$store.state.settings.tagsView
+    }
   },
   methods: {
     toggleSideBar() {
@@ -83,7 +87,6 @@ export default {
   overflow: hidden;
   position: relative;
   background: #fff;
-  box-shadow: 0 1px 4px rgba(0,21,41,.08);
 
   .hamburger-container {
     line-height: 46px;

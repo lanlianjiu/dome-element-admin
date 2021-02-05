@@ -3,7 +3,7 @@
 -->
 
 <template>
-  <div class="page-warp">
+  <div>
     <div class="search-container">
       <el-form :inline="true" :model="searchForm">
         <el-form-item label="公司名称">
@@ -15,130 +15,146 @@
         </el-form-item>
       </el-form>
     </div>
-    <div class="table-action-body">
-      <el-button type="primary" @click="handleAction()">
-        新增
-      </el-button>
-    </div>
-    <el-table
-      v-tableHeight="{bottomOffset: 110}"
-      :data="tableData"
-      height="100px"
-      border
-      style="width: 100%"
-      row-key="departId"
-    >
-      <el-table-column
-        label="部门ID"
-        prop="departId"
-        width="150"
-      />
 
-      <el-table-column
-        label="部门编码"
-        prop="departCode"
-      />
-      <el-table-column
-        label="部门名称"
-        prop="departName"
-      />
+    <div class="page-warp">
 
-      <el-table-column
-        label="部门状态"
-        prop="status"
-      >
-        <template slot-scope="{row}">
-          <el-tag :type="row.status | statusFilter">
-            {{ row.status?'有效':'无效' }}
-          </el-tag>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-        label="所属公司"
-        prop="companyName"
-      />
-
-      <el-table-column
-        label="创建人"
-        prop="createName"
-      />
-
-      <el-table-column
-        label="创建时间"
-        prop="createTime"
-      />
-
-      <el-table-column label="操作" align="center" width="260" class-name="small-padding fixed-width">
-        <template slot-scope="{row}">
-
-          <el-button type="text" size="mini" @click="handleAction(row)">
-            编 辑
-          </el-button>
-          <el-button type="text" size="mini" @click="handleAction(row,true)">
-            新增子部门
-          </el-button>
-          <el-button size="mini" type="text" class="danger-color" @click="handleDelete(row)">
-            删 除
-          </el-button>
-        </template>
-      </el-table-column>
-
-    </el-table>
-    <pagination v-show="total>0" :total="total" :page.sync="tableQuery.page" :limit.sync="tableQuery.limit" @pagination="getList" />
-    <!-- 新增、编辑 -->
-    <el-dialog
-      :title="dialogTitle"
-      :visible.sync="dialogVisible"
-      class="role_mgt_dialog"
-      @closed="resetForm"
-    >
-      <div>
-        <el-form ref="dialog_form" :model="handleForm" :rules="rules" label-width="80px">
-          <el-form-item label="所属公司" prop="companyId">
-            <treeselect
-              v-model="handleForm.companyId"
-              :disabled="is_child"
-              style="width: 100%;"
-              :options="options"
-              :default-expand-level="1"
-              :normalizer="normalizer"
-              placeholder="请选择所属公司"
-            />
-          </el-form-item>
-          <el-form-item v-if="is_child" label="父级部门">
-            <el-input v-model="handleForm.departPName" :disabled="is_child" />
-          </el-form-item>
-          <el-form-item label="部门编码" prop="departCode">
-            <el-input v-model="handleForm.departCode" :disabled="is_edit&&(!is_child)" />
-          </el-form-item>
-          <el-form-item label="部门名称" prop="departName">
-            <el-input v-model="handleForm.departName" />
-          </el-form-item>
-          <el-form-item label="部门状态">
-            <div class="swatch-body">
-              <el-switch
-                v-model="handleForm.status"
-                style="display: block;margin:auto auto auto 10px;"
-                active-color="#13ce66"
-                inactive-color="#ff4949"
-                active-text="启用"
-                inactive-text="禁用"
-              />
-            </div>
-          </el-form-item>
-          <el-form-item label="部门描述">
-            <el-input v-model="handleForm.desc" type="textarea" />
-          </el-form-item>
-
-        </el-form>
+      <div class="table-action-body">
+        <el-button type="primary" @click="handleAction()">
+          新增
+        </el-button>
       </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="resetForm">取 消</el-button>
-        <el-button type="primary" @click="saveForm">确 定</el-button>
-      </span>
-    </el-dialog>
+      <el-table
+        v-tableHeight="{bottomOffset: 80}"
+        :data="tableData"
+        height="100px"
+        border
+        style="width: 100%"
+        row-key="departId"
+      >
+        <el-table-column
+          label="部门ID"
+          prop="departId"
+          width="150"
+        />
 
+        <el-table-column
+          label="部门编码"
+          prop="departCode"
+        />
+
+        <el-table-column
+          label="部门名称"
+          prop="departName"
+        />
+
+        <el-table-column
+          label="所属公司"
+          prop="companyName"
+        />
+
+        <el-table-column
+          label="部门状态"
+          prop="status"
+          align="center"
+        >
+          <template slot-scope="{row}">
+            <el-tag :type="row.status | statusFilter">
+              {{ statusMap[row.status] ||'' }}
+            </el-tag>
+          </template>
+        </el-table-column>
+
+        <el-table-column
+          label="创建人"
+          prop="createName"
+        />
+
+        <el-table-column
+          label="创建时间"
+          prop="createTime"
+        />
+
+        <el-table-column label="操作" align="center" width="260" class-name="small-padding fixed-width">
+          <template slot-scope="{row}">
+
+            <el-button type="text" size="mini" @click="handleAction(row)">
+              编 辑
+            </el-button>
+            <el-button type="text" size="mini" @click="handleAction(row,true)">
+              新增子部门
+            </el-button>
+            <el-button size="mini" type="text" class="danger-color" @click="handleDelete(row)">
+              删 除
+            </el-button>
+          </template>
+        </el-table-column>
+
+      </el-table>
+
+      <pagination
+        v-show="total>0"
+        :total="total"
+        :page.sync="tableQuery.page"
+        :limit.sync="tableQuery.limit"
+        @pagination="getList"
+      />
+
+      <!-- 新增、编辑 -->
+      <el-dialog
+        :title="dialogTitle"
+        :visible.sync="dialogVisible"
+        class="role_mgt_dialog"
+        @closed="resetForm"
+      >
+        <div>
+          <el-form ref="dialog_form" :model="handleForm" :rules="rules" label-width="80px">
+            <el-form-item label="所属公司" prop="companyId">
+              <treeselect
+                v-model="handleForm.companyId"
+                :disabled="is_child"
+                style="width: 100%;"
+                :options="options"
+                :default-expand-level="1"
+                :normalizer="normalizer"
+                placeholder="请选择所属公司"
+              />
+            </el-form-item>
+            <el-form-item v-if="is_child" label="父级部门">
+              <el-input v-model="handleForm.departpName" :disabled="is_child" />
+            </el-form-item>
+            <el-form-item label="部门编码" prop="departCode">
+              <el-input v-model="handleForm.departCode" :disabled="is_edit&&(!is_child)" />
+            </el-form-item>
+            <el-form-item label="部门名称" prop="departName">
+              <el-input v-model="handleForm.departName" />
+            </el-form-item>
+            <el-form-item label="部门状态">
+              <div class="swatch-body">
+                <el-switch
+                  v-model="handleForm.status"
+                  style="display: block;margin:auto auto auto 10px;"
+                  active-color="#13ce66"
+                  inactive-color="#ff4949"
+                  active-text="启用"
+                  inactive-text="禁用"
+                  :active-value="1"
+                  :inactive-value="2"
+                />
+              </div>
+            </el-form-item>
+            <el-form-item label="部门描述">
+              <el-input v-model="handleForm.desc" type="textarea" />
+            </el-form-item>
+
+          </el-form>
+        </div>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="resetForm">取 消</el-button>
+          <el-button type="primary" @click="saveForm">确 定</el-button>
+        </span>
+      </el-dialog>
+
+    </div>
   </div>
 </template>
 
@@ -152,7 +168,11 @@ export default {
   components: { Pagination, Treeselect },
   filters: {
     statusFilter(status) {
-      return status ? 'success' : 'info'
+      const map = {
+        1: 'success',
+        2: 'info'
+      }
+      return map[status] || ''
     }
   },
   data() {
@@ -171,7 +191,7 @@ export default {
       handleForm: { // 提交信息对象
         departName: '',
         departCode: '',
-        status: true,
+        status: 1,
         desc: ''
       },
       pageTreedata: [], // 公司树图数组
@@ -202,7 +222,12 @@ export default {
         }
       },
       is_edit: false, // 是否是编辑标识
-      is_child: false // 是否是子级标识
+      is_child: false, // 是否是子级标识
+      statusMap: {
+        1: '有效',
+        2: '无效'
+      }
+
     }
   }, created() {
     this.getList()
@@ -222,7 +247,7 @@ export default {
       this.getList()
     },
 
-    // 新增、编辑操作
+    // 新增（子部门）、编辑操作
     handleAction(row, type) {
       if (type) {
         this.dialogTitle = '新增子部门'
@@ -242,10 +267,10 @@ export default {
         this.handleForm = {
           departpId: row.departId,
           companyId: row.companyId,
-          departPName: row.departName,
+          departpName: row.departpName,
           departCode: '',
           departName: '',
-          status: true,
+          status: 1,
           desc: ''
         }
       } else {
@@ -253,7 +278,7 @@ export default {
           departpId: '',
           companyId: undefined,
           departName: '',
-          status: true,
+          status: 1,
           desc: ''
         }
       }
@@ -270,18 +295,19 @@ export default {
       }).then(() => {
         this.$store.dispatch('system/departMgt/handleDelete', {
           departpId: row.departpId
-        })
-          .then((res) => {
-            if (res.code === 20000) {
-              this.tableData = this.tableData.filter((item) => {
-                return item.departId !== row.departId
-              })
-              // this.getList()
-            }
-          })
-          .catch(() => {
-
-          })
+        }).then((res) => {
+          if (res.code === 20000) {
+            this.tableData = this.tableData.filter((item) => {
+              return item.departId !== row.departId
+            })
+            // this.getList()
+          } else {
+            this.$message({
+              message: res.msg,
+              type: 'error'
+            })
+          }
+        }).catch(() => {})
       }).catch(() => {})
     },
 
@@ -292,7 +318,12 @@ export default {
         .then((res) => {
           if ((res.code === 20000) && res.data) {
             this.tableData = res.data
-            this.total = res.total
+            this.total = res.pageTotal
+          } else {
+            this.$message({
+              message: res.msg,
+              type: 'error'
+            })
           }
         })
         .catch(() => {
@@ -313,6 +344,11 @@ export default {
           this.$store.dispatch('system/departMgt/handleAction', this.handleForm).then((res) => {
             if (res.code === 20000) {
               this.dialogVisible = false
+            } else {
+              this.$message({
+                message: res.msg,
+                type: 'error'
+              })
             }
           }).catch(() => {})
         } else {
@@ -344,11 +380,21 @@ export default {
   }
 </style>
 <style scoped lang="scss">
-.page-warp {
-  margin: 10px 20px 10px 20px;
-  padding: 20px;
+.search-container{
+  margin: 10px 15px 0px 15px;
+  padding: 15px 20px 0 20px;
   background-color: #FFF;
-  border-radius: 4px;
+  border-radius: 2px;
+  .el-form-item{
+      margin-bottom: 15px;
+  }
+
+}
+.page-warp {
+  margin: 5px 15px 0px 15px;
+  padding: 10px 20px 0px 20px;
+  background-color: #FFF;
+  border-radius: 2px;
   .table-action-body{
     margin-bottom: 10px;
   }

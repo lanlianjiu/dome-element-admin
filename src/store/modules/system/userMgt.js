@@ -1,5 +1,5 @@
 
-import { getUserlist, handleAction, handleDelete } from '@/api/system/userMgt'
+import { getList, handleAction, handleDelete } from '@/api/system/userMgt'
 const state = {
 
 }
@@ -9,9 +9,9 @@ const mutations = {
 }
 
 const actions = {
-  getUserlist(state, params) {
+  getList(state, params) {
     return new Promise((resolve, reject) => {
-      getUserlist(params).then(response => {
+      getList(params).then(response => {
         if (!response) {
           reject('Verification failed, please Login again.')
         }

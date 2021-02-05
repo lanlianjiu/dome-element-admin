@@ -3,7 +3,7 @@
 -->
 
 <template>
-  <div class="page-warp">
+  <div>
     <div class="search-container">
       <el-form :inline="true" :model="searchForm">
         <el-form-item label="用户名称">
@@ -15,284 +15,300 @@
         </el-form-item>
       </el-form>
     </div>
-    <div class="table-action-body">
-      <el-button type="primary" @click="handleAction()">
-        新增
-      </el-button>
-    </div>
-    <el-table
-      v-tableHeight="{bottomOffset: 110}"
-      :data="tableData"
-      border
-      style="width: 100%"
-      height="100px"
-    >
-      <el-table-column type="expand">
-        <template slot-scope="props">
-          <el-form label-position="left" class="child-table-expand">
+    <div class="page-warp">
+      <div class="table-action-body">
+        <el-button type="primary" @click="handleAction()">
+          新增
+        </el-button>
+      </div>
+      <el-table
+        v-tableHeight="{bottomOffset: 80}"
+        :data="tableData"
+        border
+        style="width: 100%"
+        height="100px"
+      >
+        <el-table-column type="expand">
+          <template slot-scope="props">
+            <el-form label-position="left" class="child-table-expand">
 
+              <el-row>
+                <el-col :span="12">
+                  <el-form-item label="所属公司：">
+                    <span>{{ props.row.companyName }}</span>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="所属部门：">
+                    <span>{{ props.row.departName }}</span>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+
+              <el-row>
+                <el-col :span="12">
+                  <el-form-item label="用户角色：">
+                    <el-tag v-for="(item,index) in props.row.roles || []" :key="index" style="margin-right:5px;">
+                      {{ item.roleName }}
+                    </el-tag>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="用户描述：">
+                    <span>{{ props.row.introduction }}</span>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+
+              <el-row>
+                <el-col :span="12">
+                  <el-form-item label="创建用户：">
+                    <span>{{ props.row.createName }}</span>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="创建时间：">
+                    <span>{{ props.row.createTime }}</span>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+
+            </el-form>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="用户ID"
+          prop="userId"
+          width="80"
+        />
+        <el-table-column
+          label="用户账号"
+          prop="userName"
+        />
+        <el-table-column
+          label="用户昵称"
+          prop="nickName"
+        />
+
+        <el-table-column
+          label="用户状态"
+          width="100"
+          prop="status"
+          align="center"
+        >
+          <template slot-scope="{row}">
+            <el-tag :type="row.status | statusFilter">
+              {{ statusMap[row.status] ||'' }}
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="用户性别"
+          prop="userSex"
+          width="80"
+          align="center"
+        >
+          <template slot-scope="{row}">
+            {{ row.userSex?'男':'女' }}
+          </template>
+        </el-table-column>
+
+        <el-table-column
+          label="用户电话"
+          prop="userMobile"
+        />
+
+        <el-table-column
+          label="用户邮箱"
+          prop="userEmali"
+        />
+
+        <el-table-column label="操作" align="center" width="240" class-name="small-padding fixed-width">
+          <template slot-scope="{row}">
+            <el-button type="text" size="mini" @click="handleAction(row)">
+              编 辑
+            </el-button>
+            <el-button type="text" size="mini">
+              修改密码
+            </el-button>
+            <el-button size="mini" type="text" class="danger-color" @click="handleDelete(row)">
+              删 除
+            </el-button>
+          </template>
+        </el-table-column>
+
+      </el-table>
+
+      <pagination
+        v-show="total>0"
+        :total="total"
+        :page.sync="tableQuery.page"
+        :limit.sync="tableQuery.limit"
+        @pagination="getList"
+      />
+      <!-- 新增、编辑 -->
+      <el-dialog
+        :title="dialogTitle"
+        :visible.sync="dialogVisible"
+        custom-class="userMgt-dialog-body"
+      >
+        <div>
+          <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="100px">
             <el-row>
-              <el-col :span="12">
-                <el-form-item label="所属公司：">
-                  <span>{{ props.row.companyName }}</span>
-                </el-form-item>
+              <el-col :span="6">
+                <el-upload
+                  class="avatar-uploader"
+                  action="https://jsonplaceholder.typicode.com/posts/"
+                  :show-file-list="false"
+                  :on-success="handleAvatarSuccess"
+                  :before-upload="beforeAvatarUpload"
+                >
+                  <img v-if="ruleForm.avatar" :src="ruleForm.avatar" class="avatar">
+                  <i v-else class="el-icon-plus avatar-uploader-icon" />
+                </el-upload>
               </el-col>
-              <el-col :span="12">
-                <el-form-item label="所属部门：">
-                  <span>{{ props.row.departName }}</span>
-                </el-form-item>
+              <el-col :span="18">
+                <el-row>
+                  <el-col>
+                    <el-form-item label="用户公司" prop="companyId">
+                      <treeselect
+                        v-model="ruleForm.companyId"
+                        style="width: 100%;"
+                        :options="coptions"
+                        :normalizer="cnormalizer"
+                        placeholder="请选择公司"
+                        @select="selectCompany"
+                        @input="clearCompany"
+                      />
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+
+                  <el-col>
+                    <el-form-item label="用户部门" prop="departId">
+                      <treeselect
+                        v-model="ruleForm.departId"
+                        style="width: 100%;"
+                        :options="doptions"
+                        :normalizer="dnormalizer"
+                        placeholder="请选择部门"
+                      />
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col>
+                    <el-form-item label="用户角色" prop="roleName">
+                      <el-select
+                        v-model="ruleForm.roleName"
+                        style="width:100%;"
+                        multiple
+                        filterable
+                        allow-create
+                        default-first-option
+                        placeholder="请选择角色"
+                      >
+                        <el-option
+                          v-for="item in roleList"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value"
+                        />
+                      </el-select>
+
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="12">
+                    <el-form-item label="用户账号" prop="userName">
+                      <el-input v-model="ruleForm.userName" :disabled="!is_edit" />
+                    </el-form-item>
+                  </el-col>
+                  <el-col v-if="is_edit" :span="12">
+                    <el-form-item label="用户密码" prop="userPassword">
+                      <el-input v-model="ruleForm.userPassword" />
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-form-item label="用户昵称" prop="nickName">
+                      <el-input v-model="ruleForm.nickName" />
+                    </el-form-item>
+                  </el-col>
+
+                  <el-col :span="12">
+                    <el-form-item label="用户电话" prop="userMobile">
+                      <el-input v-model="ruleForm.userMobile" />
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-form-item label="用户邮箱" prop="userEmali" style="margin-bottom: 12px">
+                      <el-input v-model="ruleForm.userEmali" />
+                    </el-form-item>
+                  </el-col>
+
+                </el-row>
+
+                <el-row>
+                  <el-col :span="12">
+                    <el-form-item label="用户状态" style="margin-bottom: 12px">
+                      <div class="swatch-body">
+                        <el-switch
+                          v-model="ruleForm.status"
+                          style="display: block;margin:auto auto auto 10px;"
+                          active-color="#13ce66"
+                          inactive-color="#ff4949"
+                          active-text="启用"
+                          inactive-text="禁用"
+                          :active-value="1"
+                          :inactive-value="2"
+                        />
+                      </div>
+
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-form-item label="用户性别" style="margin-bottom: 12px">
+                      <div class="swatch-body">
+                        <el-switch
+                          v-model="ruleForm.userSex"
+                          style="display: block;margin:auto auto auto 10px;"
+                          active-color="#13ce66"
+                          inactive-color="#ff4949"
+                          active-text="男"
+                          inactive-text="女"
+                          :active-value="1"
+                          :inactive-value="0"
+                        />
+                      </div>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+
               </el-col>
             </el-row>
-
             <el-row>
-              <el-col :span="12">
-                <el-form-item label="用户角色：">
-                  <el-tag v-for="(item,index) in props.row.roles || []" :key="index" style="margin-right:5px;">
-                    {{ item.roleName }}
-                  </el-tag>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="用户描述：">
-                  <span>{{ props.row.introduction }}</span>
-                </el-form-item>
-              </el-col>
-            </el-row>
-
-            <el-row>
-              <el-col :span="12">
-                <el-form-item label="创建用户：">
-                  <span>{{ props.row.createName }}</span>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="创建时间：">
-                  <span>{{ props.row.createTime }}</span>
+              <el-col :span="24">
+                <el-form-item label="用户备注" style="margin-bottom:0;">
+                  <el-input
+                    v-model="ruleForm.introduction"
+                    type="textarea"
+                    :rows="2"
+                  />
                 </el-form-item>
               </el-col>
             </el-row>
 
           </el-form>
-        </template>
-      </el-table-column>
-      <el-table-column
-        label="用户ID"
-        prop="userId"
-        width="80"
-      />
-      <el-table-column
-        label="用户账号"
-        prop="userName"
-      />
-      <el-table-column
-        label="用户昵称"
-        prop="nickName"
-      />
+        </div>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="resetForm">取 消</el-button>
+          <el-button type="primary" @click="saveForm">确 定</el-button>
+        </span>
+      </el-dialog>
 
-      <el-table-column
-        label="用户状态"
-        width="100"
-        prop="status"
-      >
-        <template slot-scope="{row}">
-          <el-tag :type="row.status | statusFilter">
-            {{ row.status?'有效':'无效' }}
-          </el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column
-        label="用户性别"
-        prop="userSex"
-        width="80"
-      >
-        <template slot-scope="{row}">
-          {{ row.userSex?'男':'女' }}
-        </template>
-      </el-table-column>
-
-      <el-table-column
-        label="用户电话"
-        prop="userMobile"
-      />
-
-      <el-table-column
-        label="用户邮箱"
-        prop="userEmali"
-      />
-
-      <el-table-column label="操作" align="center" width="240" class-name="small-padding fixed-width">
-        <template slot-scope="{row}">
-          <el-button type="text" size="mini" @click="handleAction(row)">
-            编 辑
-          </el-button>
-          <el-button type="text" size="mini">
-            修改密码
-          </el-button>
-          <el-button size="mini" type="text" class="danger-color" @click="handleDelete(row)">
-            删 除
-          </el-button>
-        </template>
-      </el-table-column>
-
-    </el-table>
-    <pagination v-show="total>0" :total="total" :page.sync="tableQuery.page" :limit.sync="tableQuery.limit" @pagination="getList" />
-
-    <el-dialog
-      :title="dialogTitle"
-      :visible.sync="dialogVisible"
-      custom-class="userMgt-dialog-body"
-    >
-      <div>
-        <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="100px">
-          <el-row>
-            <el-col :span="6">
-              <el-upload
-                class="avatar-uploader"
-                action="https://jsonplaceholder.typicode.com/posts/"
-                :show-file-list="false"
-                :on-success="handleAvatarSuccess"
-                :before-upload="beforeAvatarUpload"
-              >
-                <img v-if="ruleForm.avatar" :src="ruleForm.avatar" class="avatar">
-                <i v-else class="el-icon-plus avatar-uploader-icon" />
-              </el-upload>
-            </el-col>
-            <el-col :span="18">
-              <el-row>
-                <el-col>
-                  <el-form-item label="用户公司" prop="companyId">
-                    <treeselect
-                      v-model="ruleForm.companyId"
-                      style="width: 100%;"
-                      :options="coptions"
-                      :normalizer="cnormalizer"
-                      placeholder="请选择公司"
-                      @select="selectCompany"
-                      @input="clearCompany"
-                    />
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-
-                <el-col>
-                  <el-form-item label="用户部门" prop="departId">
-                    <treeselect
-                      v-model="ruleForm.departId"
-                      style="width: 100%;"
-                      :options="doptions"
-                      :normalizer="dnormalizer"
-                      placeholder="请选择部门"
-                    />
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col>
-                  <el-form-item label="用户角色" prop="roleName">
-                    <el-select
-                      v-model="ruleForm.roleName"
-                      style="width:100%;"
-                      multiple
-                      filterable
-                      allow-create
-                      default-first-option
-                      placeholder="请选择角色"
-                    >
-                      <el-option
-                        v-for="item in roleList"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value"
-                      />
-                    </el-select>
-
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12">
-                  <el-form-item label="用户账号" prop="userName">
-                    <el-input v-model="ruleForm.userName" :disabled="!is_edit" />
-                  </el-form-item>
-                </el-col>
-                <el-col v-if="is_edit" :span="12">
-                  <el-form-item label="用户密码" prop="userPassword">
-                    <el-input v-model="ruleForm.userPassword" />
-                  </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                  <el-form-item label="用户昵称" prop="nickName">
-                    <el-input v-model="ruleForm.nickName" />
-                  </el-form-item>
-                </el-col>
-
-                <el-col :span="12">
-                  <el-form-item label="用户电话" prop="userMobile">
-                    <el-input v-model="ruleForm.userMobile" />
-                  </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                  <el-form-item label="用户邮箱" prop="userEmali">
-                    <el-input v-model="ruleForm.userEmali" />
-                  </el-form-item>
-                </el-col>
-
-              </el-row>
-
-              <el-row>
-                <el-col :span="12">
-                  <el-form-item label="用户状态">
-                    <div class="swatch-body">
-                      <el-switch
-                        v-model="ruleForm.status"
-                        style="display: block;margin:auto auto auto 10px;"
-                        active-color="#13ce66"
-                        inactive-color="#ff4949"
-                        active-text="启用"
-                        inactive-text="禁用"
-                      />
-                    </div>
-
-                  </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                  <el-form-item label="用户性别">
-                    <div class="swatch-body">
-                      <el-switch
-                        v-model="ruleForm.userSex"
-                        style="display: block;margin:auto auto auto 10px;"
-                        active-color="#13ce66"
-                        inactive-color="#ff4949"
-                        active-text="男"
-                        inactive-text="女"
-                      />
-                    </div>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="24">
-              <el-form-item label="用户备注" style="margin-bottom:0;">
-                <el-input
-                  v-model="ruleForm.introduction"
-                  type="textarea"
-                  :rows="2"
-                />
-              </el-form-item>
-            </el-col>
-          </el-row>
-
-        </el-form>
-      </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="resetForm">取 消</el-button>
-        <el-button type="primary" @click="saveForm">确 定</el-button>
-      </span>
-    </el-dialog>
+    </div>
   </div>
 </template>
 
@@ -306,33 +322,37 @@ export default {
   components: { Pagination, Treeselect },
   filters: {
     statusFilter(status) {
-      return status ? 'success' : 'info'
+      const map = {
+        1: 'success',
+        2: 'info'
+      }
+      return map[status] || ''
     }
   },
   data() {
     return {
-      searchForm: {
+      searchForm: { // 搜索对象
         nickName: ''
       },
-      total: 0,
-      tableQuery: {
+      total: 0, // 总页数
+      tableQuery: { // 分页对象参数
         page: 1,
         limit: 20
       },
-      tableData: [],
-      roleList: [],
-      dialogTitle: '',
-      dialogVisible: false,
-      is_edit: false,
-      ruleForm: {
+      tableData: [], // 表格数据
+      roleList: [], // 角色数据
+      dialogTitle: '', // 弹窗标题
+      dialogVisible: false, // 弹窗标识
+      is_edit: false, // 是否编辑标识
+      ruleForm: { // 表单对象
         nickName: '',
-        status: true,
-        userSex: true,
+        status: 1,
+        userSex: 1,
         userPassword: '',
         roleName: [],
         introduction: ''
       },
-      rules: {
+      rules: { // 表单校验规则
         companyId: [
           { required: true, message: '请选择公司', trigger: 'blur' }
         ],
@@ -352,21 +372,25 @@ export default {
           { required: true, message: '请选择用户角色', trigger: 'blur' }
         ]
       },
-      coptions: [],
-      cnormalizer(node) {
+      coptions: [], // 公司下拉数据
+      cnormalizer(node) { // 公司下拉组件配置
         return {
           id: node.companyId,
           label: node.companyName,
           children: node.children
         }
       },
-      doptions: [],
-      dnormalizer(node) {
+      doptions: [], // 部门下拉数据
+      dnormalizer(node) { // 部门下拉组件配置
         return {
           id: node.departId,
           label: node.departName,
           children: node.children
         }
+      },
+      statusMap: { // 状态字典数据
+        1: '有效',
+        2: '无效'
       }
     }
   }, created() {
@@ -377,9 +401,11 @@ export default {
   },
 
   methods: {
+    // 头像上传成功函数
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw)
     },
+    // 上传前处理函数
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg'
       const isLt2M = file.size / 1024 / 1024 < 2
@@ -392,16 +418,23 @@ export default {
       }
       return isJPG && isLt2M
     },
+
+    // 搜索
     searchAction() {
       this.getList()
     },
+
+    // 重置
     resetSearch() {
       this.tableQuery.page = 1
       this.getList()
     },
+
+    // 新增、编辑操作
     handleAction(row) {
       this.dialogTitle = row ? '编辑用户' : '新增用户'
       this.is_edit = !row
+
       if (row) {
         const roleArr = []
         row.roles.map((item) => {
@@ -412,21 +445,31 @@ export default {
         this.ruleForm = JSON.parse(JSON.stringify(row))
       } else {
         this.ruleForm = {
+          companyId: undefined,
+          departId: undefined,
+          avatar: '',
+          userName: '',
           nickName: '',
-          status: true,
-          userSex: true,
+          status: 1,
+          userSex: 1,
           userPassword: '',
           roleName: [],
-          introduction: ''
+          introduction: '',
+          userMobile: '',
+          userEmali: ''
         }
       }
 
       this.dialogVisible = true
     },
+
+    // 重置表单
     resetForm() {
       this.$refs.ruleForm.resetFields()
       this.dialogVisible = false
     },
+
+    // 保存表单
     saveForm() {
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
@@ -434,16 +477,20 @@ export default {
             .then((res) => {
               if (res.code === 20000) {
                 this.dialogVisible = false
+              } else {
+                this.$message({
+                  message: res.msg,
+                  type: 'error'
+                })
               }
-            })
-            .catch(() => {
-
-            })
+            }).catch(() => {})
         } else {
           return false
         }
       })
     },
+
+    // 删除操作
     handleDelete(row) {
       this.$confirm(`是否删除【${row.nickName}】用户?`, '提示', {
         confirmButtonText: '确定',
@@ -459,15 +506,19 @@ export default {
                 return item.userId !== row.userId
               })
               // this.getList()
+            } else {
+              this.$message({
+                message: res.msg,
+                type: 'error'
+              })
             }
-          })
-          .catch(() => {
-
-          })
+          }).catch(() => {})
       })
     },
+
+    // 获取角色数据
     getRole() {
-      this.$store.dispatch('system/roleMgt/getRolelist')
+      this.$store.dispatch('system/roleMgt/getList')
         .then((res) => {
           if (res.code === 20000) {
             this.roleList = res.data.map((item) => {
@@ -477,35 +528,37 @@ export default {
               }
             })
           }
-        })
-        .catch(() => {
-
-        })
+        }).catch(() => {})
     },
+
+    // 获取列表数据
     getList() {
       const parmas = Object.assign({}, this.tableQuery, this.searchForm)
-      this.$store.dispatch('system/userMgt/getUserlist', parmas)
+      this.$store.dispatch('system/userMgt/getList', parmas)
         .then((res) => {
           if (res.code === 20000) {
             this.tableData = res.data
             this.total = res.total
+          } else {
+            this.$message({
+              message: res.msg,
+              type: 'error'
+            })
           }
-        })
-        .catch(() => {
-
-        })
+        }).catch(() => {})
     },
+
+    // 获取公司数据
     getCompanyList() {
       this.$store.dispatch('system/companyMgt/getList')
         .then((res) => {
           if ((res.code === 20000) && res.data) {
             this.coptions = res.data
           }
-        })
-        .catch(() => {
-
-        })
+        }).catch(() => {})
     },
+
+    // 部门联动公司数据处理
     rebuildData(value, arr) {
       const newarr = []
       arr.forEach(element => {
@@ -526,23 +579,26 @@ export default {
       })
       return newarr
     },
+
+    // 获取部门数据
     getDepartList(companyId) {
       this.$store.dispatch('system/departMgt/getList', { companyId: companyId })
         .then((res) => {
           if ((res.code === 20000) && res.data) {
             this.doptions = this.rebuildData(companyId, res.data)
           }
-        })
-        .catch(() => {
-
-        })
+        }).catch(() => {})
     },
+
+    // 公司下拉组件选择时触发函数
     selectCompany(node) {
       if (this.ruleForm.companyId !== node.companyId) {
         delete this.ruleForm.departId
       }
       this.getDepartList(node.companyId)
     },
+
+    // 清空公司下拉组件数据
     clearCompany() {
       if (!this.ruleForm.companyId) {
         this.doptions = []
@@ -556,16 +612,26 @@ export default {
    .userMgt-dialog-body{
     width: 700px;
     .el-dialog__body{
-      padding: 20px;
+      padding: 5px 20px 5px 20px;
     }
   }
 </style>
 <style scoped lang="scss">
-.page-warp {
-  margin: 10px 20px 10px 20px;
-  padding: 20px;
+.search-container{
+  margin: 10px 15px 0px 15px;
+  padding: 15px 20px 0 20px;
   background-color: #FFF;
-  border-radius: 4px;
+  border-radius: 2px;
+  .el-form-item{
+      margin-bottom: 15px;
+  }
+
+}
+.page-warp {
+  margin: 5px 15px 0px 15px;
+  padding: 10px 20px 0px 20px;
+  background-color: #FFF;
+  border-radius: 2px;
   .table-action-body{
     margin-bottom: 10px;
   }

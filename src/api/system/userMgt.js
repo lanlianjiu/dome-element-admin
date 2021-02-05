@@ -1,8 +1,8 @@
 
 import request from '@/utils/request'
-export function getUserlist(data) {
+export function getList(data) {
   return request({
-    url: '/vue-element-admin/userMgt/getUserlist',
+    url: '/system/userMgt/getList',
     method: 'post',
     data
   })
@@ -10,7 +10,7 @@ export function getUserlist(data) {
 
 export function handleAction(data) {
   return request({
-    url: '/vue-element-admin/userMgt/handleAction',
+    url: '/system/userMgt/handleAction',
     method: 'post',
     data
   })
@@ -18,7 +18,7 @@ export function handleAction(data) {
 
 export function handleDelete(data) {
   return request({
-    url: '/vue-element-admin/userMgt/handleDelete',
+    url: '/system/userMgt/handleDelete',
     method: 'post',
     data
   })

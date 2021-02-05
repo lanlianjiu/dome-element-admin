@@ -3,7 +3,7 @@
 -->
 
 <template>
-  <div class="page-warp">
+  <div>
     <div class="search-container">
       <el-form :inline="true" :model="searchForm">
         <el-form-item label="接口名称">
@@ -15,152 +15,179 @@
         </el-form-item>
       </el-form>
     </div>
-    <div class="table-action-body">
-      <el-button type="primary" @click="handleAction()">
-        新增
-      </el-button>
-    </div>
-    <el-table
-      v-tableHeight="{bottomOffset: 110}"
-      :data="tableData"
-      height="100px"
-      border
-      style="width: 100%"
-    >
+    <div class="page-warp">
 
-      <el-table-column
-        label="接口ID"
-        prop="apiId"
-        width="180"
-      />
-      <el-table-column
-        label="接口名称"
-        prop="apiName"
-      />
-
-      <el-table-column
-        label="接口类型"
-        prop="apiType"
-      />
-
-      <el-table-column
-        label="接口地址"
-        prop="apiUrl"
-      />
-
-      <el-table-column
-        label="创建人"
-        prop="createName"
-      />
-
-      <el-table-column
-        label="创建时间"
-        prop="createTime"
-      />
-
-      <el-table-column label="操作" align="center" width="240" class-name="small-padding fixed-width">
-        <template slot-scope="{row}">
-
-          <el-button type="text" size="mini" @click="handleAction(row)">
-            编 辑
-          </el-button>
-          <el-button type="text" size="mini" @click="openDetail(row)">
-            查看
-          </el-button>
-          <el-button size="mini" type="text" class="danger-color" @click="handleDelete(row)">
-            删 除
-          </el-button>
-        </template>
-      </el-table-column>
-
-    </el-table>
-    <pagination v-show="total>0" :total="total" :page.sync="tableQuery.page" :limit.sync="tableQuery.limit" @pagination="getList" />
-
-    <el-dialog
-      :title="dialogTitle"
-      :visible.sync="dialogVisible"
-    >
-      <div>
-        <el-form ref="dialog_form" :model="handleForm" :rules="rules" label-width="80px">
-          <el-form-item label="接口名称" prop="apiName">
-            <el-input v-model="handleForm.apiName" />
-          </el-form-item>
-
-          <el-form-item label="接口地址" prop="apiUrl">
-            <el-input v-model="handleForm.apiUrl" />
-          </el-form-item>
-
-          <div>
-            <el-table
-              :data="JSONData"
-              height="400px"
-              border
-              style="width: 100%"
-              row-key="keyId"
-            >
-              <el-table-column
-                label=""
-              >
-                <template slot-scope="{row}">
-                  <i class="el-icon-plus" style="cursor: pointer;" @click="addKeymap(row,1)" />
-                </template>
-              </el-table-column>
-
-              <el-table-column
-                label="字段名"
-              >
-                <template slot-scope="{row}">
-                  <el-input v-model="row.keyName" placeholder="请输入内容" />
-                </template>
-              </el-table-column>
-
-              <el-table-column
-                label="类型"
-              >
-                <template slot-scope="{row}">
-                  <el-select v-model="row.keyType" placeholder="请选择">
-                    <el-option
-                      v-for="item in options"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value"
-                    />
-                  </el-select>
-                </template>
-              </el-table-column>
-
-              <el-table-column
-                label="说明"
-              >
-                <template slot-scope="{row}">
-                  <el-input v-model="row.keyDesc" placeholder="请输入内容" />
-                </template>
-              </el-table-column>
-
-              <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
-                <template slot-scope="{row}">
-
-                  <el-button type="text" size="mini" @click="addKeymap(row,2)">
-                    插 入
-                  </el-button>
-                  <el-button size="mini" type="text" @click="delKeymap(row)">
-                    删 除
-                  </el-button>
-                </template>
-              </el-table-column>
-
-            </el-table>
-
+      <div class="table-action-body">
+        <!-- <el-button type="primary" @click="handleAction()">
+          新增
+        </el-button> -->
+        <div style="margin-left:10px;display: flex;font-size: 14px;color: red;">
+          <div style="margin: auto;">返回编码：</div>
+          <div style="margin-right: 20px;">
+            20000：正常;
+            <br>
+            50008： 非法令牌(Illegal token);
           </div>
-
-        </el-form>
+          <div>
+            50012： 其他客户端已登录(Other clients logged in);
+            <br>
+            50014： 令牌已过期(Token expired);
+          </div>
+        </div>
       </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="resetForm">取 消</el-button>
-        <el-button type="primary" @click="saveForm">确 定</el-button>
-      </span>
-    </el-dialog>
+      <el-table
+        v-tableHeight="{bottomOffset: 80}"
+        :data="tableData"
+        height="100px"
+        border
+        style="width: 100%"
+      >
 
+        <el-table-column
+          label="接口ID"
+          prop="apiId"
+          width="100"
+          align="center"
+        />
+
+        <el-table-column
+          label="接口名称"
+          prop="apiName"
+        />
+
+        <el-table-column
+          label="接口类型"
+          prop="apiType"
+          width="100"
+        />
+
+        <el-table-column
+          label="接口地址"
+          prop="apiUrl"
+        />
+
+        <el-table-column
+          label="创建人"
+          prop="createName"
+          width="100"
+        />
+
+        <el-table-column
+          label="创建时间"
+          prop="createTime"
+        />
+
+        <el-table-column label="操作" align="center" width="240" class-name="small-padding fixed-width">
+          <template slot-scope="{row}">
+
+            <!-- <el-button type="text" size="mini" @click="handleAction(row)">
+              编 辑
+            </el-button> -->
+            <el-button type="text" size="mini" @click="openDetail(row)">
+              查看
+            </el-button>
+            <el-button size="mini" type="text" class="danger-color" @click="handleDelete(row)">
+              删 除
+            </el-button>
+          </template>
+        </el-table-column>
+
+      </el-table>
+
+      <pagination
+        v-show="total>0"
+        :total="total"
+        :page.sync="tableQuery.page"
+        :limit.sync="tableQuery.limit"
+        @pagination="getList"
+      />
+
+      <el-dialog
+        :title="dialogTitle"
+        :visible.sync="dialogVisible"
+      >
+        <div>
+          <el-form ref="dialog_form" :model="handleForm" :rules="rules" label-width="80px">
+            <el-form-item label="接口名称" prop="apiName">
+              <el-input v-model="handleForm.apiName" />
+            </el-form-item>
+
+            <el-form-item label="接口地址" prop="apiUrl">
+              <el-input v-model="handleForm.apiUrl" />
+            </el-form-item>
+
+            <div>
+              <el-table
+                :data="JSONData"
+                height="400px"
+                border
+                style="width: 100%"
+                row-key="keyId"
+              >
+                <el-table-column
+                  label=""
+                >
+                  <template slot-scope="{row}">
+                    <i class="el-icon-plus" style="cursor: pointer;" @click="addKeymap(row,1)" />
+                  </template>
+                </el-table-column>
+
+                <el-table-column
+                  label="字段名"
+                >
+                  <template slot-scope="{row}">
+                    <el-input v-model="row.keyName" placeholder="请输入内容" />
+                  </template>
+                </el-table-column>
+
+                <el-table-column
+                  label="类型"
+                >
+                  <template slot-scope="{row}">
+                    <el-select v-model="row.keyType" placeholder="请选择">
+                      <el-option
+                        v-for="item in options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                      />
+                    </el-select>
+                  </template>
+                </el-table-column>
+
+                <el-table-column
+                  label="说明"
+                >
+                  <template slot-scope="{row}">
+                    <el-input v-model="row.keyDesc" placeholder="请输入内容" />
+                  </template>
+                </el-table-column>
+
+                <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
+                  <template slot-scope="{row}">
+
+                    <el-button type="text" size="mini" @click="addKeymap(row,2)">
+                      插 入
+                    </el-button>
+                    <el-button size="mini" type="text" @click="delKeymap(row)">
+                      删 除
+                    </el-button>
+                  </template>
+                </el-table-column>
+
+              </el-table>
+
+            </div>
+
+          </el-form>
+        </div>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="resetForm">取 消</el-button>
+          <el-button type="primary" @click="saveForm">确 定</el-button>
+        </span>
+      </el-dialog>
+
+    </div>
   </div>
 </template>
 
@@ -179,25 +206,21 @@ export default {
   data() {
     return {
 
-      searchForm: {
+      searchForm: { // 搜索对象
         apiName: ''
       },
-      total: 0,
-      tableQuery: {
+      total: 0, // 总页数
+      tableQuery: { // 表格分页对象
         page: 1,
         limit: 20
       },
-      tableData: [],
-      dialogVisible: false,
-      handleForm: {
+      tableData: [], // 表格数据
+      dialogVisible: false, // 弹窗标识
+      handleForm: { // 表单对象
         apiName: ''
       },
-      defaultProps: {
-        children: 'children',
-        label: 'name'
-      },
-      dialogTitle: '',
-      rules: {
+      dialogTitle: '', // 弹窗标题
+      rules: { // 表单校验规则
         apiName: [
           { required: true, message: '请输入接口名称', trigger: 'blur' }
         ],
@@ -206,7 +229,7 @@ export default {
         ]
       },
 
-      JSONData: [
+      JSONData: [ // 弹窗列表数据
         {
           keyId: 1,
           keyName: '',
@@ -215,14 +238,14 @@ export default {
           keyDesc: ''
         }
       ],
-      defaultJson: [{
+      defaultJson: [{ // 添加默认数据
         keyId: '',
         keyName: '',
         keyType: '',
         keyRequire: '',
         keyDesc: ''
       }],
-      options: [
+      options: [ // 数据类型字典数据
         {
           value: 1,
           label: 'Stirng'
@@ -243,14 +266,18 @@ export default {
 
   methods: {
 
+    // 搜索
     searchAction() {
       this.getList()
     },
+
+    // 重置
     resetSearch() {
       this.tableQuery.page = 1
       this.getList()
     },
 
+    // 新增、编辑操作
     handleAction(row) {
       this.dialogTitle = row ? '编辑接口' : '新增接口'
       if (row) {
@@ -264,6 +291,7 @@ export default {
       this.dialogVisible = true
     },
 
+    // 删除操作
     handleDelete(row) {
       this.$confirm(`是否删除【${row.apiName}】接口?`, '提示', {
         confirmButtonText: '确定',
@@ -272,21 +300,23 @@ export default {
       }).then(() => {
         this.$store.dispatch('system/apiMgt/handleDelete', {
           apiId: row.apiId
-        })
-          .then((res) => {
-            if (res.code === 20000) {
-              this.tableData = this.tableData.filter((item) => {
-                return item.apiId !== row.apiId
-              })
-              // this.getList()
-            }
-          })
-          .catch(() => {
-
-          })
+        }).then((res) => {
+          if (res.code === 20000) {
+            this.tableData = this.tableData.filter((item) => {
+              return item.apiId !== row.apiId
+            })
+            // this.getList()
+          } else {
+            this.$message({
+              message: res.msg,
+              type: 'error'
+            })
+          }
+        }).catch(() => {})
       }).catch(() => {})
     },
 
+    // 查看接口详情
     openDetail(row) {
       const parmas = {
         path: 'detail',
@@ -295,44 +325,48 @@ export default {
       this.router_go(this, parmas.path, { type: 'push', parmas: { data: JSON.stringify(parmas.query) }})
     },
 
+    // 获取列表数据
     getList() {
       const parmas = Object.assign({}, this.tableQuery, this.searchForm)
-      this.$store.dispatch('system/apiMgt/getList', parmas)
-        .then((res) => {
-          if ((res.code === 20000) && res.data) {
-            this.tableData = res.data.map((item) => {
-              return {
-                ...item
-              }
-            })
-            this.total = res.total
-          }
-        })
-        .catch(() => {
-
-        })
+      this.$store.dispatch('system/apiMgt/getList', parmas).then((res) => {
+        if ((res.code === 20000) && res.data) {
+          this.tableData = res.data.map((item) => {
+            return {
+              ...item
+            }
+          })
+          this.total = res.total
+        }
+      }).catch(() => {})
     },
+
+    // 重置表单
     resetForm() {
       this.$refs.dialog_form.resetFields()
       this.dialogVisible = false
     },
+
+    // 保存表单
     saveForm() {
       this.$refs.dialog_form.validate((valid) => {
         if (valid) {
-          this.$store.dispatch('system/apiMgt/handleAction', this.handleForm)
-            .then((res) => {
-              if (res.code === 20000) {
-                this.dialogVisible = false
-              }
-            })
-            .catch(() => {
-
-            })
+          this.$store.dispatch('system/apiMgt/handleAction', this.handleForm).then((res) => {
+            if (res.code === 20000) {
+              this.dialogVisible = false
+            } else {
+              this.$message({
+                message: res.msg,
+                type: 'error'
+              })
+            }
+          }).catch(() => {})
         } else {
           return false
         }
       })
     },
+
+    // 弹窗列表数据过滤
     filterParent(data, id) {
       for (const i in data) {
         if (data[i].keyId) {
@@ -358,6 +392,8 @@ export default {
         }
       }
     },
+
+    // 弹窗列表数据操作
     addKeymap(row, type) {
       if ((type === 2) || (row.keypId && (type === 2))) {
         if (row.children) {
@@ -390,6 +426,8 @@ export default {
 
       this.$forceUpdate()
     },
+
+    // 弹窗列表数据删除操作
     delKeymap() {
 
     }
@@ -398,13 +436,24 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.page-warp {
-  margin: 10px 20px 10px 20px;
-  padding: 20px;
+.search-container{
+  margin: 10px 15px 0px 15px;
+  padding: 15px 20px 0 20px;
   background-color: #FFF;
-  border-radius: 4px;
+  border-radius: 2px;
+  .el-form-item{
+      margin-bottom: 15px;
+  }
+
+}
+.page-warp {
+  margin: 5px 15px 0px 15px;
+  padding: 10px 20px 0px 20px;
+  background-color: #FFF;
+  border-radius: 2px;
   .table-action-body{
     margin-bottom: 10px;
+    display: flex;
   }
   .child-table-expand {
     font-size: 0;

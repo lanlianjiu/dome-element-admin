@@ -2,7 +2,7 @@
 import request from '@/utils/request'
 export function getList(data) {
   return request({
-    url: '/vue-element-admin/menuMgt/list',
+    url: '/system/menuMgt/getList',
     method: 'post',
     data
   })
@@ -10,7 +10,7 @@ export function getList(data) {
 
 export function handleAction(data) {
   return request({
-    url: '/vue-element-admin/menuMgt/handleAction',
+    url: '/system/menuMgt/handleAction',
     method: 'post',
     data
   })
@@ -18,7 +18,7 @@ export function handleAction(data) {
 
 export function handleDelete(data) {
   return request({
-    url: '/vue-element-admin/menuMgt/handleDelete',
+    url: '/system/menuMgt/handleDelete',
     method: 'post',
     data
   })

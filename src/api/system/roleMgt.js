@@ -1,9 +1,9 @@
 
 import request from '@/utils/request'
 
-export function getRolelist(data) {
+export function getList(data) {
   return request({
-    url: '/vue-element-admin/sysRole/getRolelist',
+    url: '/system/roleMgt/getList',
     method: 'post',
     data
   })
@@ -11,7 +11,7 @@ export function getRolelist(data) {
 
 export function setRolemenus(data) {
   return request({
-    url: '/vue-element-admin/sysRole/setRolemenus',
+    url: '/system/roleMgt/setRolemenus',
     method: 'post',
     data
   })
@@ -19,7 +19,7 @@ export function setRolemenus(data) {
 
 export function handleAction(data) {
   return request({
-    url: '/vue-element-admin/sysRole/handleAction',
+    url: '/system/roleMgt/handleAction',
     method: 'post',
     data
   })
@@ -27,7 +27,7 @@ export function handleAction(data) {
 
 export function handleDelete(data) {
   return request({
-    url: '/vue-element-admin/sysRole/handleDelete',
+    url: '/system/roleMgt/handleDelete',
     method: 'post',
     data
   })

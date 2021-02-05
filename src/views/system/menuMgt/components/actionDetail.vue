@@ -11,7 +11,7 @@
 
           <div class="input_body">
             <div class="input_left">
-              <el-switch v-model="actionForm.is_external_link" />
+              <el-switch v-model="actionForm.is_external_link" @change="witchLink" />
             </div>
             <div class="input_right">
               路由作为外链打开
@@ -27,13 +27,25 @@
                 v-model="actionForm.pid"
                 style="width: 300px;"
                 :options="options"
+                :disabled="actionForm.is_external_link"
                 :default-expand-level="1"
                 :normalizer="normalizer"
-                placeholder="请选择父级菜单"
+                placeholder="请选择父级菜单,不填时默认为一级菜单"
               />
             </div>
             <div class="input_right">
               父级菜单
+            </div>
+          </div>
+        </el-form-item>
+
+        <el-form-item label="菜单编码" prop="menusCode">
+          <div class="input_body">
+            <div class="input_left">
+              <el-input v-model="actionForm.menusCode" :disabled="($route.query.id)?true:false" class="input_w" placeholder="请输入菜单编码" />
+            </div>
+            <div class="input_right">
+              菜单编码确保唯一性
             </div>
           </div>
         </el-form-item>
@@ -60,7 +72,7 @@
           </div>
         </el-form-item> -->
 
-        <el-form-item label="路由路径" prop="path">
+        <el-form-item label="路由路径/外链" prop="path">
           <div class="input_body">
             <div class="input_left">
               <el-input v-model="actionForm.path" class="input_w" placeholder="请输入路由路径" />
@@ -71,7 +83,7 @@
           </div>
         </el-form-item>
 
-        <el-form-item label="页面路径" prop="component">
+        <el-form-item label="页面路径/外链" :prop="(actionForm.pid)?'component':''">
           <div class="input_body">
             <div class="input_left">
               <el-input v-model="actionForm.component" class="input_w" placeholder="请输入页面路径" />
@@ -86,7 +98,11 @@
 
           <div class="input_body">
             <div class="input_left">
-              <el-switch v-model="actionForm.stauts" />
+              <el-switch
+                v-model="actionForm.stauts"
+                :active-value="1"
+                :inactive-value="2"
+              />
             </div>
             <div class="input_right">
               菜单是否有效
@@ -127,7 +143,12 @@
         <el-form-item label="导航是否可点击">
           <div class="input_body">
             <div class="input_left">
-              <el-input v-model="actionForm.redirect" class="input_w" placeholder="请输入可点击路由或noRedirect" />
+              <el-input
+                v-model="actionForm.redirect"
+                :disabled="actionForm.is_external_link"
+                class="input_w"
+                placeholder="请输入可点击路由或noRedirect"
+              />
             </div>
             <div class="input_right">
               当设置 noRedirect 的时候该路由在面包屑导航中不可被点击
@@ -138,7 +159,7 @@
         <el-form-item label="是否显示根路由">
           <div class="input_body">
             <div class="input_left">
-              <el-switch v-model="actionForm.alwaysShow" />
+              <el-switch v-model="actionForm.alwaysShow" :disabled="actionForm.is_external_link" />
             </div>
             <div class="input_right">
               你可以设置 alwaysShow: true，这样它就会忽略之前定义的规则，一直显示根路由
@@ -149,7 +170,7 @@
         <el-form-item label="是否缓存路由">
           <div class="input_body">
             <div class="input_left">
-              <el-switch v-model="actionForm.meta.noCache" />
+              <el-switch v-model="actionForm.meta.noCache" :disabled="actionForm.is_external_link" />
             </div>
             <div class="input_right">
               如果设置为true，则不会被 <keep-alive> 缓存(默认 false)
@@ -160,7 +181,7 @@
         <el-form-item label="是否面包屑中显示">
           <div class="input_body">
             <div class="input_left">
-              <el-switch v-model="actionForm.meta.breadcrumb" />
+              <el-switch v-model="actionForm.meta.breadcrumb" :disabled="actionForm.is_external_link" />
             </div>
             <div class="input_right">
               如果设置为false，则不会在breadcrumb面包屑中显示(默认 true)
@@ -171,7 +192,7 @@
         <el-form-item label="是否在标签栏显示">
           <div class="input_body">
             <div class="input_left">
-              <el-switch v-model="actionForm.meta.affix" />
+              <el-switch v-model="actionForm.meta.affix" :disabled="actionForm.is_external_link" />
             </div>
             <div class="input_right">
               如果设置为true，它则会固定在tags-view中(默认 false)
@@ -179,10 +200,26 @@
           </div>
         </el-form-item>
 
+        <el-form-item label="是否只在本地显示">
+          <div class="input_body">
+            <div class="input_left">
+              <el-switch v-model="actionForm.meta.is_local" :disabled="actionForm.is_external_link" />
+            </div>
+            <div class="input_right">
+              如果设置为true，它则只会在本地调试出现(默认 false)
+            </div>
+          </div>
+        </el-form-item>
+
         <el-form-item label="高亮的路由路径">
           <div class="input_body">
             <div class="input_left">
-              <el-input v-model="actionForm.meta.activeMenu" class="input_w" placeholder="请输入高亮的路由路径" />
+              <el-input
+                v-model="actionForm.meta.activeMenu"
+                :disabled="actionForm.is_external_link"
+                class="input_w"
+                placeholder="请输入高亮的路由路径"
+              />
             </div>
             <div class="input_right">
               当路由设置了该属性，则会高亮相对应的侧边栏
@@ -194,8 +231,8 @@
     </el-form>
     <footer>
       <div class="footer-body">
-        <el-button type="primary" @click="submitForm">保 存</el-button>
         <el-button @click="cancelForm">取 消</el-button>
+        <el-button type="primary" @click="submitForm">保 存</el-button>
       </div>
     </footer>
 
@@ -207,20 +244,22 @@ import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 const defaultForm = {
   name: '',
+  menusCode: '',
   path: '',
   component: '',
   redirect: '', // 当设置 noRedirect 的时候该路由在面包屑导航中不可被点击
   hidden: false, // 当设置 true 的时候该路由不会在侧边栏出现
   alwaysShow: false, // 你可以设置 alwaysShow: true，这样它就会忽略之前定义的规则，一直显示根路由
   is_external_link: false, // 路由作为外链打开
-  stauts: true, // 菜单状态
+  stauts: 1, // 菜单状态
   meta: {
     title: '', // 设置该路由在侧边栏和面包屑中展示的名字
     icon: '', // 设置该路由的图标，支持 svg-class，也支持 el-icon-x element-ui 的 icon
     noCache: false, // 如果设置为true，则不会被 <keep-alive> 缓存(默认 false)
     breadcrumb: true, //  如果设置为false，则不会在breadcrumb面包屑中显示(默认 true)
     affix: false, // 如果设置为true，它则会固定在tags-view中(默认 false)
-    activeMenu: '' // 当路由设置了该属性，则会高亮相对应的侧边栏。
+    activeMenu: '', // 当路由设置了该属性，则会高亮相对应的侧边栏。
+    is_local: false // 只是本地调试才会出现
   }
 }
 
@@ -241,6 +280,9 @@ export default {
       loading: false,
       userListOptions: [],
       rules: {
+        menusCode: [
+          { required: true, message: '请输入菜单编码', trigger: 'blur' }
+        ],
         name: [
           { required: true, message: '请输入路由名称', trigger: 'blur' }
         ],
@@ -261,9 +303,6 @@ export default {
       }
     }
   },
-  computed: {
-
-  },
   created() {
     if (this.$route.query.id) {
       this.actionForm = this.$route.query
@@ -271,6 +310,8 @@ export default {
     this.getList()
   },
   methods: {
+
+    // 保存操作
     submitForm() {
       this.$refs.postForm.validate(valid => {
         if (valid) {
@@ -278,26 +319,30 @@ export default {
           this.actionForm.meta.title = this.actionForm.name
           this.actionForm.meta = JSON.stringify(this.actionForm.meta)
           const parmas = this.actionForm
-          console.log(parmas)
           this.$store.dispatch('system/menuMgt/handleAction', parmas)
             .then((res) => {
               if (res.code === 20000) {
                 this.loading = false
                 this.cancelForm()
+              } else {
+                this.$message({
+                  message: res.msg,
+                  type: 'error'
+                })
               }
-            })
-            .catch(() => {
-
-            })
+            }).catch(() => {})
         } else {
-          console.log('error submit!!')
           return false
         }
       })
     },
+
+    // 取消操作
     cancelForm() {
       this.router_go(this, 'list', { type: 'replace', closeTag: true })
     },
+
+    // 获取父级菜单下拉数据
     getList() {
       this.$store.dispatch('system/menuMgt/getList')
         .then((res) => {
@@ -308,6 +353,24 @@ export default {
         .catch(() => {
 
         })
+    },
+
+    // 选择外链
+    witchLink(v) {
+      if (v) {
+        this.actionForm.pid = undefined
+        this.actionForm.meta.activeMenu = ''
+        this.actionForm.redirect = ''
+        this.actionForm.meta.affix = false
+        this.actionForm.meta.breadcrumb = false
+        this.actionForm.meta.noCache = false
+        this.actionForm.alwaysShow = false
+        this.actionForm.is_local = false
+      } else {
+        this.actionForm.meta.breadcrumb = true
+      }
+
+      this.$forceUpdate()
     }
   }
 }
@@ -317,10 +380,10 @@ export default {
 @import "~@/styles/mixin.scss";
 
 .page-warp {
-  margin: 10px 20px 10px 20px;
-  padding: 20px;
+  margin: 10px 15px 10px 15px;
+  padding: 10px 20px 5px 20px;
   background-color: #FFF;
-  border-radius: 4px;
+  border-radius: 2px;
   .dash_line{
     border:1px dashed #dddddd;
     padding: 15px;
@@ -338,9 +401,6 @@ export default {
   }
   .input_body{
     display: flex;
-    .input_left{
-
-    }
     .input_right{
       color: #909399;
       margin-left: 15px;

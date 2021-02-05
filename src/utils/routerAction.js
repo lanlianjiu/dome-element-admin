@@ -13,9 +13,9 @@ const router_action = (Vue) => {
     if (option && option.closeTag) {
       store.dispatch('tagsView/delView', self.$route)
     }
-    console.log(option)
+
     const params = { path: path, query: option.parmas }
-    console.log(params)
+
     if (path && option && option.type) {
       router[option.type](params)
     } else if (path) {

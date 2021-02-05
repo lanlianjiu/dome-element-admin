@@ -1,10 +1,3 @@
-/*
- * @Descripttion:
- * @Author: ex_lanlj2@partner.midea.com
- * @Date: 2020-11-24 14:57:59
- * @LastEditors: ex_lanlj2@partner.midea.com
- * @LastEditTime: 2020-12-14 10:03:06
- */
 
 const menusData = require('./router.js')
 
@@ -34,28 +27,29 @@ const users = {
 
 const menus = {
   code: 20000,
+  msg: '查询成功',
   data: menusData
 }
 
 module.exports = [
   // user login
   {
-    url: '/vue-element-admin/user/login',
+    url: '/system/user/login',
     type: 'post',
     response: config => {
       const { userName } = config.body
       const token = tokens[userName]
-
       // mock error
       if (!token) {
         return {
           code: 60204,
-          message: 'Account and password are incorrect.'
+          msg: 'Account and password are incorrect.'
         }
       }
 
       return {
         code: 20000,
+        msg: '登录成功',
         data: token
       }
     }
@@ -63,7 +57,7 @@ module.exports = [
 
   // get user info
   {
-    url: '/vue-element-admin/user/info\.*',
+    url: '/system/user/info\.*',
     type: 'get',
     response: config => {
       const { token } = config.query
@@ -73,12 +67,13 @@ module.exports = [
       if (!info) {
         return {
           code: 50008,
-          message: 'Login failed, unable to get user details.'
+          msg: 'Login failed, unable to get user details.'
         }
       }
 
       return {
         code: 20000,
+        msg: '操作成功',
         data: info
       }
     }
@@ -86,18 +81,19 @@ module.exports = [
 
   // user logout
   {
-    url: '/vue-element-admin/user/logout',
+    url: '/system/user/logout',
     type: 'post',
     response: _ => {
       return {
         code: 20000,
+        msg: '操作成功',
         data: 'success'
       }
     }
   },
   // user getAuthMenu
   {
-    url: '/vue-element-admin/user/getAuthMenu',
+    url: '/system/user/getAuthMenu',
     type: 'get',
     response: _ => {
       return menus || []

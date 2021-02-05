@@ -1,5 +1,5 @@
 
-import { getRolelist, setRolemenus, handleAction, handleDelete } from '@/api/system/roleMgt'
+import { getList, setRolemenus, handleAction, handleDelete } from '@/api/system/roleMgt'
 import { getAuthMenu } from '@/api/user'
 const state = {
 
@@ -10,9 +10,9 @@ const mutations = {
 }
 
 const actions = {
-  getRolelist(state, params) {
+  getList(state, params) {
     return new Promise((resolve, reject) => {
-      getRolelist(params).then(response => {
+      getList(params).then(response => {
         if (!response) {
           reject('Verification failed, please Login again.')
         }

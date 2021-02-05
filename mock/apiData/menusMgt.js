@@ -1,247 +1,10 @@
-const { menus_list } = require('./apiData/menusMgt')
-const { user_list } = require('./apiData/userMgt')
-const { company_list } = require('./apiData/companyMgt')
-const { depart_list } = require('./apiData/departMgt')
-const { role_list } = require('./apiData/roleMgt')
 const list = [
   {
-    apiId: 1,
-    apiName: '登录接口',
+    apiId: 5,
+    apiName: '【菜单模块】菜单列表',
     apiType: 'POST',
-    apiUrl: '/system/user/login',
-    desc: '系统登录接口',
-    Headers: [
-      {
-        parmasId: 1,
-        parmasName: 'Content-Type',
-        parmaValue: 'application/json',
-        is_requried: true,
-        desc: 'JSON类型传参'
-      },
-      {
-        parmasId: 2,
-        parmasName: 'access-token',
-        parmaValue: '123456',
-        is_requried: true,
-        desc: 'token校验登录'
-      }
-    ],
-    Body: [
-      {
-        parmasId: 3,
-        parmasName: 'companyCode',
-        is_requried: true,
-        parmaType: 'String',
-        desc: '公司编码'
-      },
-      {
-        parmasId: 4,
-        parmasName: 'userName',
-        is_requried: true,
-        parmaType: 'String',
-        desc: '登录账号'
-      },
-      {
-        parmasId: 5,
-        parmasName: 'passWord',
-        is_requried: true,
-        parmaType: 'String',
-        desc: '登录密码'
-      }
-    ],
-    Query: [],
-    callBackdata: [
-      {
-        parmasId: 6,
-        parmasName: 'code',
-        parmaType: 'Number',
-        parmaValue: 20000,
-        parmasDefault: '',
-        is_requried: true,
-        desc: '返回编码：\n  20000：正常; \n50008: 非法令牌(Illegal token);\n50012: 其他客户端已登录(Other clients logged in);\n50014: 令牌已过期(Token expired);'
-      },
-      {
-        parmasId: 82,
-        parmasName: 'msg',
-        parmaType: 'String',
-        parmaValue: '',
-        parmasDefault: '',
-        is_requried: false,
-        desc: '接口返回提示信息、错误原因等'
-      },
-      {
-        parmasId: 8,
-        parmasName: 'data',
-        parmaType: 'Object',
-        parmaValue: '',
-        parmasDefault: '',
-        is_requried: true,
-        desc: '',
-        children: [{
-          parmasId: 9,
-          parmasName: 'token',
-          parmaType: 'String',
-          parmaValue: 'admin-token',
-          parmasDefault: '',
-          is_requried: true,
-          desc: '返回token值'
-        }]
-      }
-    ],
-    createName: '管理员用户',
-    createTime: '2021-01-05 09:00:00'
-  },
-  {
-    apiId: 2,
-    apiName: '获取登录人信息接口',
-    apiType: 'GET',
-    apiUrl: '/system/user/info',
-    desc: '系统登录接口',
-    Headers: [
-      {
-        parmasId: 1,
-        parmasName: 'Content-Type',
-        parmaValue: 'application/json',
-        is_requried: true,
-        desc: 'JSON类型传参'
-      },
-      {
-        parmasId: 2,
-        parmasName: 'access-token',
-        parmaValue: '123456',
-        is_requried: true,
-        desc: 'token校验登录'
-      }
-    ],
-    Body: [],
-    Query: [{
-      parmasId: 1,
-      parmasName: 'access-token',
-      parmaValue: '123456',
-      is_requried: true,
-      desc: '拼上token'
-    }],
-    callBackdata: [
-      {
-        parmasId: 83,
-        parmasName: 'code',
-        parmaType: 'Number',
-        parmaValue: 20000,
-        parmasDefault: '',
-        is_requried: true,
-        desc: '返回编码：\n  20000：正常; \n50008: 非法令牌(Illegal token);\n50012: 其他客户端已登录(Other clients logged in);\n50014: 令牌已过期(Token expired);'
-      },
-      {
-        parmasId: 84,
-        parmasName: 'msg',
-        parmaType: 'String',
-        parmaValue: '',
-        parmasDefault: '',
-        is_requried: false,
-        desc: '接口返回提示信息、错误原因等'
-      },
-      {
-        parmasId: 85,
-        parmasName: 'data',
-        parmaType: 'Object',
-        parmaValue: '',
-        parmasDefault: '',
-        is_requried: true,
-        desc: '',
-        children: [{
-          parmasId: 86,
-          parmasName: 'avatar',
-          parmaType: 'String',
-          parmaValue: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-          parmasDefault: '',
-          is_requried: true,
-          desc: '登录人头像'
-        }, {
-          parmasId: 87,
-          parmasName: 'introduction',
-          parmaType: 'String',
-          parmaValue: '',
-          parmasDefault: '',
-          is_requried: true,
-          desc: '登录人备注'
-        }, {
-          parmasId: 88,
-          parmasName: 'name',
-          parmaType: 'String',
-          parmaValue: '',
-          parmasDefault: '',
-          is_requried: true,
-          desc: '登录人名称'
-        }, {
-          parmasId: 89,
-          parmasName: 'roles',
-          parmaType: 'Array',
-          parmaValue: '[admin,edit]',
-          parmasDefault: '',
-          is_requried: true,
-          desc: '登录人拥有的角色编码'
-        }]
-      }
-    ],
-    createName: '管理员用户',
-    createTime: '2021-01-05 09:00:00'
-  },
-  {
-    apiId: 3,
-    apiName: '退出登录接口',
-    apiType: 'POST',
-    apiUrl: '/system/user/logout',
-    desc: '系统退出登录',
-    Headers: [{
-      parmasId: 10,
-      parmasName: 'Content-Type',
-      parmaValue: 'application/json',
-      is_requried: true,
-      desc: 'JSON类型传参'
-    },
-    {
-      parmasId: 11,
-      parmasName: 'access-token',
-      parmaValue: '123456',
-      is_requried: true,
-      desc: 'token校验登录'
-    }],
-    Body: [],
-    Query: [],
-    callBackdata: [{
-      parmasId: 12,
-      parmasName: 'code',
-      parmaType: 'Number',
-      parmaValue: 20000,
-      parmasDefault: '',
-      is_requried: true,
-      desc: '返回编码：\n  20000：正常; \n50008: 非法令牌(Illegal token);\n50012: 其他客户端已登录(Other clients logged in);\n50014: 令牌已过期(Token expired);'
-    }, {
-      parmasId: 13,
-      parmasName: 'msg',
-      parmaType: 'String',
-      parmaValue: '操作成功',
-      parmasDefault: '',
-      is_requried: true,
-      desc: '接口返回提示信息、错误原因等' },
-    {
-      parmasId: 83,
-      parmasName: 'data',
-      parmaType: 'String',
-      parmaValue: '',
-      parmasDefault: '',
-      is_requried: true,
-      desc: 'token等信息'
-    }],
-    createName: '管理员用户',
-    createTime: '2021-01-05 09:00:00'
-  },
-  {
-    apiId: 4,
-    apiName: '获取登录人的菜单',
-    apiType: 'POST',
-    apiUrl: '/system/user/getAuthMenu',
-    desc: '根据当前用户所拥有的角色对应的菜单',
+    apiUrl: '/system/menuMgt/getList',
+    desc: '1.根据当前用户所在公司作为条件查询该公司所配置的菜单数据。<br>2.这个接口两用，当传page、limit等分页参数时作为限制条件返回数据。当不传任何参数时返回当前公司的所有有效的菜单（用于新增时父级下拉插件数据）',
     Headers: [
       {
         parmasId: 1,
@@ -304,7 +67,16 @@ const list = [
         parmaValue: '',
         parmasDefault: '',
         is_requried: true,
-        desc: '数据总条数'
+        desc: '数据总条数(查出统计出包含子级的数据条数)'
+      },
+      {
+        parmasId: 83,
+        parmasName: 'pageTotal',
+        parmaType: 'Number',
+        parmaValue: '',
+        parmasDefault: '',
+        is_requried: true,
+        desc: '数据总数(查出的数据中只是统计父级id为0的总数)'
       },
       {
         parmasId: 69,
@@ -659,9 +431,218 @@ const list = [
     ],
     createName: '管理员用户',
     createTime: '2021-01-05 09:00:00'
+  },
+  {
+    apiId: 6,
+    apiName: '【菜单模块】新增、编辑菜单',
+    apiType: 'POST',
+    apiUrl: '/system/menuMgt/handleAction',
+    desc: '菜单编码需要校验当前公司作为条件编码的唯一性',
+    Headers: [{
+      parmasId: 48,
+      parmasName: 'Content-Type',
+      parmaValue: 'application/json',
+      is_requried: true,
+      desc: 'JSON类型传参'
+    },
+    {
+      parmasId: 49,
+      parmasName: 'access-token',
+      parmaValue: '123456',
+      is_requried: true,
+      desc: 'token校验登录'
+    }],
+    Body: [
+      {
+        parmasId: 52,
+        parmasName: 'id',
+        is_requried: false,
+        parmaType: 'Number',
+        desc: `菜单ID(<span style="color:red;">编辑时必传</span>)`
+      },
+      {
+        parmasId: 69,
+        parmasName: 'menusCode',
+        is_requried: true,
+        parmaType: 'String',
+        desc: '菜单编码'
+      },
+      {
+        parmasId: 53,
+        parmasName: 'name',
+        is_requried: true,
+        parmaType: 'String',
+        desc: '菜单名称'
+      },
+      {
+        parmasId: 55,
+        parmasName: 'hidden',
+        is_requried: true,
+        parmaType: 'Boolean',
+        desc: '菜单隐藏'
+      },
+      {
+        parmasId: 56,
+        parmasName: 'component',
+        is_requried: true,
+        parmaType: 'String',
+        desc: '菜单组件路径'
+      },
+      {
+        parmasId: 57,
+        parmasName: 'is_external_link',
+        is_requried: false,
+        parmaType: 'Boolean',
+        desc: '是否外链'
+      }, {
+        parmasId: 58,
+        parmasName: 'path',
+        is_requried: true,
+        parmaType: 'String',
+        desc: '菜单路由路径'
+      },
+      {
+        parmasId: 59,
+        parmasName: 'redirect',
+        is_requried: false,
+        parmaType: 'String',
+        desc: '标签重定向'
+      }, {
+        parmasId: 60,
+        parmasName: 'stauts',
+        is_requried: true,
+        parmaType: 'Boolean',
+        desc: '菜单状态'
+      },
+      {
+        parmasId: 61,
+        parmasName: 'meta',
+        is_requried: true,
+        parmaType: 'JSON',
+        desc: '其他设置(json字符串)',
+        children: [
+          {
+            parmasId: 62,
+            parmasName: 'title',
+            is_requried: true,
+            parmaType: 'String',
+            desc: '标签名称'
+          },
+          {
+            parmasId: 63,
+            parmasName: 'icon',
+            is_requried: true,
+            parmaType: 'String',
+            desc: '菜单图标'
+          }, {
+            parmasId: 64,
+            parmasName: 'noCache',
+            is_requried: true,
+            parmaType: 'Boolean',
+            desc: '是否缓存页面'
+          }, {
+            parmasId: 65,
+            parmasName: 'breadcrumb',
+            is_requried: true,
+            parmaType: 'Boolean',
+            desc: '显示在面包屑'
+          }, {
+            parmasId: 66,
+            parmasName: 'affix',
+            is_requried: true,
+            parmaType: 'Boolean',
+            desc: '是否固定在viewtag'
+          }, {
+            parmasId: 67,
+            parmasName: 'activeMenu',
+            is_requried: false,
+            parmaType: 'String',
+            desc: '菜单点击时高亮路径'
+          },
+          {
+            parmasId: 68,
+            parmasName: 'is_local',
+            is_requried: false,
+            parmaType: 'String',
+            desc: '是否只是本地调试显示'
+          }
+        ]
+      }
+    ],
+    Query: [],
+    callBackdata: [
+      {
+        parmasId: 70,
+        parmasName: 'code',
+        parmaType: 'Number',
+        parmaValue: 20000,
+        parmasDefault: '',
+        is_requried: true,
+        desc: '返回编码：\n  20000：正常; \n50008: 非法令牌(Illegal token);\n50012: 其他客户端已登录(Other clients logged in);\n50014: 令牌已过期(Token expired);'
+      },
+      {
+        parmasId: 71,
+        parmasName: 'msg',
+        parmaType: 'String',
+        parmaValue: '操作成功',
+        is_requried: true,
+        desc: '接口返回提示信息、错误原因等'
+      }
+    ],
+    createName: '管理员用户',
+    createTime: '2021-01-05 09:00:00'
+  },
+  {
+    apiId: 7,
+    apiName: '【菜单模块】删除菜单',
+    apiType: 'POST',
+    apiUrl: '/system/menuMgt/handleDelete',
+    Headers: [{
+      parmasId: 76,
+      parmasName: 'Content-Type',
+      parmaValue: 'application/json',
+      is_requried: true,
+      desc: 'JSON类型传参'
+    },
+    {
+      parmasId: 77,
+      parmasName: 'access-token',
+      parmaValue: '123456',
+      is_requried: true,
+      desc: 'token校验登录'
+    }],
+    Body: [{
+      parmasId: 78,
+      parmasName: 'id',
+      parmaType: 'Number',
+      parmaValue: '',
+      parmasDefault: '',
+      is_requried: true,
+      desc: '菜单ID'
+    }],
+    Query: [],
+    callBackdata: [{
+      parmasId: 74,
+      parmasName: 'code',
+      parmaType: 'Number',
+      parmaValue: 20000,
+      parmasDefault: '',
+      is_requried: true,
+      desc: '返回编码：\n  20000：正常; \n50008: 非法令牌(Illegal token);\n50012: 其他客户端已登录(Other clients logged in);\n50014: 令牌已过期(Token expired);'
+    },
+    {
+      parmasId: 75,
+      parmasName: 'msg',
+      parmaType: 'String',
+      parmaValue: '操作成功',
+      is_requried: true,
+      desc: '接口返回提示信息、错误原因等'
+    }],
+    createName: '管理员用户',
+    createTime: '2021-01-05 09:00:00'
   }
 ]
 
 module.exports = {
-  api_list: list.concat(menus_list, user_list, company_list, depart_list, role_list)
+  menus_list: list
 }

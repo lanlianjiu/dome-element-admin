@@ -8,49 +8,55 @@ const { api_list } = require('./apiMgt_data.js')
 
 const menusList = {
   code: 20000,
-  total: meuns_list.length,
+  msg: '操作成功',
+  pageTotal: meuns_list.length,
   data: meuns_list
 }
 
 const userList = {
   code: 20000,
+  msg: '操作成功',
   total: user_list.length,
   data: user_list
 }
 
 const departList = {
   code: 20000,
-  total: company_list.length,
+  msg: '操作成功',
+  pageTotal: company_list.length,
   data: depart_list
 }
 const companyList = {
   code: 20000,
-  total: company_list.length,
+  msg: '操作成功',
+  pageTotal: company_list.length,
   data: company_list
 }
 
 const roleList = {
   code: 20000,
+  msg: '操作成功',
   total: role_list.length,
   data: role_list
 }
 
 const apiList = {
   code: 20000,
+  msg: '操作成功',
   total: api_list.length,
   data: api_list
 }
 
 module.exports = [
   {
-    url: '/vue-element-admin/menuMgt/list',
+    url: '/system/menuMgt/getList',
     type: 'post',
     response: _ => {
       return menusList
     }
   },
   {
-    url: '/vue-element-admin/menuMgt/handleAction',
+    url: '/system/menuMgt/handleAction',
     type: 'post',
     response: _ => {
       return {
@@ -60,7 +66,7 @@ module.exports = [
     }
   },
   {
-    url: '/vue-element-admin/menuMgt/handleDelete',
+    url: '/system/menuMgt/handleDelete',
     type: 'post',
     response: _ => {
       return {
@@ -70,14 +76,14 @@ module.exports = [
     }
   },
   {
-    url: '/vue-element-admin/userMgt/getUserlist',
+    url: '/system/userMgt/getList',
     type: 'post',
     response: _ => {
       return userList
     }
   },
   {
-    url: '/vue-element-admin/userMgt/handleAction',
+    url: '/system/userMgt/handleAction',
     type: 'post',
     response: _ => {
       return {
@@ -87,7 +93,7 @@ module.exports = [
     }
   },
   {
-    url: '/vue-element-admin/userMgt/handleDelete',
+    url: 'system/userMgt/handleDelete',
     type: 'post',
     response: _ => {
       return {
@@ -97,14 +103,14 @@ module.exports = [
     }
   },
   {
-    url: '/vue-element-admin/sysRole/getRolelist',
+    url: '/system/roleMgt/getList',
     type: 'post',
     response: _ => {
       return roleList
     }
   },
   {
-    url: '/vue-element-admin/sysRole/setRolemenus',
+    url: '/system/roleMgt/setRolemenus',
     type: 'post',
     response: _ => {
       return {
@@ -114,7 +120,7 @@ module.exports = [
     }
   },
   {
-    url: '/vue-element-admin/sysRole/handleAction',
+    url: '/system/roleMgt/handleAction',
     type: 'post',
     response: _ => {
       return {
@@ -124,7 +130,7 @@ module.exports = [
     }
   },
   {
-    url: '/vue-element-admin/sysRole/handleDelete',
+    url: '/system/roleMgt/handleDelete',
     type: 'post',
     response: _ => {
       return {
@@ -134,13 +140,13 @@ module.exports = [
     }
   },
   {
-    url: '/vue-element-admin/sysCompany/list',
+    url: '/system/companyMgt/getList',
     type: 'post',
     response: _ => {
       return companyList
     }
   }, {
-    url: '/vue-element-admin/sysCompany/handleAction',
+    url: '/system/companyMgt/handleActio',
     type: 'post',
     response: _ => {
       return {
@@ -150,7 +156,7 @@ module.exports = [
     }
   },
   {
-    url: '/vue-element-admin/sysCompany/handleDelete',
+    url: '/system/companyMgt/handleDelete',
     type: 'post',
     response: _ => {
       return {
@@ -160,13 +166,13 @@ module.exports = [
     }
   },
   {
-    url: '/vue-element-admin/sysDepart/list',
+    url: '/system/departMgt/getList',
     type: 'post',
     response: _ => {
       return departList
     }
   }, {
-    url: '/vue-element-admin/sysDepart/handleAction',
+    url: '/system/departMgt/handleAction',
     type: 'post',
     response: _ => {
       return {
@@ -176,7 +182,7 @@ module.exports = [
     }
   },
   {
-    url: '/vue-element-admin/sysDepart/handleDelete',
+    url: '/system/departMgt/handleDelete',
     type: 'post',
     response: _ => {
       return {
@@ -186,13 +192,13 @@ module.exports = [
     }
   },
   {
-    url: '/vue-element-admin/sysApi/list',
+    url: '/system/apiMgt/getList',
     type: 'post',
     response: _ => {
       return apiList
     }
   }, {
-    url: '/vue-element-admin/sysApi/handleAction',
+    url: '/system/apiMgt/handleAction',
     type: 'post',
     response: _ => {
       return {
@@ -202,7 +208,7 @@ module.exports = [
     }
   },
   {
-    url: '/vue-element-admin/sysApi/handleDelete',
+    url: '/system/apiMgt/handleDelete',
     type: 'post',
     response: _ => {
       return {

@@ -3,7 +3,7 @@ const list = [{
   roleId: 1,
   roleName: '管理员角色',
   roleCode: 'admin',
-  status: true,
+  status: 1,
   desc: '系统管理员角色',
   createName: '用户管理员',
   createTime: '2021-01-05 09:00:00',
@@ -89,7 +89,7 @@ const list = [{
         redirect: '/system/companyMgt/list',
         hidden: false,
         id: 6,
-        status: true,
+        status: 1,
         sortNo: 2,
         meta: {
           title: '公司管理',
@@ -107,7 +107,7 @@ const list = [{
             component: '/system/companyMgt/list',
             hidden: true,
             id: 7,
-            status: true,
+            status: 1,
             sortNo: 1,
             meta: {
               title: '公司列表',
@@ -127,7 +127,7 @@ const list = [{
         redirect: '/system/departMgt/list',
         hidden: false,
         id: 8,
-        status: true,
+        status: 1,
         sortNo: 3,
         meta: {
           title: '部门管理',
@@ -145,7 +145,7 @@ const list = [{
             component: '/system/departMgt/list',
             hidden: true,
             id: 9,
-            status: true,
+            status: 1,
             sortNo: 1,
             meta: {
               title: '部门列表',
@@ -366,7 +366,7 @@ const list = [{
   roleId: 2,
   roleCode: 'editor',
   roleName: '普通角色',
-  status: false,
+  status: 2,
   desc: '系统普通用户角色',
   createName: '普通用户',
   createTime: '2021-01-05 09:00:00',
