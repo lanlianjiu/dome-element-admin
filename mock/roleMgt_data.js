@@ -1,11 +1,11 @@
 
 const list = [{
   roleId: 1,
-  roleName: '管理员角色',
+  roleName: '平台管理员',
   roleCode: 'admin',
   status: 1,
   desc: '系统管理员角色',
-  createName: '用户管理员',
+  createName: '平台管理员',
   createTime: '2021-01-05 09:00:00',
   menusTree: [
     {
@@ -362,101 +362,102 @@ const list = [{
     }
   ],
   menuIds: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]
-}, {
-  roleId: 2,
-  roleCode: 'editor',
-  roleName: '普通角色',
-  status: 2,
-  desc: '系统普通用户角色',
-  createName: '普通用户',
-  createTime: '2021-01-05 09:00:00',
-  menusTree: [{
-    component: '',
-    redirect: 'noRedirect',
-    hidden: false,
-    id: 16,
-    meta: {
-      icon: 'el-icon-s-cooperation',
-      title: '系统工具',
-      noCache: false,
-      breadcrumb: true,
-      affix: false,
-      activeMenu: ''
-    },
-    name: '系统工具',
-    path: '/systemTools',
-    pid: 0,
-    children: [
-      {
-        component: '/systemTools/iconsMgt/index',
-        redirect: '/systemTools/iconsMgt/list',
-        hidden: false,
-        id: 17,
-        meta: {
-          title: '图标管理',
-          icon: '',
-          noCache: false,
-          breadcrumb: true,
-          affix: false,
-          activeMenu: ''
-        },
-        name: '图标管理',
-        path: 'iconsMgt',
-        pid: 16,
-        children: [{
-          component: '/systemTools/iconsMgt/list',
-          hidden: true,
-          id: 18,
-          meta: {
-            title: '图标列表',
-            noCache: true,
-            activeMenu: '/systemTools/iconsMgt',
-            icon: '',
-            breadcrumb: true,
-            affix: false
-          },
-          name: '图标列表',
-          path: 'list',
-          pid: 17
-        }]
-      },
-      {
-        component: '/systemTools/apiMgt/index',
-        redirect: '/systemTools/apiMgt/list',
-        hidden: false,
-        id: 19,
-        meta: {
-          title: '接口管理',
-          icon: '',
-          noCache: false,
-          breadcrumb: true,
-          affix: false,
-          activeMenu: ''
-        },
-        name: '接口管理',
-        path: 'apiMgt',
-        pid: 17,
-        children: [{
-          component: '/systemTools/apiMgt/list',
-          hidden: true,
-          id: 20,
-          meta: {
-            title: '接口列表',
-            noCache: true,
-            activeMenu: '/systemTools/apiMgt',
-            icon: '',
-            breadcrumb: true,
-            affix: false
-          },
-          name: '接口列表',
-          path: 'list',
-          pid: 19
-        }]
-      }
-    ]
-  }],
-  menuIds: [16, 17, 18, 19, 20]
 }
+//  {
+//   roleId: 2,
+//   roleCode: 'editor',
+//   roleName: '普通角色',
+//   status: 2,
+//   desc: '系统普通用户角色',
+//   createName: '普通用户',
+//   createTime: '2021-01-05 09:00:00',
+//   menusTree: [{
+//     component: '',
+//     redirect: 'noRedirect',
+//     hidden: false,
+//     id: 16,
+//     meta: {
+//       icon: 'el-icon-s-cooperation',
+//       title: '系统工具',
+//       noCache: false,
+//       breadcrumb: true,
+//       affix: false,
+//       activeMenu: ''
+//     },
+//     name: '系统工具',
+//     path: '/systemTools',
+//     pid: 0,
+//     children: [
+//       {
+//         component: '/systemTools/iconsMgt/index',
+//         redirect: '/systemTools/iconsMgt/list',
+//         hidden: false,
+//         id: 17,
+//         meta: {
+//           title: '图标管理',
+//           icon: '',
+//           noCache: false,
+//           breadcrumb: true,
+//           affix: false,
+//           activeMenu: ''
+//         },
+//         name: '图标管理',
+//         path: 'iconsMgt',
+//         pid: 16,
+//         children: [{
+//           component: '/systemTools/iconsMgt/list',
+//           hidden: true,
+//           id: 18,
+//           meta: {
+//             title: '图标列表',
+//             noCache: true,
+//             activeMenu: '/systemTools/iconsMgt',
+//             icon: '',
+//             breadcrumb: true,
+//             affix: false
+//           },
+//           name: '图标列表',
+//           path: 'list',
+//           pid: 17
+//         }]
+//       },
+//       {
+//         component: '/systemTools/apiMgt/index',
+//         redirect: '/systemTools/apiMgt/list',
+//         hidden: false,
+//         id: 19,
+//         meta: {
+//           title: '接口管理',
+//           icon: '',
+//           noCache: false,
+//           breadcrumb: true,
+//           affix: false,
+//           activeMenu: ''
+//         },
+//         name: '接口管理',
+//         path: 'apiMgt',
+//         pid: 17,
+//         children: [{
+//           component: '/systemTools/apiMgt/list',
+//           hidden: true,
+//           id: 20,
+//           meta: {
+//             title: '接口列表',
+//             noCache: true,
+//             activeMenu: '/systemTools/apiMgt',
+//             icon: '',
+//             breadcrumb: true,
+//             affix: false
+//           },
+//           name: '接口列表',
+//           path: 'list',
+//           pid: 19
+//         }]
+//       }
+//     ]
+//   }],
+//   menuIds: [16, 17, 18, 19, 20]
+// }
 ]
 module.exports = {
   role_list: list

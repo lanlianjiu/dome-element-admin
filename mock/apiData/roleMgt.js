@@ -1,6 +1,6 @@
 const list = [
   {
-    apiId: 17,
+    apiId: 18,
     apiName: '【角色模块】角色列表',
     apiType: 'POST',
     apiUrl: '/system/roleMgt/getList',
@@ -282,6 +282,14 @@ const list = [
                   parmasDefault: false,
                   is_requried: false,
                   desc: '是否固定viewTag中显示'
+                }, {
+                  parmasId: 301,
+                  parmasName: 'is_local',
+                  parmaType: 'Boolean',
+                  parmaValue: '',
+                  parmasDefault: false,
+                  is_requried: false,
+                  desc: '是否只本地显示'
                 }]
               },
               {
@@ -473,7 +481,7 @@ const list = [
     createTime: '2021-01-05 09:00:00'
   },
   {
-    apiId: 18,
+    apiId: 19,
     apiName: '【角色模块】新增、编辑角色',
     apiType: 'POST',
     apiUrl: '/system/roleMgt/handleAction',
@@ -551,7 +559,7 @@ const list = [
     createTime: '2021-01-05 09:00:00'
   },
   {
-    apiId: 19,
+    apiId: 20,
     apiName: '【角色模块】删除角色',
     apiType: 'POST',
     apiUrl: '/system/roleMgt/handleDelete',
@@ -600,7 +608,7 @@ const list = [
     createTime: '2021-01-05 09:00:00'
   },
   {
-    apiId: 20,
+    apiId: 21,
     apiName: '【角色模块】角色授权',
     apiType: 'POST',
     apiUrl: '/system/roleMgt/setRolemenus',

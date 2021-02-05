@@ -109,7 +109,7 @@
         <div>
           <el-form ref="dialog_form" :model="handleForm" :rules="rules" label-width="80px">
             <el-form-item label="角色编码" prop="roleCode">
-              <el-input v-model="handleForm.roleCode" />
+              <el-input v-model="handleForm.roleCode" :disabled="is_edit" />
             </el-form-item>
             <el-form-item label="角色名称" prop="roleName">
               <el-input v-model="handleForm.roleName" />
@@ -228,7 +228,8 @@ export default {
       statusMap: { // 状态对象
         1: '有效',
         2: '无效'
-      }
+      },
+      is_edit: false // 是否编辑标识
     }
   }, created() {
     this.getList()
@@ -250,6 +251,7 @@ export default {
     // 新增、编辑操作
     handleAction(row) {
       this.dialogTitle = row ? '编辑角色' : '新增角色'
+      this.is_edit = !!row
       if (row) {
         this.handleForm = JSON.parse(JSON.stringify(row))
       } else {

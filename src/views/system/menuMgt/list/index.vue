@@ -103,7 +103,7 @@
       <pagination v-show="total>0" :total="total" :page.sync="tableQuery.page" :limit.sync="tableQuery.limit" @pagination="getList" />
       <!-- 菜单信息 -->
       <el-dialog
-        title="菜单信息"
+        title="更多信息"
         :visible.sync="dialogVisible"
         custom-class="meunsMgt-dialog"
       >

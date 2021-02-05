@@ -1,6 +1,6 @@
 const list = [
   {
-    apiId: 5,
+    apiId: 6,
     apiName: '【菜单模块】菜单列表',
     apiType: 'POST',
     apiUrl: '/system/menuMgt/getList',
@@ -433,7 +433,7 @@ const list = [
     createTime: '2021-01-05 09:00:00'
   },
   {
-    apiId: 6,
+    apiId: 7,
     apiName: '【菜单模块】新增、编辑菜单',
     apiType: 'POST',
     apiUrl: '/system/menuMgt/handleAction',
@@ -593,7 +593,7 @@ const list = [
     createTime: '2021-01-05 09:00:00'
   },
   {
-    apiId: 7,
+    apiId: 8,
     apiName: '【菜单模块】删除菜单',
     apiType: 'POST',
     apiUrl: '/system/menuMgt/handleDelete',

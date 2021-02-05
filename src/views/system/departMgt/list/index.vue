@@ -119,7 +119,7 @@
                 placeholder="请选择所属公司"
               />
             </el-form-item>
-            <el-form-item v-if="is_child" label="父级部门">
+            <el-form-item v-if="is_child&&handleForm.departpName" label="父级部门">
               <el-input v-model="handleForm.departpName" :disabled="is_child" />
             </el-form-item>
             <el-form-item label="部门编码" prop="departCode">
@@ -267,7 +267,7 @@ export default {
         this.handleForm = {
           departpId: row.departId,
           companyId: row.companyId,
-          departpName: row.departpName,
+          departpName: row.departName,
           departCode: '',
           departName: '',
           status: 1,

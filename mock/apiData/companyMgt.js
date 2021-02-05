@@ -1,6 +1,6 @@
 const list = [
   {
-    apiId: 11,
+    apiId: 12,
     apiName: '【公司模块】公司列表',
     apiType: 'POST',
     apiUrl: '/system/companyMgt/getList',
@@ -220,7 +220,7 @@ const list = [
     createTime: '2021-01-05 09:00:00'
   },
   {
-    apiId: 12,
+    apiId: 13,
     apiName: '【公司模块】新增、编辑公司',
     apiType: 'POST',
     apiUrl: '/system/companyMgt/handleAction',
@@ -305,7 +305,7 @@ const list = [
     createTime: '2021-01-05 09:00:00'
   },
   {
-    apiId: 13,
+    apiId: 14,
     apiName: '【公司模块】删除公司',
     apiType: 'POST',
     apiUrl: '/system/companyMgt/handleDelete',

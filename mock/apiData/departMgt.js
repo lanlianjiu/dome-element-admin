@@ -1,6 +1,6 @@
 const list = [
   {
-    apiId: 14,
+    apiId: 15,
     apiName: '【部门模块】部门列表',
     apiType: 'POST',
     apiUrl: '/system/departMgt/getList',
@@ -279,7 +279,7 @@ const list = [
     createTime: '2021-01-05 09:00:00'
   },
   {
-    apiId: 15,
+    apiId: 16,
     apiName: '【部门模块】新增、编辑部门',
     apiType: 'POST',
     apiUrl: '/system/departMgt/handleAction',
@@ -364,7 +364,7 @@ const list = [
     createTime: '2021-01-05 09:00:00'
   },
   {
-    apiId: 16,
+    apiId: 17,
     apiName: '【部门模块】删除部门',
     apiType: 'POST',
     apiUrl: '/system/departMgt/handleDelete',

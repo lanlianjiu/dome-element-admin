@@ -9,7 +9,7 @@ const list = [
     apiName: '登录接口',
     apiType: 'POST',
     apiUrl: '/system/user/login',
-    desc: '系统登录接口',
+    desc: '系统登录接口，登录校验需要根据 【公司编码】【登录账号】【登录密码】 三者校验正确方可登录成功',
     Headers: [
       {
         parmasId: 1,
@@ -96,7 +96,7 @@ const list = [
     apiName: '获取登录人信息接口',
     apiType: 'GET',
     apiUrl: '/system/user/info',
-    desc: '系统登录接口',
+    desc: '登陆后获取登录人相关信息',
     Headers: [
       {
         parmasId: 1,
@@ -656,6 +656,68 @@ const list = [
             desc: '创建时间'
           }
         ] }
+    ],
+    createName: '管理员用户',
+    createTime: '2021-01-05 09:00:00'
+  },
+  {
+    apiId: 5,
+    apiName: '图片上传接口',
+    apiType: 'POST',
+    apiUrl: '/system/upLoad',
+    desc: '上传接口，以formData的形式传参，文件传值为base64形式',
+    Headers: [
+      {
+        parmasId: 1,
+        parmasName: 'Content-Type',
+        parmaValue: 'application/json',
+        is_requried: true,
+        desc: 'JSON类型传参'
+      },
+      {
+        parmasId: 2,
+        parmasName: 'access-token',
+        parmaValue: '123456',
+        is_requried: true,
+        desc: 'token校验登录'
+      }
+    ],
+    Body: [{
+      parmasId: 2,
+      parmasName: 'data',
+      parmaValue: '',
+      is_requried: false,
+      desc: '文件传值'
+    }],
+    Query: [],
+    callBackdata: [
+      {
+        parmasId: 68,
+        parmasName: 'code',
+        parmaType: 'Number',
+        parmaValue: 20000,
+        parmasDefault: '',
+        is_requried: true,
+        desc: '返回编码：\n  20000：正常; \n50008: 非法令牌(Illegal token);\n50012: 其他客户端已登录(Other clients logged in);\n50014: 令牌已过期(Token expired);'
+      },
+      {
+        parmasId: 84,
+        parmasName: 'msg',
+        parmaType: 'String',
+        parmaValue: '操作成功',
+        parmasDefault: '',
+        is_requried: true,
+        desc: '接口返回提示信息、错误原因等'
+      },
+      {
+        parmasId: 85,
+        parmasName: 'data',
+        parmaType: 'String',
+        parmaValue: '',
+        parmasDefault: '',
+        is_requried: true,
+        desc: '接口返回图片上传七牛服务器后的url地址'
+      }
     ],
     createName: '管理员用户',
     createTime: '2021-01-05 09:00:00'

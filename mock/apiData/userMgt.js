@@ -1,6 +1,6 @@
 const list = [
   {
-    apiId: 8,
+    apiId: 9,
     apiName: '【用户模块】用户列表',
     apiType: 'POST',
     apiUrl: '/system/userMgt/getList',
@@ -253,7 +253,7 @@ const list = [
     createTime: '2021-01-05 09:00:00'
   },
   {
-    apiId: 9,
+    apiId: 10,
     apiName: '【用户模块】新增、编辑用户',
     apiType: 'POST',
     apiUrl: '/system/userMgt/handleAction',
@@ -387,7 +387,7 @@ const list = [
     createTime: '2021-01-05 09:00:00'
   },
   {
-    apiId: 10,
+    apiId: 11,
     apiName: '【用户模块】删除用户',
     apiType: 'POST',
     apiUrl: '/system/userMgt/handleDelete',

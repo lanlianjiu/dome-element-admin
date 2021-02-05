@@ -158,8 +158,11 @@
               <el-col :span="6">
                 <el-upload
                   class="avatar-uploader"
-                  action="https://jsonplaceholder.typicode.com/posts/"
                   :show-file-list="false"
+                  action="auto"
+                  accept="image/*"
+                  :headers="null"
+                  :http-request="uploadImg"
                   :on-success="handleAvatarSuccess"
                   :before-upload="beforeAvatarUpload"
                 >
@@ -417,6 +420,42 @@ export default {
         this.$message.error('上传头像图片大小不能超过 2MB!')
       }
       return isJPG && isLt2M
+    },
+
+    // 图片格式转换
+    imageToBase64(file) {
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+      return new Promise(function(resolve, reject) {
+        reader.onload = () => {
+          resolve(reader.result)
+        }
+        reader.onerror = (error) => {
+          reject(error)
+        }
+      })
+    },
+
+    // 点击上传
+    uploadImg(v) {
+      this.imageToBase64(v.file).then((res) => {
+        const formdata = new FormData()
+
+        formdata.append('data', res.replace(/^data:image\/(png|jpeg);base64,/g, ''))
+        formdata.append('format', 'jpeg')
+
+        this.$store.dispatch('common/uploadAction', formdata)
+          .then((res) => {
+            if (res.code === 20000) {
+              this.ruleForm.avatar = res.data || ''
+            } else {
+              this.$message({
+                message: res.msg,
+                type: 'error'
+              })
+            }
+          }).catch(() => {})
+      })
     },
 
     // 搜索
