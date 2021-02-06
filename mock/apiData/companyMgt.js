@@ -224,7 +224,7 @@ const list = [
     apiName: '【公司模块】新增、编辑公司',
     apiType: 'POST',
     apiUrl: '/system/companyMgt/handleAction',
-    desc: `新增时校验当前公司下公司编码的唯一性`,
+    desc: `新增时校验【当前公司】下【公司编码】的唯一性`,
     Headers: [{
       parmasId: 48,
       parmasName: 'Content-Type',
@@ -309,6 +309,7 @@ const list = [
     apiName: '【公司模块】删除公司',
     apiType: 'POST',
     apiUrl: '/system/companyMgt/handleDelete',
+    desc: '删除公司',
     Headers: [{
       parmasId: 76,
       parmasName: 'Content-Type',
@@ -325,7 +326,7 @@ const list = [
     }],
     Body: [{
       parmasId: 78,
-      parmasName: 'companypId',
+      parmasName: 'companyId',
       parmaType: 'Number',
       parmaValue: '',
       parmasDefault: '',

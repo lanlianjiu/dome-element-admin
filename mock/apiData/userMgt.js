@@ -391,6 +391,7 @@ const list = [
     apiName: '【用户模块】删除用户',
     apiType: 'POST',
     apiUrl: '/system/userMgt/handleDelete',
+    desc: '删除用户',
     Headers: [{
       parmasId: 76,
       parmasName: 'Content-Type',

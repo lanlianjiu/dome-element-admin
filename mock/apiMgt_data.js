@@ -223,16 +223,7 @@ const list = [
       parmaValue: '操作成功',
       parmasDefault: '',
       is_requried: true,
-      desc: '接口返回提示信息、错误原因等' },
-    {
-      parmasId: 83,
-      parmasName: 'data',
-      parmaType: 'String',
-      parmaValue: '',
-      parmasDefault: '',
-      is_requried: true,
-      desc: 'token等信息'
-    }],
+      desc: '接口返回提示信息、错误原因等' }],
     createName: '管理员用户',
     createTime: '2021-01-05 09:00:00'
   },

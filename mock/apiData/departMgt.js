@@ -283,7 +283,7 @@ const list = [
     apiName: '【部门模块】新增、编辑部门',
     apiType: 'POST',
     apiUrl: '/system/departMgt/handleAction',
-    desc: `部门新增时，编码校验在当前公司下的部门编码唯一性`,
+    desc: `部门新增时，编码校验在【当前公司】下的【部门编码】唯一性`,
     Headers: [{
       parmasId: 48,
       parmasName: 'Content-Type',
@@ -368,6 +368,7 @@ const list = [
     apiName: '【部门模块】删除部门',
     apiType: 'POST',
     apiUrl: '/system/departMgt/handleDelete',
+    desc: '删除部门',
     Headers: [{
       parmasId: 76,
       parmasName: 'Content-Type',
@@ -384,12 +385,12 @@ const list = [
     }],
     Body: [{
       parmasId: 78,
-      parmasName: 'companypId',
+      parmasName: 'departId',
       parmaType: 'Number',
       parmaValue: '',
       parmasDefault: '',
       is_requried: true,
-      desc: '公司ID'
+      desc: '部门ID'
     }],
     Query: [],
     callBackdata: [{

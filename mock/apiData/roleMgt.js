@@ -4,7 +4,7 @@ const list = [
     apiName: '【角色模块】角色列表',
     apiType: 'POST',
     apiUrl: '/system/roleMgt/getList',
-    desc: ` 根据当前用户所在公司作为条件查询该公司角色数据。`,
+    desc: ` 根据当前【用户所在公司】作为条件查询该【公司角色数据】。`,
     Headers: [
       {
         parmasId: 1,
@@ -485,7 +485,7 @@ const list = [
     apiName: '【角色模块】新增、编辑角色',
     apiType: 'POST',
     apiUrl: '/system/roleMgt/handleAction',
-    desc: `新增时，以当前公司为限制条件校验角色编码唯一性`,
+    desc: `新增时，以【当前公司】为限制条件校验【角色编码】唯一性`,
     Headers: [{
       parmasId: 48,
       parmasName: 'Content-Type',
@@ -505,7 +505,7 @@ const list = [
       parmasName: 'roleId',
       is_requried: false,
       parmaType: 'Number',
-      desc: `公司ID(编辑时必传)`
+      desc: `角色ID(编辑时必传)`
     },
     {
       parmasId: 53,
@@ -563,6 +563,7 @@ const list = [
     apiName: '【角色模块】删除角色',
     apiType: 'POST',
     apiUrl: '/system/roleMgt/handleDelete',
+    desc: '删除角色',
     Headers: [{
       parmasId: 76,
       parmasName: 'Content-Type',
@@ -612,6 +613,7 @@ const list = [
     apiName: '【角色模块】角色授权',
     apiType: 'POST',
     apiUrl: '/system/roleMgt/setRolemenus',
+    desc: '角色授权菜单',
     Headers: [{
       parmasId: 76,
       parmasName: 'Content-Type',
