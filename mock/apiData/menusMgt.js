@@ -26,7 +26,7 @@ const list = [
       parmasName: 'menusName',
       parmaValue: '',
       is_requried: false,
-      desc: '菜单名称'
+      desc: '【菜单名称】模糊查询'
     }, {
       parmasId: 80,
       parmasName: 'page',
@@ -458,7 +458,7 @@ const list = [
         parmasName: 'id',
         is_requried: false,
         parmaType: 'Number',
-        desc: `菜单ID(<span style="color:red;">编辑时必传</span>)`
+        desc: `菜单ID(编辑时必传)`
       },
       {
         parmasId: 69,
@@ -597,6 +597,7 @@ const list = [
     apiName: '【菜单模块】删除菜单',
     apiType: 'POST',
     apiUrl: '/system/menuMgt/handleDelete',
+    desc: '删除菜单操作',
     Headers: [{
       parmasId: 76,
       parmasName: 'Content-Type',

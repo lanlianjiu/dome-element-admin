@@ -4,7 +4,7 @@ const list = [
     apiName: '【用户模块】用户列表',
     apiType: 'POST',
     apiUrl: '/system/userMgt/getList',
-    desc: `根据当前用户所在公司作为条件查询用户数据。`,
+    desc: `根据【当前用户所在公司】作为条件查询用户数据。`,
     Headers: [
       {
         parmasId: 1,
@@ -26,7 +26,7 @@ const list = [
       parmasName: 'userName',
       parmaValue: '',
       is_requried: false,
-      desc: '用户账号'
+      desc: '【用户账号】模糊查询'
     }, {
       parmasId: 80,
       parmasName: 'page',
@@ -257,7 +257,7 @@ const list = [
     apiName: '【用户模块】新增、编辑用户',
     apiType: 'POST',
     apiUrl: '/system/userMgt/handleAction',
-    desc: `部门新增时，编码校验在当前公司下的部门编码唯一性`,
+    desc: `用户新增时，校验在【当前公司】下的【用户账号】的唯一性`,
     Headers: [{
       parmasId: 48,
       parmasName: 'Content-Type',
@@ -277,7 +277,7 @@ const list = [
       parmasName: 'userId',
       is_requried: false,
       parmaType: 'Number',
-      desc: `部门ID(<span style="color:red;">编辑时必传)</span>`
+      desc: `部门ID(编辑时必传)`
     },
     {
       parmasId: 62,
@@ -413,6 +413,64 @@ const list = [
       parmasDefault: '',
       is_requried: true,
       desc: '用户ID'
+    }],
+    Query: [],
+    callBackdata: [{
+      parmasId: 74,
+      parmasName: 'code',
+      parmaType: 'Number',
+      parmaValue: 20000,
+      parmasDefault: '',
+      is_requried: true,
+      desc: '返回编码：\n  20000：正常; \n50008: 非法令牌(Illegal token);\n50012: 其他客户端已登录(Other clients logged in);\n50014: 令牌已过期(Token expired);'
+    },
+    {
+      parmasId: 75,
+      parmasName: 'msg',
+      parmaType: 'String',
+      parmaValue: '操作成功',
+      is_requried: true,
+      desc: '接口返回提示信息、错误原因等'
+    }],
+    createName: '管理员用户',
+    createTime: '2021-01-05 09:00:00'
+  },
+  {
+    apiId: 12,
+    apiName: '【用户模块】修改密码',
+    apiType: 'POST',
+    apiUrl: '/system/userMgt/changePassword',
+    desc: '用户修改密码',
+    Headers: [{
+      parmasId: 76,
+      parmasName: 'Content-Type',
+      parmaValue: 'application/json',
+      is_requried: true,
+      desc: 'JSON类型传参'
+    },
+    {
+      parmasId: 77,
+      parmasName: 'access-token',
+      parmaValue: '123456',
+      is_requried: true,
+      desc: 'token校验登录'
+    }],
+    Body: [{
+      parmasId: 78,
+      parmasName: 'userId',
+      parmaType: 'Number',
+      parmaValue: '',
+      parmasDefault: '',
+      is_requried: true,
+      desc: '用户ID'
+    }, {
+      parmasId: 79,
+      parmasName: 'passWord',
+      parmaType: 'String',
+      parmaValue: '',
+      parmasDefault: '',
+      is_requried: true,
+      desc: '用户密码'
     }],
     Query: [],
     callBackdata: [{

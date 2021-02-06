@@ -23,3 +23,11 @@ export function handleDelete(data) {
     data
   })
 }
+
+export function changePassword(data) {
+  return request({
+    url: '/system/userMgt/changePassword',
+    method: 'post',
+    data
+  })
+}

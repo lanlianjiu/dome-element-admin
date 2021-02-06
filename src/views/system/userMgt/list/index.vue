@@ -29,6 +29,7 @@
         height="100px"
       >
         <el-table-column type="expand">
+
           <template slot-scope="props">
             <el-form label-position="left" class="child-table-expand">
 
@@ -76,15 +77,18 @@
             </el-form>
           </template>
         </el-table-column>
+
         <el-table-column
           label="用户ID"
           prop="userId"
           width="80"
         />
+
         <el-table-column
           label="用户账号"
           prop="userName"
         />
+
         <el-table-column
           label="用户昵称"
           prop="nickName"
@@ -102,6 +106,7 @@
             </el-tag>
           </template>
         </el-table-column>
+
         <el-table-column
           label="用户性别"
           prop="userSex"
@@ -128,7 +133,7 @@
             <el-button type="text" size="mini" @click="handleAction(row)">
               编 辑
             </el-button>
-            <el-button type="text" size="mini">
+            <el-button type="text" size="mini" @click="changeOpen(row)">
               修改密码
             </el-button>
             <el-button size="mini" type="text" class="danger-color" @click="handleDelete(row)">
@@ -151,6 +156,7 @@
         :title="dialogTitle"
         :visible.sync="dialogVisible"
         custom-class="userMgt-dialog-body"
+        @close="resetForm"
       >
         <div>
           <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="100px">
@@ -311,6 +317,34 @@
         </span>
       </el-dialog>
 
+      <!-- 修改密码 -->
+      <el-dialog
+        title="修改密码"
+        :visible.sync="passdialogVisible"
+        custom-class="cpassword-dialog-body"
+        @close="cancelForm"
+      >
+        <div>
+          <el-form ref="passForm" :model="passForm" :rules="passrules" label-width="80px">
+
+            <el-row>
+              <el-col :span="24">
+                <el-form-item label="新密码" style="margin-bottom:0;" prop="passWord">
+                  <el-input
+                    v-model.trim="passForm.passWord"
+                  />
+                </el-form-item>
+              </el-col>
+            </el-row>
+
+          </el-form>
+        </div>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="cancelForm">取 消</el-button>
+          <el-button type="primary" @click="changePasssave">确 定</el-button>
+        </span>
+      </el-dialog>
+
     </div>
   </div>
 </template>
@@ -394,7 +428,17 @@ export default {
       statusMap: { // 状态字典数据
         1: '有效',
         2: '无效'
-      }
+      },
+      passForm: { // 密码表单数据
+        passWord: ''
+      },
+      passdialogVisible: false, // 密码窗弹窗标识
+      passrules: { // 密码窗校验规则
+        passWord: [
+          { required: true, message: '请输入密码', trigger: 'blur' }
+        ]
+      },
+      rowUserId: '' // 暂存记录点击行id
     }
   }, created() {
     this.getList()
@@ -516,10 +560,9 @@ export default {
             .then((res) => {
               if (res.code === 20000) {
                 this.dialogVisible = false
-              } else {
                 this.$message({
                   message: res.msg,
-                  type: 'error'
+                  type: 'success'
                 })
               }
             }).catch(() => {})
@@ -538,20 +581,15 @@ export default {
       }).then(() => {
         this.$store.dispatch('system/userMgt/handleDelete', {
           userId: row.userId
-        })
-          .then((res) => {
-            if (res.code === 20000) {
-              this.tableData = this.tableData.filter((item) => {
-                return item.userId !== row.userId
-              })
-              // this.getList()
-            } else {
-              this.$message({
-                message: res.msg,
-                type: 'error'
-              })
-            }
-          }).catch(() => {})
+        }).then((res) => {
+          if (res.code === 20000) {
+            this.$message({
+              message: res.msg,
+              type: 'success'
+            })
+            this.getList()
+          }
+        }).catch(() => {})
       })
     },
 
@@ -643,6 +681,38 @@ export default {
         this.doptions = []
         delete this.ruleForm.departId
       }
+    },
+
+    // 修改密码弹窗
+    changeOpen(row) {
+      this.rowUserId = row.userId
+      this.passdialogVisible = true
+    },
+
+    // 密码窗取消
+    cancelForm() {
+      this.$refs.passForm.resetFields()
+      this.passdialogVisible = false
+    },
+
+    // 修改密码
+    changePasssave() {
+      this.$refs.passForm.validate((valid) => {
+        if (valid) {
+          this.$store.dispatch('system/userMgt/changePassword', Object.assign({}, this.passForm, { userId: this.rowUserId }))
+            .then((res) => {
+              if (res.code === 20000) {
+                this.passdialogVisible = false
+                this.$message({
+                  message: res.msg,
+                  type: 'success'
+                })
+              }
+            }).catch(() => {})
+        } else {
+          return false
+        }
+      })
     }
   }
 }
@@ -653,6 +723,9 @@ export default {
     .el-dialog__body{
       padding: 5px 20px 5px 20px;
     }
+  }
+  .cpassword-dialog-body{
+    width: 300px;
   }
 </style>
 <style scoped lang="scss">

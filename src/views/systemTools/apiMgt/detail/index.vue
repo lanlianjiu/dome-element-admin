@@ -8,7 +8,9 @@
           <div class="label-title">接口类型：{{ baseData.apiType }}</div>
           <div class="label-title">接口路径：{{ baseData.apiUrl }}</div>
           <div class="label-title">Mock地址：</div>
-          <div class="label-title" style="display:flex;"><div>接口说明：</div> <div style="color:red;flex:1;" v-html="baseData.desc" /></div>
+          <div class="label-title" style="display:flex;">
+            <div>接口说明：</div>
+            <div style="color:red;flex:1;" v-html="baseData.desc" /></div>
         </div>
       </div>
       <div class="api-box">
@@ -44,7 +46,7 @@
                 label="备注"
               >
                 <template slot-scope="props">
-                  <span v-html="props.row.desc" />
+                  {{ props.row.desc }}
                 </template>
               </el-table-column>
             </el-table>

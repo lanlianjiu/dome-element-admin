@@ -323,12 +323,11 @@ export default {
             .then((res) => {
               if (res.code === 20000) {
                 this.loading = false
-                this.cancelForm()
-              } else {
                 this.$message({
                   message: res.msg,
-                  type: 'error'
+                  type: 'success'
                 })
+                this.cancelForm()
               }
             }).catch(() => {})
         } else {

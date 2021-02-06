@@ -10,7 +10,7 @@
 
         <el-form-item prop="companyCode">
           <span class="svg-container">
-            <svg-icon icon-class="companyIcon" />
+            <svg-icon icon-class="companycode" />
           </span>
           <el-input
             ref="companyCode"

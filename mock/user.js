@@ -91,6 +91,41 @@ module.exports = [
       }
     }
   },
+  // user del
+  {
+    url: '/system/userMgt/handleDelete',
+    type: 'post',
+    response: _ => {
+      return {
+        code: 20000,
+        msg: '操作成功',
+        data: 'success'
+      }
+    }
+  },
+  // user change password
+  {
+    url: '/system/userMgt/changePassword',
+    type: 'post',
+    response: _ => {
+      return {
+        code: 20000,
+        msg: '操作成功',
+        data: 'success'
+      }
+    }
+  },
+  {
+    url: '/system/upLoad',
+    type: 'post',
+    response: _ => {
+      return {
+        code: 20000,
+        msg: '操作成功',
+        data: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80'
+      }
+    }
+  },
   // user getAuthMenu
   {
     url: '/system/user/getAuthMenu',

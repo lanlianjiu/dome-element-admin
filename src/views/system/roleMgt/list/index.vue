@@ -32,6 +32,7 @@
       >
 
         <el-table-column type="expand">
+
           <template slot-scope="props">
             <div style="margin-bottom: 5px;">授权菜单:</div>
             <div>
@@ -51,11 +52,13 @@
           prop="roleId"
           width="180"
         />
+
         <el-table-column
           label="角色编码"
           prop="roleCode"
           width="180"
         />
+
         <el-table-column
           label="角色名称"
           prop="roleName"
@@ -277,14 +280,10 @@ export default {
         })
           .then((res) => {
             if (res.code === 20000) {
-              this.tableData = this.tableData.filter((item) => {
-                return item.roleId !== row.roleId
-              })
-              // this.getList()
-            } else {
+              this.getList()
               this.$message({
                 message: res.msg,
-                type: 'error'
+                type: 'success'
               })
             }
           }).catch(() => {})
@@ -345,10 +344,9 @@ export default {
       }).then((res) => {
         if (res.code === 20000) {
           this.dialogMenus = false
-        } else {
           this.$message({
             message: res.msg,
-            type: 'error'
+            type: 'success'
           })
         }
       }).catch(() => {})
@@ -401,10 +399,9 @@ export default {
             .then((res) => {
               if (res.code === 20000) {
                 this.dialogVisible = false
-              } else {
                 this.$message({
                   message: res.msg,
-                  type: 'error'
+                  type: 'success'
                 })
               }
             }).catch(() => {})

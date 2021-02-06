@@ -302,10 +302,7 @@ export default {
           apiId: row.apiId
         }).then((res) => {
           if (res.code === 20000) {
-            this.tableData = this.tableData.filter((item) => {
-              return item.apiId !== row.apiId
-            })
-            // this.getList()
+            this.getList()
           } else {
             this.$message({
               message: res.msg,

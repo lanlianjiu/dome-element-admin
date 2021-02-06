@@ -1,7 +1,9 @@
 'use strict'
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
-
+const fs = require('fs')
+const formatJson = require('format-json-pretty')
+var cfg = require('./src/config/cfg.js')
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
@@ -24,7 +26,7 @@ module.exports = {
    * In most cases please use '/' !!!
    * Detail: https://cli.vuejs.org/config/#publicpath
    */
-  publicPath: '/',
+  publicPath: './',
   outputDir: 'dist',
   assetsDir: 'static',
   lintOnSave: false, // process.env.NODE_ENV === 'development',
@@ -49,6 +51,15 @@ module.exports = {
     }
   },
   chainWebpack(config) {
+    config
+      .when(process.env.NODE_ENV !== 'development',
+        config => {
+          cfg.serviceType = process.env.ENV
+          fs.writeFileSync('./src/config/cfg.js',
+            `/* eslint-disable quotes */\n/* "serviceProd"：在线服务，"serviceDev"：测试服务*/\nconst CONFIG = ${formatJson(cfg)}\nmodule.exports = CONFIG\n`)
+        }
+      )
+
     // it can improve the speed of the first screen, it is recommended to turn on preload
     // it can improve the speed of the first screen, it is recommended to turn on preload
     config.plugin('preload').tap(() => [

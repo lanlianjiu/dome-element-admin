@@ -24,13 +24,13 @@
         </el-button> -->
       </div>
       <el-table
-
         v-tableHeight="{bottomOffset: 80}"
         :data="tableData"
         border
         style="width: 100%"
         height="100px"
-        row-key="id"
+        :row-key="getRowKeys"
+        :expand-row-keys="expands"
       >
 
         <el-table-column
@@ -100,7 +100,15 @@
         </el-table-column>
 
       </el-table>
-      <pagination v-show="total>0" :total="total" :page.sync="tableQuery.page" :limit.sync="tableQuery.limit" @pagination="getList" />
+
+      <pagination
+        v-show="total>0"
+        :total="total"
+        :page.sync="tableQuery.page"
+        :limit.sync="tableQuery.limit"
+        @pagination="getList"
+      />
+
       <!-- 菜单信息 -->
       <el-dialog
         title="更多信息"
@@ -272,7 +280,12 @@ export default {
       statusMap: { // 状态字典数据
         1: '有效',
         2: '无效'
-      }
+      },
+      // 获取row的key值
+      getRowKeys(row) {
+        return row.id
+      },
+      expands: []
     }
   }, created() {
     this.getList()
@@ -319,14 +332,10 @@ export default {
         this.$store.dispatch('system/menuMgt/handleDelete', parmas)
           .then((res) => {
             if (res.code === 20000) {
-              this.tableData = this.tableData.filter((item) => {
-                return item.id !== row.id
-              })
-              // this.getList()
-            } else {
+              this.getList()
               this.$message({
                 message: res.msg,
-                type: 'error'
+                type: 'success'
               })
             }
           }).catch(() => {})

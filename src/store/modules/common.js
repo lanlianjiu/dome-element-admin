@@ -1,4 +1,4 @@
-import { uploadAction } from '@/api/user'
+import { uploadAction } from '@/api/qiniu'
 const state = {
 
 }

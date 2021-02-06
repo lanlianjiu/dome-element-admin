@@ -32,11 +32,3 @@ export function getAuthMenu(token) {
   })
 }
 
-export function uploadAction(data) {
-  console.log(data)
-  return request({
-    url: '/system/upLoad',
-    method: 'post',
-    data
-  })
-}

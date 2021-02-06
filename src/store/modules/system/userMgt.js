@@ -1,5 +1,5 @@
 
-import { getList, handleAction, handleDelete } from '@/api/system/userMgt'
+import { getList, handleAction, handleDelete, changePassword } from '@/api/system/userMgt'
 const state = {
 
 }
@@ -39,6 +39,17 @@ const actions = {
         if (!response) {
           reject('Verification failed, please Login again.')
         }
+        resolve(response)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+  // user change password
+  changePassword({ commit }, data) {
+    const { userId, passWord } = data
+    return new Promise((resolve, reject) => {
+      changePassword({ userId: userId, passWord: passWord.trim() }).then(response => {
         resolve(response)
       }).catch(error => {
         reject(error)

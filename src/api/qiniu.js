@@ -1,8 +1,9 @@
 import request from '@/utils/request'
 
-export function getToken() {
+export function uploadAction(data) {
   return request({
-    url: '/qiniu/upload/token', // 假地址 自行替换
-    method: 'get'
+    url: '/system/upLoad',
+    method: 'post',
+    data
   })
 }

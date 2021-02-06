@@ -1,11 +1,11 @@
 const list = [
   {
-    apiId: 12,
+    apiId: 13,
     apiName: '【公司模块】公司列表',
     apiType: 'POST',
     apiUrl: '/system/companyMgt/getList',
     desc: `
-    1.根据当前用户所在公司作为条件查询该公司以及下面子级公司数据。<br>
+    1.根据当前用户所在公司作为条件查询【该公司】以及【下面子级公司】数据。<br>
     2.这个接口两用，当传page、limit等分页参数时作为限制条件返回数据。当不传任何参数时返回当前公司的所有有效数据（其中包括自己公司以及子公司）（用于新增时父级下拉插件数据）`,
     Headers: [
       {
@@ -28,7 +28,7 @@ const list = [
       parmasName: 'companyName',
       parmaValue: '',
       is_requried: false,
-      desc: '公司名称'
+      desc: '【公司名称】模糊查询'
     }, {
       parmasId: 80,
       parmasName: 'page',
@@ -220,7 +220,7 @@ const list = [
     createTime: '2021-01-05 09:00:00'
   },
   {
-    apiId: 13,
+    apiId: 14,
     apiName: '【公司模块】新增、编辑公司',
     apiType: 'POST',
     apiUrl: '/system/companyMgt/handleAction',
@@ -244,7 +244,7 @@ const list = [
       parmasName: 'companyId',
       is_requried: false,
       parmaType: 'Number',
-      desc: `公司ID(<span style="color:red;">编辑时必传)</span>`
+      desc: `公司ID(编辑时必传)`
     },
     {
       parmasId: 52,
@@ -305,7 +305,7 @@ const list = [
     createTime: '2021-01-05 09:00:00'
   },
   {
-    apiId: 14,
+    apiId: 15,
     apiName: '【公司模块】删除公司',
     apiType: 'POST',
     apiUrl: '/system/companyMgt/handleDelete',

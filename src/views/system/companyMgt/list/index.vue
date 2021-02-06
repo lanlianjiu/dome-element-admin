@@ -31,17 +31,20 @@
         border
         style="width: 100%"
         row-key="companyId"
+        :default-expand-all="true"
       >
         <el-table-column
           label="公司ID"
           prop="companyId"
           width="180"
         />
+
         <el-table-column
           label="公司编码"
           prop="companyCode"
           width="180"
         />
+
         <el-table-column
           label="公司名称"
           prop="companyName"
@@ -100,7 +103,7 @@
       >
         <div>
           <el-form ref="dialog_form" :model="handleForm" :rules="rules" label-width="80px">
-            <el-form-item v-if="(handleForm.companypId&&is_edit) || (!is_edit)" label="上级公司">
+            <el-form-item v-if="(handleForm.companypId&&is_edit) || (!is_edit)" label="上级公司" prop="companypId">
               <treeselect
                 v-model="handleForm.companypId"
                 :disabled="is_edit"
@@ -108,7 +111,7 @@
                 :default-expand-level="1"
                 :options="options"
                 :normalizer="normalizer"
-                placeholder="请选择父级公司，不填默认为一级公司"
+                placeholder="请选择父级公司"
               />
             </el-form-item>
             <el-form-item label="公司编码" prop="companyCode">
@@ -190,6 +193,9 @@ export default {
       },
       dialogTitle: '', // 弹窗标题
       rules: { // 表单校验规则
+        companypId: [
+          { required: true, message: '请选择上级公司', trigger: 'blur' }
+        ],
         companyName: [
           { required: true, message: '请输入公司名称', trigger: 'blur' }
         ],
@@ -209,7 +215,8 @@ export default {
       statusMap: { // 状态字典数据
         1: '有效',
         2: '无效'
-      }
+      },
+      expandRowKeys: [1]
     }
   }, created() {
     this.getList()
@@ -256,18 +263,23 @@ export default {
           companyId: row.companyId
         }).then((res) => {
           if (res.code === 20000) {
-            this.tableData = this.tableData.filter((item) => {
-              return item.companyId !== row.companyId
-            })
-            // this.getList()
-          } else {
+            this.getList()
             this.$message({
               message: res.msg,
-              type: 'error'
+              type: 'success'
             })
           }
         }).catch(() => {})
       }).catch(() => {})
+    },
+
+    getTreeids(data, resarr) {
+      data.forEach(item => {
+        resarr.push(item.companyId)
+        if (item.children && item.children.length) {
+          this.getTreeids(item.children, resarr)
+        }
+      })
     },
 
     // 获取列表数据
@@ -302,10 +314,9 @@ export default {
             .then((res) => {
               if (res.code === 20000) {
                 this.dialogVisible = false
-              } else {
                 this.$message({
                   message: res.msg,
-                  type: 'error'
+                  type: 'success'
                 })
               }
             }).catch(() => {

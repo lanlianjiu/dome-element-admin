@@ -1,10 +1,10 @@
 const list = [
   {
-    apiId: 15,
+    apiId: 16,
     apiName: '【部门模块】部门列表',
     apiType: 'POST',
     apiUrl: '/system/departMgt/getList',
-    desc: `根据当前用户所在公司作为条件查询该公司部门以及下面子级部门数据。`,
+    desc: `根据当前用户所在公司作为【父级】条件查询【该公司部门】以及下面【子级部门】数据，也包含【当前公司】下【子公司】的部门以及子部门数据。`,
     Headers: [
       {
         parmasId: 1,
@@ -23,10 +23,10 @@ const list = [
     ],
     Body: [{
       parmasId: 2,
-      parmasName: 'companyName',
+      parmasName: 'departName',
       parmaValue: '',
       is_requried: false,
-      desc: '公司名称'
+      desc: '【部门名称】模糊查询'
     }, {
       parmasId: 80,
       parmasName: 'page',
@@ -279,7 +279,7 @@ const list = [
     createTime: '2021-01-05 09:00:00'
   },
   {
-    apiId: 16,
+    apiId: 17,
     apiName: '【部门模块】新增、编辑部门',
     apiType: 'POST',
     apiUrl: '/system/departMgt/handleAction',
@@ -303,7 +303,7 @@ const list = [
       parmasName: 'departId',
       is_requried: false,
       parmaType: 'Number',
-      desc: `部门ID(<span style="color:red;">编辑时必传)</span>`
+      desc: `部门ID(编辑时必传)`
     },
     {
       parmasId: 52,
@@ -364,7 +364,7 @@ const list = [
     createTime: '2021-01-05 09:00:00'
   },
   {
-    apiId: 17,
+    apiId: 18,
     apiName: '【部门模块】删除部门',
     apiType: 'POST',
     apiUrl: '/system/departMgt/handleDelete',

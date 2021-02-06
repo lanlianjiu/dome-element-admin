@@ -108,6 +108,7 @@
       >
         <div>
           <el-form ref="dialog_form" :model="handleForm" :rules="rules" label-width="80px">
+
             <el-form-item label="所属公司" prop="companyId">
               <treeselect
                 v-model="handleForm.companyId"
@@ -119,15 +120,19 @@
                 placeholder="请选择所属公司"
               />
             </el-form-item>
+
             <el-form-item v-if="is_child&&handleForm.departpName" label="父级部门">
               <el-input v-model="handleForm.departpName" :disabled="is_child" />
             </el-form-item>
+
             <el-form-item label="部门编码" prop="departCode">
               <el-input v-model="handleForm.departCode" :disabled="is_edit&&(!is_child)" />
             </el-form-item>
+
             <el-form-item label="部门名称" prop="departName">
               <el-input v-model="handleForm.departName" />
             </el-form-item>
+
             <el-form-item label="部门状态">
               <div class="swatch-body">
                 <el-switch
@@ -142,6 +147,7 @@
                 />
               </div>
             </el-form-item>
+
             <el-form-item label="部门描述">
               <el-input v-model="handleForm.desc" type="textarea" />
             </el-form-item>
@@ -297,14 +303,10 @@ export default {
           departpId: row.departpId
         }).then((res) => {
           if (res.code === 20000) {
-            this.tableData = this.tableData.filter((item) => {
-              return item.departId !== row.departId
-            })
-            // this.getList()
-          } else {
+            this.getList()
             this.$message({
               message: res.msg,
-              type: 'error'
+              type: 'success'
             })
           }
         }).catch(() => {})
@@ -344,10 +346,9 @@ export default {
           this.$store.dispatch('system/departMgt/handleAction', this.handleForm).then((res) => {
             if (res.code === 20000) {
               this.dialogVisible = false
-            } else {
               this.$message({
                 message: res.msg,
-                type: 'error'
+                type: 'success'
               })
             }
           }).catch(() => {})

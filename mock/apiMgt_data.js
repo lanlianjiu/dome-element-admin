@@ -96,7 +96,7 @@ const list = [
     apiName: '获取登录人信息接口',
     apiType: 'GET',
     apiUrl: '/system/user/info',
-    desc: '登陆后获取登录人相关信息',
+    desc: '登陆后获取【登录人相关信息】',
     Headers: [
       {
         parmasId: 1,
@@ -241,7 +241,7 @@ const list = [
     apiName: '获取登录人的菜单',
     apiType: 'POST',
     apiUrl: '/system/user/getAuthMenu',
-    desc: '根据当前用户所拥有的角色对应的菜单',
+    desc: '根据【当前用户】所拥有的【角色对应的菜单】数据',
     Headers: [
       {
         parmasId: 1,
