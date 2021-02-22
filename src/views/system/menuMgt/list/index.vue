@@ -307,6 +307,9 @@ export default {
     // 重置
     resetSearch() {
       this.tableQuery.page = 1
+      this.searchForm = {
+        menusName: ''
+      }
       this.getList()
     },
 

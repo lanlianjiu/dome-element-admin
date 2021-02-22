@@ -230,7 +230,7 @@ const list = [
   {
     apiId: 4,
     apiName: '获取登录人的菜单',
-    apiType: 'POST',
+    apiType: 'GET',
     apiUrl: '/system/user/getAuthMenu',
     desc: '根据【当前用户】所拥有的【角色对应的菜单】数据',
     Headers: [
@@ -249,25 +249,7 @@ const list = [
         desc: 'token校验登录'
       }
     ],
-    Body: [{
-      parmasId: 2,
-      parmasName: 'menusName',
-      parmaValue: '',
-      is_requried: false,
-      desc: '菜单名称'
-    }, {
-      parmasId: 80,
-      parmasName: 'page',
-      parmaValue: '',
-      is_requried: false,
-      desc: '当前页数'
-    }, {
-      parmasId: 81,
-      parmasName: 'limit',
-      parmaValue: '',
-      is_requried: false,
-      desc: '每页条数'
-    }],
+    Body: [],
     Query: [],
     callBackdata: [
       {
@@ -287,15 +269,6 @@ const list = [
         parmasDefault: '',
         is_requried: true,
         desc: '接口返回提示信息、错误原因等'
-      },
-      {
-        parmasId: 79,
-        parmasName: 'total',
-        parmaType: 'Number',
-        parmaValue: '',
-        parmasDefault: '',
-        is_requried: true,
-        desc: '数据总条数'
       },
       {
         parmasId: 69,
@@ -397,7 +370,7 @@ const list = [
           {
             parmasId: 22,
             parmasName: 'status',
-            parmaType: 'Boolean',
+            parmaType: 'Number',
             parmaValue: '',
             parmasDefault: true,
             is_requried: true,
@@ -553,7 +526,7 @@ const list = [
               {
                 parmasId: 39,
                 parmasName: 'status',
-                parmaType: 'Boolean',
+                parmaType: 'Number',
                 parmaValue: '',
                 parmasDefault: true,
                 is_requried: true,

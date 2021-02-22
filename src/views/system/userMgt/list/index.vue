@@ -151,201 +151,204 @@
         :limit.sync="tableQuery.limit"
         @pagination="getList"
       />
-      <!-- 新增、编辑 -->
-      <el-dialog
-        :title="dialogTitle"
-        :visible.sync="dialogVisible"
-        custom-class="userMgt-dialog-body"
-        @close="resetForm"
-      >
-        <div>
-          <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="100px">
-            <el-row>
-              <el-col :span="6">
-                <el-upload
-                  class="avatar-uploader"
-                  :show-file-list="false"
-                  action="auto"
-                  accept="image/*"
-                  :headers="null"
-                  :http-request="uploadImg"
-                  :on-success="handleAvatarSuccess"
-                  :before-upload="beforeAvatarUpload"
-                >
-                  <img v-if="ruleForm.avatar" :src="ruleForm.avatar" class="avatar">
-                  <i v-else class="el-icon-plus avatar-uploader-icon" />
-                </el-upload>
-              </el-col>
-              <el-col :span="18">
-                <el-row>
-                  <el-col>
-                    <el-form-item label="用户公司" prop="companyId">
-                      <treeselect
-                        v-model="ruleForm.companyId"
-                        style="width: 100%;"
-                        :options="coptions"
-                        :normalizer="cnormalizer"
-                        placeholder="请选择公司"
-                        @select="selectCompany"
-                        @input="clearCompany"
-                      />
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-                <el-row>
-
-                  <el-col>
-                    <el-form-item label="用户部门" prop="departId">
-                      <treeselect
-                        v-model="ruleForm.departId"
-                        style="width: 100%;"
-                        :options="doptions"
-                        :normalizer="dnormalizer"
-                        placeholder="请选择部门"
-                      />
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-                <el-row>
-                  <el-col>
-                    <el-form-item label="用户角色" prop="roleName">
-                      <el-select
-                        v-model="ruleForm.roleName"
-                        style="width:100%;"
-                        multiple
-                        filterable
-                        allow-create
-                        default-first-option
-                        placeholder="请选择角色"
-                      >
-                        <el-option
-                          v-for="item in roleList"
-                          :key="item.value"
-                          :label="item.label"
-                          :value="item.value"
-                        />
-                      </el-select>
-
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="12">
-                    <el-form-item label="用户账号" prop="userName">
-                      <el-input v-model="ruleForm.userName" :disabled="!is_edit" />
-                    </el-form-item>
-                  </el-col>
-                  <el-col v-if="is_edit" :span="12">
-                    <el-form-item label="用户密码" prop="userPassword">
-                      <el-input v-model="ruleForm.userPassword" />
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="12">
-                    <el-form-item label="用户昵称" prop="nickName">
-                      <el-input v-model="ruleForm.nickName" />
-                    </el-form-item>
-                  </el-col>
-
-                  <el-col :span="12">
-                    <el-form-item label="用户电话" prop="userMobile">
-                      <el-input v-model="ruleForm.userMobile" />
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="12">
-                    <el-form-item label="用户邮箱" prop="userEmali" style="margin-bottom: 12px">
-                      <el-input v-model="ruleForm.userEmali" />
-                    </el-form-item>
-                  </el-col>
-
-                </el-row>
-
-                <el-row>
-                  <el-col :span="12">
-                    <el-form-item label="用户状态" style="margin-bottom: 12px">
-                      <div class="swatch-body">
-                        <el-switch
-                          v-model="ruleForm.status"
-                          style="display: block;margin:auto auto auto 10px;"
-                          active-color="#13ce66"
-                          inactive-color="#ff4949"
-                          active-text="启用"
-                          inactive-text="禁用"
-                          :active-value="1"
-                          :inactive-value="2"
-                        />
-                      </div>
-
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="12">
-                    <el-form-item label="用户性别" style="margin-bottom: 12px">
-                      <div class="swatch-body">
-                        <el-switch
-                          v-model="ruleForm.userSex"
-                          style="display: block;margin:auto auto auto 10px;"
-                          active-color="#13ce66"
-                          inactive-color="#ff4949"
-                          active-text="男"
-                          inactive-text="女"
-                          :active-value="1"
-                          :inactive-value="0"
-                        />
-                      </div>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="24">
-                <el-form-item label="用户备注" style="margin-bottom:0;">
-                  <el-input
-                    v-model="ruleForm.introduction"
-                    type="textarea"
-                    :rows="2"
-                  />
-                </el-form-item>
-              </el-col>
-            </el-row>
-
-          </el-form>
-        </div>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="resetForm">取 消</el-button>
-          <el-button type="primary" @click="saveForm">确 定</el-button>
-        </span>
-      </el-dialog>
-
-      <!-- 修改密码 -->
-      <el-dialog
-        title="修改密码"
-        :visible.sync="passdialogVisible"
-        custom-class="cpassword-dialog-body"
-        @close="cancelForm"
-      >
-        <div>
-          <el-form ref="passForm" :model="passForm" :rules="passrules" label-width="80px">
-
-            <el-row>
-              <el-col :span="24">
-                <el-form-item label="新密码" style="margin-bottom:0;" prop="passWord">
-                  <el-input
-                    v-model.trim="passForm.passWord"
-                  />
-                </el-form-item>
-              </el-col>
-            </el-row>
-
-          </el-form>
-        </div>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="cancelForm">取 消</el-button>
-          <el-button type="primary" @click="changePasssave">确 定</el-button>
-        </span>
-      </el-dialog>
 
     </div>
+    <!-- 新增、编辑 -->
+    <el-dialog
+      :title="dialogTitle"
+      :visible.sync="dialogVisible"
+      custom-class="userMgt-dialog-body"
+      @close="resetForm"
+    >
+      <div>
+        <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="100px">
+          <el-row>
+            <el-col :span="4">
+              <el-upload
+                class="avatar-uploader"
+                :show-file-list="false"
+                action="auto"
+                accept="image/*"
+                :headers="null"
+                :http-request="uploadImg"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload"
+              >
+                <img v-if="ruleForm.avatar" :src="ruleForm.avatar" class="avatar">
+                <i v-else class="el-icon-plus avatar-uploader-icon" />
+              </el-upload>
+            </el-col>
+            <el-col :span="20">
+              <el-row>
+                <el-col :span="12">
+                  <el-form-item label="用户公司" prop="companyId">
+                    <treeselect
+                      v-model="ruleForm.companyId"
+                      style="width: 100%;"
+                      :options="coptions"
+                      :normalizer="cnormalizer"
+                      placeholder="请选择公司"
+                      @select="selectCompany"
+                      @input="clearCompany"
+                    />
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="用户部门" prop="departId">
+                    <treeselect
+                      v-model="ruleForm.departId"
+                      style="width: 100%;"
+                      :options="doptions"
+                      :normalizer="dnormalizer"
+                      placeholder="请选择部门"
+                    />
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col>
+                  <el-form-item label="用户角色" prop="roleName">
+                    <el-select
+                      v-model="ruleForm.roleName"
+                      style="width:100%;"
+                      multiple
+                      filterable
+                      allow-create
+                      default-first-option
+                      placeholder="请选择角色"
+                    >
+                      <el-option
+                        v-for="item in roleList"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                      />
+                    </el-select>
+
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row style="display: flex;flex-wrap: wrap;justify-content: space-between;">
+
+                <el-col :span="12">
+                  <el-form-item label="用户账号" prop="userName">
+                    <el-input v-model="ruleForm.userName" :disabled="!is_edit" />
+                  </el-form-item>
+                </el-col>
+
+                <el-col v-if="is_edit" :span="12">
+                  <el-form-item label="用户密码" prop="userPassword">
+                    <el-input v-model="ruleForm.userPassword" />
+                  </el-form-item>
+                </el-col>
+
+                <el-col :span="12">
+                  <el-form-item label="用户昵称" prop="nickName">
+                    <el-input v-model="ruleForm.nickName" />
+                  </el-form-item>
+                </el-col>
+
+                <el-col :span="12">
+                  <el-form-item label="用户电话" prop="userMobile">
+                    <el-input v-model="ruleForm.userMobile" />
+                  </el-form-item>
+                </el-col>
+
+                <el-col :span="12">
+                  <el-form-item label="用户邮箱" prop="userEmali" style="margin-bottom: 12px">
+                    <el-input v-model="ruleForm.userEmali" />
+                  </el-form-item>
+                </el-col>
+
+                <el-col :span="12">
+                  <el-form-item label="用户状态" style="margin-bottom: 12px">
+                    <div class="swatch-body">
+                      <el-switch
+                        v-model="ruleForm.status"
+                        style="display: block;margin:auto auto auto 10px;"
+                        active-color="#13ce66"
+                        inactive-color="#ff4949"
+                        active-text="启用"
+                        inactive-text="禁用"
+                        :active-value="1"
+                        :inactive-value="2"
+                      />
+                    </div>
+
+                  </el-form-item>
+                </el-col>
+
+                <el-col :span="12">
+                  <el-form-item label="用户性别" style="margin-bottom: 6px">
+                    <div class="swatch-body">
+                      <el-switch
+                        v-model="ruleForm.userSex"
+                        style="display: block;margin:auto auto auto 10px;"
+                        active-color="#13ce66"
+                        inactive-color="#ff4949"
+                        active-text="男"
+                        inactive-text="女"
+                        :active-value="1"
+                        :inactive-value="0"
+                      />
+                    </div>
+                  </el-form-item>
+                </el-col>
+
+              </el-row>
+
+              <el-row />
+
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="24">
+              <el-form-item label="用户备注" style="margin-bottom:0;">
+                <el-input
+                  v-model="ruleForm.introduction"
+                  type="textarea"
+                  :rows="2"
+                />
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+        </el-form>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="resetForm">取 消</el-button>
+        <el-button type="primary" @click="saveForm">确 定</el-button>
+      </span>
+    </el-dialog>
+
+    <!-- 修改密码 -->
+    <el-dialog
+      title="修改密码"
+      :visible.sync="passdialogVisible"
+      custom-class="cpassword-dialog-body"
+      @close="cancelForm"
+    >
+      <div>
+        <el-form ref="passForm" :model="passForm" :rules="passrules" label-width="80px">
+
+          <el-row>
+            <el-col :span="24">
+              <el-form-item label="新密码" style="margin-bottom:0;" prop="passWord">
+                <el-input
+                  v-model.trim="passForm.passWord"
+                />
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+        </el-form>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="cancelForm">取 消</el-button>
+        <el-button type="primary" @click="changePasssave">确 定</el-button>
+      </span>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -510,6 +513,9 @@ export default {
     // 重置
     resetSearch() {
       this.tableQuery.page = 1
+      this.searchForm = {
+        nickName: ''
+      }
       this.getList()
     },
 
@@ -759,17 +765,14 @@ export default {
     margin-bottom: 0;
     width: 50%;
   }
-  .swatch-body{
-    line-height: 36px;
-    height: 36px;
-    display: flex;
-  }
+}
   .avatar-uploader .el-upload {
     border: 1px dashed #d9d9d9;
     border-radius: 6px;
     cursor: pointer;
     position: relative;
     overflow: hidden;
+    margin: auto;
   }
   .avatar-uploader .el-upload:hover {
     border-color: #409EFF;
@@ -777,17 +780,22 @@ export default {
   .avatar-uploader-icon {
     font-size: 28px;
     color: #8c939d;
-    width: 178px;
-    height: 178px;
-    line-height: 178px;
+    width: 120px;
+    height: 120px;
+    line-height: 120px;
     text-align: center;
     border: 1px dashed #d9d9d9;
+    border-radius: 50%;
   }
   .avatar {
-    width: 178px;
-    height: 178px;
+    width: 120px;
+    height: 120px;
     display: block;
+    border-radius: 50%;
   }
-
-}
+  .swatch-body{
+    line-height: 36px;
+    height: 36px;
+    display: flex;
+  }
 </style>

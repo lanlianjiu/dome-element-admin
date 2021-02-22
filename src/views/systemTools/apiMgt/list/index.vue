@@ -36,9 +36,7 @@
         </div>
       </div>
       <el-table
-        v-tableHeight="{bottomOffset: 80}"
         :data="tableData"
-        height="100px"
         border
         style="width: 100%"
       >

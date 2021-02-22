@@ -216,7 +216,7 @@ const list = [
           }, {
             parmasId: 28,
             parmasName: 'status',
-            parmaType: 'String',
+            parmaType: 'Number',
             parmaValue: '',
             parmasDefault: '',
             is_requried: false,
@@ -332,7 +332,7 @@ const list = [
       parmasName: 'roleName',
       is_requried: false,
       parmaType: 'Array',
-      desc: '用户分配的角色'
+      desc: '用户分配的角色(这里面是一个数组)例如：[1,2]'
     },
     {
       parmasId: 60,
@@ -352,7 +352,7 @@ const list = [
       parmasId: 55,
       parmasName: 'status',
       is_requried: true,
-      parmaType: 'Boolean',
+      parmaType: 'Number',
       desc: '用户状态'
     },
     {

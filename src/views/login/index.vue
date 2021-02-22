@@ -284,7 +284,7 @@ $cursor: #fff;
 
 /* reset element-ui css */
 .login-container {
-  background:url('../../assets/images/bg_icon_1.jpg');
+  //background:url('../../assets/images/bg_icon_1.jpg');
   background-size: cover;
   .el-input {
     display: inline-block;

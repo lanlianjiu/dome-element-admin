@@ -28,6 +28,12 @@ const list = [
       is_requried: false,
       desc: '【部门名称】模糊查询'
     }, {
+      parmasId: 3,
+      parmasName: 'departCode',
+      parmaValue: '',
+      is_requried: false,
+      desc: '【部门编码】模糊查询'
+    }, {
       parmasId: 80,
       parmasName: 'page',
       parmaValue: '',
@@ -329,7 +335,7 @@ const list = [
       parmasId: 55,
       parmasName: 'status',
       is_requried: true,
-      parmaType: 'Boolean',
+      parmaType: 'Number',
       desc: '部门状态'
     },
     {

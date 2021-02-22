@@ -1,7 +1,7 @@
 
 const prefix = {
-  serviceDev: '', // https://easy-mock.com/mock/5d537679ff99cc660ff71df6/   https://serviceDev.com/
-  serviceProd: 'https://serviceProd.com/'
+  serviceDev: 'https://mockapi.eolinker.com/xwYarNI0b57b5de6ad4c0441c978c87098ba0ae25536f70', //  // eolinker的地址
+  serviceProd: 'https://serviceProd.com'
 }
 
 const getBaseUrl = function(type) {

@@ -220,7 +220,7 @@ const list = [
               {
                 parmasId: 220,
                 parmasName: 'status',
-                parmaType: 'Boolean',
+                parmaType: 'Number',
                 parmaValue: '',
                 parmasDefault: true,
                 is_requried: true,
@@ -384,7 +384,7 @@ const list = [
                   {
                     parmasId: 390,
                     parmasName: 'status',
-                    parmaType: 'Boolean',
+                    parmaType: 'Number',
                     parmaValue: '',
                     parmasDefault: true,
                     is_requried: true,
@@ -524,7 +524,7 @@ const list = [
       parmasId: 55,
       parmasName: 'status',
       is_requried: true,
-      parmaType: 'Boolean',
+      parmaType: 'Number',
       desc: '角色状态'
     },
     {

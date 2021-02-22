@@ -6,8 +6,11 @@
   <div>
     <div class="search-container">
       <el-form :inline="true" :model="searchForm">
-        <el-form-item label="公司名称">
-          <el-input v-model="searchForm.departName" placeholder="请输入公司名称" />
+        <el-form-item label="部门编码">
+          <el-input v-model="searchForm.departCode" placeholder="请输入部门编码" />
+        </el-form-item>
+        <el-form-item label="部门名称">
+          <el-input v-model="searchForm.departName" placeholder="请输入部门名称" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="searchAction">查询</el-button>
@@ -250,6 +253,10 @@ export default {
     // 重置
     resetSearch() {
       this.tableQuery.page = 1
+      this.searchForm = {
+        departName: '',
+        departCode: ''
+      }
       this.getList()
     },
 

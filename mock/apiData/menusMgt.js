@@ -461,6 +461,13 @@ const list = [
         desc: `菜单ID(编辑时必传)`
       },
       {
+        parmasId: 152,
+        parmasName: 'pid',
+        is_requried: false,
+        parmaType: 'Number',
+        desc: `菜单父级ID`
+      },
+      {
         parmasId: 69,
         parmasName: 'menusCode',
         is_requried: true,
@@ -511,7 +518,7 @@ const list = [
         parmasId: 60,
         parmasName: 'stauts',
         is_requried: true,
-        parmaType: 'Boolean',
+        parmaType: 'Number',
         desc: '菜单状态'
       },
       {
@@ -563,7 +570,7 @@ const list = [
             parmasId: 68,
             parmasName: 'is_local',
             is_requried: false,
-            parmaType: 'String',
+            parmaType: 'Boolean',
             desc: '是否只是本地调试显示'
           }
         ]
