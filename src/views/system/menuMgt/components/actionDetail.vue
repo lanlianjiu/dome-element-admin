@@ -99,7 +99,7 @@
           <div class="input_body">
             <div class="input_left">
               <el-switch
-                v-model="actionForm.stauts"
+                v-model="actionForm.status"
                 :active-value="1"
                 :inactive-value="2"
               />
@@ -251,7 +251,7 @@ const defaultForm = {
   hidden: false, // 当设置 true 的时候该路由不会在侧边栏出现
   alwaysShow: false, // 你可以设置 alwaysShow: true，这样它就会忽略之前定义的规则，一直显示根路由
   is_external_link: false, // 路由作为外链打开
-  stauts: 1, // 菜单状态
+  status: 1, // 菜单状态
   meta: {
     title: '', // 设置该路由在侧边栏和面包屑中展示的名字
     icon: '', // 设置该路由的图标，支持 svg-class，也支持 el-icon-x element-ui 的 icon
