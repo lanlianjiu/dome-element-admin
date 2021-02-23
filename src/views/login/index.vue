@@ -84,9 +84,6 @@
 <script>
 import { validUsername, validCompanycode } from '@/utils/validate'
 import SocialSign from './components/SocialSignin'
-import bg1 from '@/assets/images/bg_icon_1.jpg'
-import bg2 from '@/assets/images/bg_icon_2.jpg'
-import bg3 from '@/assets/images/bg_icon_3.jpg'
 export default {
   name: 'Login',
   components: { SocialSign },
@@ -129,8 +126,7 @@ export default {
       loading: false,
       showDialog: false,
       redirect: undefined,
-      otherQuery: {},
-      arrImg: [bg1, bg2, bg3]
+      otherQuery: {}
     }
   },
   watch: {
