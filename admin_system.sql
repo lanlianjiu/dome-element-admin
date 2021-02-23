@@ -54,9 +54,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `admin_system`.`depart_stauts`
+-- Table `admin_system`.`depart_status`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `admin_system`.`depart_stauts` (
+CREATE TABLE IF NOT EXISTS `admin_system`.`depart_status` (
   `id` INT NOT NULL,
   `status` VARCHAR(255) NULL,
   PRIMARY KEY (`id`),
@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS `admin_system`.`department_table` (
   `departpId` INT NOT NULL DEFAULT 0 COMMENT '父级部门ID',
   `departCode` VARCHAR(255) NULL,
   `companyId` INT NOT NULL,
-  `stauts` INT NOT NULL,
+  `status` INT NOT NULL,
   `createName` VARCHAR(255) NULL,
   `createUserId` INT NULL,
   `createTime` DATETIME(0) NULL,
@@ -82,15 +82,15 @@ CREATE TABLE IF NOT EXISTS `admin_system`.`department_table` (
   UNIQUE INDEX `departId_UNIQUE` (`departId` ASC),
   UNIQUE INDEX `departCode_UNIQUE` (`departCode` ASC),
   INDEX `fk_department_table_company_table1_idx` (`companyId` ASC),
-  INDEX `fk_department_table_depart_stauts1_idx` (`stauts` ASC),
+  INDEX `fk_department_table_depart_stauts1_idx` (`status` ASC),
   CONSTRAINT `fk_department_table_company_table1`
     FOREIGN KEY (`companyId`)
     REFERENCES `admin_system`.`company_table` (`companyId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_department_table_depart_stauts1`
-    FOREIGN KEY (`stauts`)
-    REFERENCES `admin_system`.`depart_stauts` (`id`)
+    FOREIGN KEY (`status`)
+    REFERENCES `admin_system`.`depart_status` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -269,8 +269,8 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 INSERT INTO `admin_system`.`company_status` (`id`, `status`) VALUES ('1', '有效');
 INSERT INTO `admin_system`.`company_status` (`id`, `status`) VALUES ('2', '无效');
 
-INSERT INTO `admin_system`.`depart_stauts` (`id`, `status`) VALUES ('1', '有效');
-INSERT INTO `admin_system`.`depart_stauts` (`id`, `status`) VALUES ('2', '无效');
+INSERT INTO `admin_system`.`depart_status` (`id`, `status`) VALUES ('1', '有效');
+INSERT INTO `admin_system`.`depart_status` (`id`, `status`) VALUES ('2', '无效');
 
 INSERT INTO `admin_system`.`menus_status` (`id`, `status`) VALUES ('1', '有效');
 INSERT INTO `admin_system`.`menus_status` (`id`, `status`) VALUES ('2', '无效');
@@ -283,7 +283,7 @@ INSERT INTO `admin_system`.`user_status` (`id`, `status`) VALUES ('2', '无效')
 
 INSERT INTO `admin_system`.`company_table` (`companyId`, `companypId`, `companyCode`, `companyName`, `status`, `createName`, `createUserId`) VALUES ('1', '0', 'admin_system', '平台', '1', '平台管理员', '1');
 
-INSERT INTO `admin_system`.`department_table` (`departId`, `departpId`, `departCode`, `companyId`, `stauts`, `createName`, `createUserId`) VALUES ('1', '0', '平台部门', '1', '1', 'admin', '1');
+INSERT INTO `admin_system`.`department_table` (`departId`, `departpId`, `departCode`, `companyId`, `status`, `createName`, `createUserId`) VALUES ('1', '0', '平台部门', '1', '1', 'admin', '1');
 
 INSERT INTO `admin_system`.`user_table` (`userId`, `companyId`, `departId`, `status`, `userName`, `nickName`, `userSex`, `roles`, `avatar`) VALUES ('1', '1', '1', '1', 'admin', '平台管理员', '1', '["admin"]', 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80');
 
