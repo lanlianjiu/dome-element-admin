@@ -36,6 +36,7 @@
         </div>
       </div>
       <el-table
+        v-loading="tableLoading"
         :data="tableData"
         border
         style="width: 100%"
@@ -256,7 +257,8 @@ export default {
           value: 3,
           label: 'Array'
         }
-      ]
+      ],
+      tableLoading: false
     }
   }, created() {
     this.getList()
@@ -322,6 +324,7 @@ export default {
 
     // 获取列表数据
     getList() {
+      this.tableLoading = true
       const parmas = Object.assign({}, this.tableQuery, this.searchForm)
       this.$store.dispatch('system/apiMgt/getList', parmas).then((res) => {
         if ((res.code === 20000) && res.data) {
@@ -332,7 +335,10 @@ export default {
           })
           this.total = res.total
         }
-      }).catch(() => {})
+        this.tableLoading = false
+      }).catch(() => {
+        this.tableLoading = false
+      })
     },
 
     // 重置表单

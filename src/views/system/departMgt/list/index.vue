@@ -27,6 +27,7 @@
         </el-button>
       </div>
       <el-table
+        v-loading="tableLoading"
         v-tableHeight="{bottomOffset: 80}"
         :data="tableData"
         height="100px"
@@ -235,8 +236,8 @@ export default {
       statusMap: {
         1: '有效',
         2: '无效'
-      }
-
+      },
+      tableLoading: false
     }
   }, created() {
     this.getList()
@@ -322,6 +323,7 @@ export default {
 
     // 获取部门列表数据
     getList() {
+      this.tableLoading = true
       const parmas = Object.assign({}, this.tableQuery, this.searchForm)
       this.$store.dispatch('system/departMgt/getList', parmas)
         .then((res) => {
@@ -334,9 +336,10 @@ export default {
               type: 'error'
             })
           }
+          this.tableLoading = false
         })
         .catch(() => {
-
+          this.tableLoading = false
         })
     },
 

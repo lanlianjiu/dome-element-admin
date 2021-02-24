@@ -24,6 +24,7 @@
         </el-button>
       </div>
       <el-table
+        v-loading="tableLoading"
         v-tableHeight="{bottomOffset: 80}"
         :data="tableData"
         height="100px"
@@ -232,7 +233,8 @@ export default {
         1: '有效',
         2: '无效'
       },
-      is_edit: false // 是否编辑标识
+      is_edit: false, // 是否编辑标识
+      tableLoading: false
     }
   }, created() {
     this.getList()
@@ -373,6 +375,7 @@ export default {
 
     // 获取角色列表数据
     getList() {
+      this.tableLoading = true
       const parmas = Object.assign({}, this.tableQuery, this.searchForm)
       this.$store.dispatch('system/roleMgt/getList', parmas)
         .then((res) => {
@@ -385,7 +388,10 @@ export default {
               type: 'error'
             })
           }
-        }).catch(() => {})
+          this.tableLoading = false
+        }).catch(() => {
+          this.tableLoading = false
+        })
     },
 
     // 重置表单

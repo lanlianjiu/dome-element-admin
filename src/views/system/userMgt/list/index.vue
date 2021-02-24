@@ -22,6 +22,7 @@
         </el-button>
       </div>
       <el-table
+        v-loading="tableLoading"
         v-tableHeight="{bottomOffset: 80}"
         :data="tableData"
         border
@@ -441,7 +442,8 @@ export default {
           { required: true, message: '请输入密码', trigger: 'blur' }
         ]
       },
-      rowUserId: '' // 暂存记录点击行id
+      rowUserId: '', // 暂存记录点击行id
+      tableLoading: false
     }
   }, created() {
     this.getList()
@@ -616,6 +618,7 @@ export default {
 
     // 获取列表数据
     getList() {
+      this.tableLoading = true
       const parmas = Object.assign({}, this.tableQuery, this.searchForm)
       this.$store.dispatch('system/userMgt/getList', parmas)
         .then((res) => {
@@ -628,7 +631,10 @@ export default {
               type: 'error'
             })
           }
-        }).catch(() => {})
+          this.tableLoading = false
+        }).catch(() => {
+          this.tableLoading = false
+        })
     },
 
     // 获取公司数据
