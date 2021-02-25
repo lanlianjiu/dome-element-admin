@@ -107,7 +107,7 @@
       <el-dialog
         :title="dialogTitle"
         :visible.sync="dialogVisible"
-        class="role_mgt_dialog"
+        class="depart_mgt_dialog"
         @closed="resetForm"
       >
         <div>
@@ -400,12 +400,15 @@ export default {
 }
 </script>
 <style lang="scss">
-  .role_mgt_dialog{
+  .depart_mgt_dialog{
     .el-dialog{
       width: 500px;
     }
     .vue-treeselect__single-value,.vue-treeselect__placeholder{
       line-height: 40px !important;
+    }
+    .el-dialog__body{
+      padding: 10px 20px;
     }
   }
 </style>

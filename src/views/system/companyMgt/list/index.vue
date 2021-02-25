@@ -369,8 +369,8 @@ export default {
       line-height: 40px !important;
     }
     .el-dialog__body{
-        padding: 10px 20px;
-      }
+      padding: 10px 20px;
+    }
   }
 </style>
 <style scoped lang="scss">

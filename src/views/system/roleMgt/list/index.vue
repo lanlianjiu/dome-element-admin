@@ -444,6 +444,9 @@ export default {
     .el-dialog{
       width: 500px;
     }
+    .el-dialog__body{
+      padding: 10px 20px;
+    }
   }
 </style>
 <style scoped lang="scss">
