@@ -30,8 +30,8 @@
         border
         style="width: 100%"
         height="100px"
-        :row-key="getRowKeys"
-        :default-expand-all="true"
+        row-key="id"
+        :expand-row-keys="expands"
       >
 
         <el-table-column
@@ -282,11 +282,9 @@ export default {
         1: '有效',
         2: '无效'
       },
-      // 获取row的key值
-      getRowKeys(row) {
-        return row.id
-      },
-      tableLoading: false
+
+      tableLoading: false,
+      expands: []
     }
   }, created() {
     this.getList()
@@ -352,7 +350,13 @@ export default {
       const parmas = Object.assign({}, this.tableQuery, this.searchForm)
       this.$store.dispatch('system/menuMgt/getList', parmas).then((res) => {
         if ((res.code === 20000) && res.data) {
+          this.expands = []
           this.tableData = res.data
+          if (res.data && res.data.length) {
+            res.data.forEach((item) => {
+              this.expands.push(item.id.toString())
+            })
+          }
           this.total = res.pageTotal
         }
         this.tableLoading = false
