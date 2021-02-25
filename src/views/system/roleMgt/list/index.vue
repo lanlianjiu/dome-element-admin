@@ -109,14 +109,26 @@
         :title="dialogTitle"
         :visible.sync="dialogVisible"
         class="role_mgt_dialog"
+        @close="resetForm"
       >
         <div>
           <el-form ref="dialog_form" :model="handleForm" :rules="rules" label-width="80px">
             <el-form-item label="角色编码" prop="roleCode">
-              <el-input v-model="handleForm.roleCode" :disabled="is_edit" />
+              <el-input
+                v-model="handleForm.roleCode"
+                maxlength="100"
+                show-word-limit
+                clearable
+                :disabled="is_edit"
+              />
             </el-form-item>
             <el-form-item label="角色名称" prop="roleName">
-              <el-input v-model="handleForm.roleName" />
+              <el-input
+                v-model="handleForm.roleName"
+                maxlength="80"
+                show-word-limit
+                clearable
+              />
             </el-form-item>
             <el-form-item label="角色状态">
               <div class="swatch-body">
@@ -133,7 +145,12 @@
               </div>
             </el-form-item>
             <el-form-item label="角色描述">
-              <el-input v-model="handleForm.desc" type="textarea" />
+              <el-input
+                v-model="handleForm.desc"
+                maxlength="200"
+                show-word-limit
+                type="textarea"
+              />
             </el-form-item>
 
           </el-form>
@@ -152,13 +169,13 @@
         <div>
           <el-input
             v-model="searchKey"
-            placeholder="请输入内容"
+            placeholder="请输入搜索内容"
             clearable
             @input="searchKeyFn"
           />
           <el-tree
             ref="tree"
-            style="height:50vh;overflow: auto;"
+            style="height:40vh;overflow: auto;"
             :data="treeList"
             :props="defaultProps"
             :default-expanded-keys="expandedKeys"

@@ -117,7 +117,7 @@
               <treeselect
                 v-model="handleForm.companyId"
                 :disabled="is_child"
-                style="width: 100%;"
+                style="width: 100%;height:40px;"
                 :options="options"
                 :default-expand-level="1"
                 :normalizer="normalizer"
@@ -130,11 +130,22 @@
             </el-form-item>
 
             <el-form-item label="部门编码" prop="departCode">
-              <el-input v-model="handleForm.departCode" :disabled="is_edit&&(!is_child)" />
+              <el-input
+                v-model="handleForm.departCode"
+                maxlength="50"
+                show-word-limit
+                clearable
+                :disabled="is_edit&&(!is_child)"
+              />
             </el-form-item>
 
             <el-form-item label="部门名称" prop="departName">
-              <el-input v-model="handleForm.departName" />
+              <el-input
+                v-model="handleForm.departName"
+                maxlength="80"
+                show-word-limit
+                clearable
+              />
             </el-form-item>
 
             <el-form-item label="部门状态">
@@ -153,7 +164,12 @@
             </el-form-item>
 
             <el-form-item label="部门描述">
-              <el-input v-model="handleForm.desc" type="textarea" />
+              <el-input
+                v-model="handleForm.desc"
+                maxlength="200"
+                show-word-limit
+                type="textarea"
+              />
             </el-form-item>
 
           </el-form>
@@ -388,6 +404,9 @@ export default {
     .el-dialog{
       width: 500px;
     }
+    .vue-treeselect__single-value,.vue-treeselect__placeholder{
+      line-height: 40px !important;
+    }
   }
 </style>
 <style scoped lang="scss">
@@ -401,6 +420,7 @@ export default {
   }
 
 }
+
 .page-warp {
   margin: 5px 15px 0px 15px;
   padding: 10px 20px 0px 20px;

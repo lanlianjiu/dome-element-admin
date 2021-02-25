@@ -114,7 +114,7 @@ export default {
       loginForm: {
         companyCode: 'code',
         userName: 'admin',
-        passWord: '111111'
+        passWord: '123456'
       },
       loginRules: {
         userName: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -323,6 +323,10 @@ $cursor: #fff;
       }
     }
   }
+  .el-form-item__content{
+    line-height: unset;
+    display: flex;
+  }
 }
 </style>
 
@@ -376,6 +380,7 @@ $light_gray:#eee;
     vertical-align: middle;
     width: 30px;
     display: inline-block;
+    margin: auto 0 auto 0;
   }
 
   .title-container {
@@ -391,13 +396,12 @@ $light_gray:#eee;
   }
 
   .show-pwd {
-    position: absolute;
-    right: 10px;
-    top: 7px;
+
     font-size: 16px;
     color: $dark_gray;
     cursor: pointer;
     user-select: none;
+    margin: auto 10px auto 0;
   }
 
   .thirdparty-button {

@@ -102,7 +102,7 @@
       <el-dialog
         :title="dialogTitle"
         :visible.sync="dialogVisible"
-        class="role_mgt_dialog"
+        class="company_mgt_dialog"
         @closed="resetForm"
       >
         <div>
@@ -119,10 +119,21 @@
               />
             </el-form-item>
             <el-form-item label="公司编码" prop="companyCode">
-              <el-input v-model="handleForm.companyCode" :disabled="is_edit" />
+              <el-input
+                v-model="handleForm.companyCode"
+                maxlength="20"
+                show-word-limit
+                clearable
+                :disabled="is_edit"
+              />
             </el-form-item>
             <el-form-item label="公司名称" prop="companyName">
-              <el-input v-model="handleForm.companyName" />
+              <el-input
+                v-model="handleForm.companyName"
+                maxlength="50"
+                show-word-limit
+                clearable
+              />
             </el-form-item>
             <el-form-item label="公司状态">
               <div class="swatch-body">
@@ -139,7 +150,12 @@
               </div>
             </el-form-item>
             <el-form-item label="公司描述">
-              <el-input v-model="handleForm.desc" type="textarea" />
+              <el-input
+                v-model="handleForm.desc"
+                maxlength="200"
+                show-word-limit
+                type="textarea"
+              />
             </el-form-item>
 
           </el-form>
@@ -344,10 +360,17 @@ export default {
 }
 </script>
 <style lang="scss">
-  .role_mgt_dialog{
+  .company_mgt_dialog{
     .el-dialog{
       width: 500px;
+
     }
+    .vue-treeselect__single-value,.vue-treeselect__placeholder{
+      line-height: 40px !important;
+    }
+    .el-dialog__body{
+        padding: 10px 20px;
+      }
   }
 </style>
 <style scoped lang="scss">

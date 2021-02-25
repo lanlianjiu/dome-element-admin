@@ -233,31 +233,31 @@
 
                 <el-col :span="12">
                   <el-form-item label="用户账号" prop="userName">
-                    <el-input v-model="ruleForm.userName" :disabled="!is_edit" />
+                    <el-input v-model="ruleForm.userName" clearable :disabled="!is_edit" />
                   </el-form-item>
                 </el-col>
 
                 <el-col v-if="is_edit" :span="12">
                   <el-form-item label="用户密码" prop="userPassword">
-                    <el-input v-model="ruleForm.userPassword" />
+                    <el-input v-model="ruleForm.userPassword" clearable />
                   </el-form-item>
                 </el-col>
 
                 <el-col :span="12">
                   <el-form-item label="用户昵称" prop="nickName">
-                    <el-input v-model="ruleForm.nickName" />
+                    <el-input v-model="ruleForm.nickName" clearable />
                   </el-form-item>
                 </el-col>
 
                 <el-col :span="12">
                   <el-form-item label="用户电话" prop="userMobile">
-                    <el-input v-model="ruleForm.userMobile" />
+                    <el-input v-model="ruleForm.userMobile" clearable />
                   </el-form-item>
                 </el-col>
 
                 <el-col :span="12">
                   <el-form-item label="用户邮箱" prop="userEmali" style="margin-bottom: 12px">
-                    <el-input v-model="ruleForm.userEmali" />
+                    <el-input v-model="ruleForm.userEmali" clearable />
                   </el-form-item>
                 </el-col>
 
@@ -337,6 +337,7 @@
               <el-form-item label="新密码" style="margin-bottom:0;" prop="passWord">
                 <el-input
                   v-model.trim="passForm.passWord"
+                  clearable
                 />
               </el-form-item>
             </el-col>
@@ -734,6 +735,9 @@ export default {
     width: 700px;
     .el-dialog__body{
       padding: 5px 20px 5px 20px;
+    }
+    .vue-treeselect__single-value,.vue-treeselect__placeholder{
+      line-height: 40px !important;
     }
   }
   .cpassword-dialog-body{

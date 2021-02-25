@@ -1,5 +1,5 @@
 <template>
-  <div class="page-warp">
+  <div class="page-warp meuns_mgt_action">
     <el-form ref="postForm" :model="actionForm" :rules="rules" class="form-container" label-width="130px">
 
       <el-row :gutter="20" class="action_title">
@@ -42,7 +42,15 @@
         <el-form-item label="菜单编码" prop="menusCode">
           <div class="input_body">
             <div class="input_left">
-              <el-input v-model="actionForm.menusCode" :disabled="($route.query.id)?true:false" class="input_w" placeholder="请输入菜单编码" />
+              <el-input
+                v-model="actionForm.menusCode"
+                maxlength="100"
+                show-word-limit
+                clearable
+                :disabled="($route.query.id)?true:false"
+                class="input_w"
+                placeholder="请输入菜单编码"
+              />
             </div>
             <div class="input_right">
               菜单编码确保唯一性
@@ -53,7 +61,14 @@
         <el-form-item label="路由名称" prop="name">
           <div class="input_body">
             <div class="input_left">
-              <el-input v-model="actionForm.name" class="input_w" placeholder="请输入路由名称" />
+              <el-input
+                v-model="actionForm.name"
+                maxlength="200"
+                show-word-limit
+                clearable
+                class="input_w"
+                placeholder="请输入路由名称"
+              />
             </div>
             <div class="input_right">
               路由名称确保唯一性
@@ -75,7 +90,14 @@
         <el-form-item label="路由路径/外链" prop="path">
           <div class="input_body">
             <div class="input_left">
-              <el-input v-model="actionForm.path" class="input_w" placeholder="请输入路由路径" />
+              <el-input
+                v-model="actionForm.path"
+                maxlength="200"
+                show-word-limit
+                clearable
+                class="input_w"
+                placeholder="请输入路由路径"
+              />
             </div>
             <div class="input_right">
               路由标签，用于侧边栏以及面包屑显示名称
@@ -86,7 +108,14 @@
         <el-form-item label="页面路径/外链" :prop="(actionForm.pid)?'component':''">
           <div class="input_body">
             <div class="input_left">
-              <el-input v-model="actionForm.component" class="input_w" placeholder="请输入页面路径" />
+              <el-input
+                v-model="actionForm.component"
+                maxlength="200"
+                show-word-limit
+                clearable
+                class="input_w"
+                placeholder="请输入页面路径"
+              />
             </div>
             <div class="input_right">
               页面（组件文件）的src下目录路径
@@ -121,7 +150,31 @@
         <el-form-item label="菜单图标">
           <div class="input_body">
             <div class="input_left">
-              <el-input v-model="actionForm.meta.icon" class="input_w" placeholder="请输入菜单图标" />
+              <el-autocomplete
+                v-model="actionForm.meta.icon"
+                class="menuMgt-autocomplete"
+                :fetch-suggestions="querySearch"
+                clearable
+                placeholder="请选择菜单图标"
+              >
+                <div slot="prefix">
+                  <i v-if="actionForm.meta&&actionForm.meta.icon&&actionForm.meta.icon.includes('el-icon')" :class="actionForm.meta.icon" />
+                  <svg-icon
+                    v-else
+                    :icon-class="actionForm.meta.icon"
+                  />
+                </div>
+                <template slot-scope="{ item }">
+                  <div class="name">
+
+                    <i v-if="item.value&&item.value.includes('el-icon')" :class="item.value" />
+                    <svg-icon
+                      v-else
+                      :icon-class="item.value"
+                    />
+                    {{ item.value }}</div>
+                </template>
+              </el-autocomplete>
             </div>
             <div class="input_right">
               设置该路由的图标，支持 svg-class，也支持 el-icon-x element-ui 的 icon
@@ -145,6 +198,9 @@
             <div class="input_left">
               <el-input
                 v-model="actionForm.redirect"
+                maxlength="200"
+                show-word-limit
+                clearable
                 :disabled="actionForm.is_external_link"
                 class="input_w"
                 placeholder="请输入可点击路由或noRedirect"
@@ -216,6 +272,9 @@
             <div class="input_left">
               <el-input
                 v-model="actionForm.meta.activeMenu"
+                maxlength="200"
+                show-word-limit
+                clearable
                 :disabled="actionForm.is_external_link"
                 class="input_w"
                 placeholder="请输入高亮的路由路径"
@@ -242,6 +301,8 @@
 <script>
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
+import elementIcons from '@/utils/icon/element-icons'
+import svgIcons from '@/utils/icon/svg-icons'
 const defaultForm = {
   name: '',
   menusCode: '',
@@ -276,7 +337,7 @@ export default {
   },
   data() {
     return {
-      actionForm: Object.assign({}, defaultForm),
+      actionForm: JSON.parse(JSON.stringify(defaultForm)),
       loading: false,
       userListOptions: [],
       rules: {
@@ -300,10 +361,24 @@ export default {
           label: node.name,
           children: node.children
         }
-      }
+      },
+      restaurants: []
     }
   },
   created() {
+    const svgArr = svgIcons.map((item) => {
+      return {
+        value: item
+      }
+    })
+    const elArr = elementIcons.map((item) => {
+      return {
+        value: `el-icon-${item}`
+      }
+    })
+
+    this.restaurants = elArr.concat(svgArr)
+
     if (this.$route.query.id) {
       this.actionForm = this.$route.query
     }
@@ -370,11 +445,30 @@ export default {
       }
 
       this.$forceUpdate()
+    },
+
+    // 图标搜索
+    querySearch(queryString, cb) {
+      var restaurants = this.restaurants
+      var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants
+      cb(results)
+    },
+
+    createFilter(queryString) {
+      return (restaurant) => {
+        return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0)
+      }
     }
   }
 }
 </script>
-
+<style lang="scss">
+.meuns_mgt_action{
+  .vue-treeselect__single-value,.vue-treeselect__placeholder{
+    line-height: 40px !important;
+  }
+}
+</style>
 <style lang="scss" scoped>
 @import "~@/styles/mixin.scss";
 
@@ -408,6 +502,10 @@ export default {
       min-width: 300px;
       max-width: 400px;
     }
+  }
+  .menuMgt-autocomplete{
+    min-width: 300px;
+    max-width: 400px;
   }
 }
 

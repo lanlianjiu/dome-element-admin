@@ -31,7 +31,7 @@
         style="width: 100%"
         height="100px"
         :row-key="getRowKeys"
-        :expand-row-keys="expands"
+        :default-expand-all="true"
       >
 
         <el-table-column
@@ -83,7 +83,7 @@
           align="center"
         />
 
-        <el-table-column label="操作" align="center" width="240" class-name="small-padding fixed-width">
+        <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">
           <template slot-scope="{row}">
             <el-button type="text" size="mini" @click="handleAction(row)">
               编 辑
@@ -286,7 +286,6 @@ export default {
       getRowKeys(row) {
         return row.id
       },
-      expands: [],
       tableLoading: false
     }
   }, created() {
@@ -351,17 +350,15 @@ export default {
     getList() {
       this.tableLoading = true
       const parmas = Object.assign({}, this.tableQuery, this.searchForm)
-      this.$store.dispatch('system/menuMgt/getList', parmas)
-        .then((res) => {
-          if (res.code === 20000) {
-            this.tableData = res.data
-            this.total = res.pageTotal
-          }
-          this.tableLoading = false
-        })
-        .catch(() => {
-          this.tableLoading = false
-        })
+      this.$store.dispatch('system/menuMgt/getList', parmas).then((res) => {
+        if ((res.code === 20000) && res.data) {
+          this.tableData = res.data
+          this.total = res.pageTotal
+        }
+        this.tableLoading = false
+      }).catch(() => {
+        this.tableLoading = false
+      })
     },
 
     // 上移、下移操作
