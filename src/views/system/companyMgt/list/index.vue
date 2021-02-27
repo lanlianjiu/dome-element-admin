@@ -116,11 +116,13 @@
                 :options="options"
                 :normalizer="normalizer"
                 placeholder="请选择父级公司"
+                @select="selectCompany"
               />
             </el-form-item>
             <el-form-item label="公司编码" prop="companyCode">
               <el-input
                 v-model="handleForm.companyCode"
+                placeholder="请输入公司编码，编码唯一性"
                 maxlength="20"
                 show-word-limit
                 clearable
@@ -132,6 +134,7 @@
                 v-model="handleForm.companyName"
                 maxlength="50"
                 show-word-limit
+                placeholder="请输入公司名称"
                 clearable
               />
             </el-form-item>
@@ -155,6 +158,7 @@
                 maxlength="200"
                 show-word-limit
                 type="textarea"
+                placeholder="请输入公司描述"
               />
             </el-form-item>
 
@@ -224,6 +228,7 @@ export default {
         ]
       },
       options: [], // 父级公司数组
+      selectComcode: '', // 选择父级时的code
       normalizer(node) { // 下拉树图自定义字段
         return {
           id: node.companyId,
@@ -264,6 +269,7 @@ export default {
     handleAction(row) {
       this.dialogTitle = row ? '编辑公司' : '新增公司'
       this.is_edit = !!row
+      this.selectComcode = ''
       if (row) {
         this.handleForm = JSON.parse(JSON.stringify(row))
       } else {
@@ -335,11 +341,22 @@ export default {
       this.dialogVisible = false
     },
 
+    // 选择父级公司
+    selectCompany(node) {
+      this.selectComcode = node.companyCode || ''
+    },
+
     // 保存表单
     saveForm() {
       this.$refs.dialog_form.validate((valid) => {
         if (valid) {
-          this.$store.dispatch('system/companyMgt/handleAction', this.handleForm)
+          const saveData = JSON.parse(JSON.stringify(this.handleForm))
+          if (this.selectComcode) {
+            saveData.companyCode = `${this.selectComcode}_${saveData.companyCode}`
+          } else if (this.is_edit) {
+            saveData.companyCode = null
+          }
+          this.$store.dispatch('system/companyMgt/handleAction', saveData)
             .then((res) => {
               if (res.code === 20000) {
                 this.dialogVisible = false

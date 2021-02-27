@@ -136,6 +136,7 @@
                 show-word-limit
                 clearable
                 :disabled="is_edit&&(!is_child)"
+                placeholder="请输入部门编码，部门编码唯一性"
               />
             </el-form-item>
 
@@ -145,6 +146,7 @@
                 maxlength="80"
                 show-word-limit
                 clearable
+                placeholder="请输入部门名称"
               />
             </el-form-item>
 
@@ -169,6 +171,7 @@
                 maxlength="200"
                 show-word-limit
                 type="textarea"
+                placeholder="请输入部门描述"
               />
             </el-form-item>
 

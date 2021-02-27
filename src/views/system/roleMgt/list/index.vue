@@ -118,6 +118,7 @@
                 v-model="handleForm.roleCode"
                 maxlength="100"
                 show-word-limit
+                placeholder="请输入角色编码，角色编码唯一性"
                 clearable
                 :disabled="is_edit"
               />
@@ -128,6 +129,7 @@
                 maxlength="80"
                 show-word-limit
                 clearable
+                placeholder="请输入角色名称"
               />
             </el-form-item>
             <el-form-item label="角色状态">
@@ -150,6 +152,7 @@
                 maxlength="200"
                 show-word-limit
                 type="textarea"
+                placeholder="请输入角色描述"
               />
             </el-form-item>
 
