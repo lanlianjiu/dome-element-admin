@@ -7,14 +7,14 @@
     <div class="search-container">
       <el-form :inline="true" :model="searchForm">
         <el-form-item label="部门编码">
-          <el-input v-model="searchForm.departCode" placeholder="请输入部门编码" />
+          <el-input v-model="searchForm.departCode" size="small" placeholder="请输入部门编码" />
         </el-form-item>
         <el-form-item label="部门名称">
-          <el-input v-model="searchForm.departName" placeholder="请输入部门名称" />
+          <el-input v-model="searchForm.departName" size="small" placeholder="请输入部门名称" />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="searchAction">查询</el-button>
-          <el-button @click="resetSearch">重置</el-button>
+          <el-button type="primary" size="small" @click="searchAction">查询</el-button>
+          <el-button size="small" @click="resetSearch">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -22,7 +22,7 @@
     <div class="page-warp">
 
       <div class="table-action-body">
-        <el-button type="primary" @click="handleAction()">
+        <el-button type="primary" size="small" @click="handleAction()">
           新增
         </el-button>
       </div>
@@ -62,7 +62,7 @@
           align="center"
         >
           <template slot-scope="{row}">
-            <el-tag :type="row.status | statusFilter">
+            <el-tag :type="row.status | statusFilter" size="small">
               {{ statusMap[row.status] ||'' }}
             </el-tag>
           </template>
@@ -119,6 +119,7 @@
                 :disabled="is_child"
                 style="width: 100%;height:40px;"
                 :options="options"
+                size="small"
                 :default-expand-level="1"
                 :normalizer="normalizer"
                 placeholder="请选择所属公司"
@@ -135,6 +136,7 @@
                 maxlength="50"
                 show-word-limit
                 clearable
+                size="small"
                 :disabled="is_edit&&(!is_child)"
                 placeholder="请输入部门编码，部门编码唯一性"
               />
@@ -145,6 +147,7 @@
                 v-model="handleForm.departName"
                 maxlength="80"
                 show-word-limit
+                size="small"
                 clearable
                 placeholder="请输入部门名称"
               />
@@ -178,8 +181,8 @@
           </el-form>
         </div>
         <span slot="footer" class="dialog-footer">
-          <el-button @click="resetForm">取 消</el-button>
-          <el-button type="primary" @click="saveForm">确 定</el-button>
+          <el-button size="small" @click="resetForm">取 消</el-button>
+          <el-button type="primary" size="small" @click="saveForm">确 定</el-button>
         </span>
       </el-dialog>
 
@@ -407,8 +410,13 @@ export default {
     .el-dialog{
       width: 500px;
     }
-    .vue-treeselect__single-value,.vue-treeselect__placeholder{
-      line-height: 40px !important;
+     .vue-treeselect__single-value,.vue-treeselect__placeholder{
+      height: 32px;
+      line-height: 32px !important;
+    }
+    .vue-treeselect__control{
+      height: 32px;
+      line-height: 32px;
     }
     .el-dialog__body{
       padding: 10px 20px;
@@ -418,11 +426,11 @@ export default {
 <style scoped lang="scss">
 .search-container{
   margin: 10px 15px 0px 15px;
-  padding: 15px 20px 0 20px;
+  padding: 8px 20px 0 20px;
   background-color: #FFF;
   border-radius: 2px;
   .el-form-item{
-      margin-bottom: 15px;
+      margin-bottom: 8px;
   }
 
 }

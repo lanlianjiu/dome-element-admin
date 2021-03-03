@@ -4,11 +4,11 @@
     <div class="search-container">
       <el-form :inline="true" :model="searchForm">
         <el-form-item label="菜单名称">
-          <el-input v-model="searchForm.menusName" placeholder="请输入菜单名称" />
+          <el-input v-model="searchForm.menusName" size="small" placeholder="请输入菜单名称" />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="searchAction">查询</el-button>
-          <el-button @click="resetSearch">重置</el-button>
+          <el-button type="primary" size="small" @click="searchAction">查询</el-button>
+          <el-button size="small" @click="resetSearch">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -16,7 +16,7 @@
     <div class="page-warp">
 
       <div class="table-action-body">
-        <el-button type="primary" @click="handleAction()">
+        <el-button type="primary" size="small" @click="handleAction()">
           新 增
         </el-button>
         <!-- <el-button type="text" @click="sortAction()">
@@ -70,7 +70,7 @@
           align="center"
         >
           <template slot-scope="props">
-            <el-tag :type="props.row.status | statusFilter">
+            <el-tag :type="props.row.status | statusFilter" size="small">
               {{ statusMap[props.row.status] ||'' }}
             </el-tag>
           </template>
@@ -431,11 +431,11 @@ export default {
 <style scoped lang="scss">
 .search-container{
   margin: 10px 15px 0px 15px;
-  padding: 15px 20px 0 20px;
+  padding: 8px 20px 0 20px;
   background-color: #FFF;
   border-radius: 2px;
   .el-form-item{
-      margin-bottom: 15px;
+      margin-bottom: 8px;
   }
 
 }

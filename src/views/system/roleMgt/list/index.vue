@@ -7,11 +7,11 @@
     <div class="search-container">
       <el-form :inline="true" :model="searchForm">
         <el-form-item label="角色名称">
-          <el-input v-model="searchForm.roleName" placeholder="请输入角色名称" />
+          <el-input v-model="searchForm.roleName" size="small" placeholder="请输入角色名称" />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="searchAction">查询</el-button>
-          <el-button @click="resetSearch">重置</el-button>
+          <el-button type="primary" size="small" @click="searchAction">查询</el-button>
+          <el-button size="small" @click="resetSearch">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -19,7 +19,7 @@
     <div class="page-warp">
 
       <div class="table-action-body">
-        <el-button type="primary" @click="handleAction()">
+        <el-button type="primary" size="small" @click="handleAction()">
           新增
         </el-button>
       </div>
@@ -71,7 +71,7 @@
           align="center"
         >
           <template slot-scope="{row}">
-            <el-tag :type="row.status | statusFilter">
+            <el-tag :type="row.status | statusFilter" size="small">
               {{ statusMap[row.status] ||'' }}
             </el-tag>
           </template>
@@ -119,6 +119,7 @@
                 maxlength="100"
                 show-word-limit
                 placeholder="请输入角色编码，角色编码唯一性"
+                size="small"
                 clearable
                 :disabled="is_edit"
               />
@@ -128,6 +129,7 @@
                 v-model="handleForm.roleName"
                 maxlength="80"
                 show-word-limit
+                size="small"
                 clearable
                 placeholder="请输入角色名称"
               />
@@ -159,8 +161,8 @@
           </el-form>
         </div>
         <span slot="footer" class="dialog-footer">
-          <el-button @click="resetForm">取 消</el-button>
-          <el-button type="primary" @click="saveForm">确 定</el-button>
+          <el-button size="small" @click="resetForm">取 消</el-button>
+          <el-button type="primary" size="small" @click="saveForm">确 定</el-button>
         </span>
       </el-dialog>
 
@@ -189,8 +191,8 @@
           />
         </div>
         <span slot="footer" class="dialog-footer">
-          <el-button @click="dialogMenus = false">取 消</el-button>
-          <el-button type="primary" @click="confirmMenus">确 定</el-button>
+          <el-button size="small" @click="dialogMenus = false">取 消</el-button>
+          <el-button type="primary" size="small" @click="confirmMenus">确 定</el-button>
         </span>
       </el-dialog>
     </div>
@@ -455,11 +457,11 @@ export default {
 <style scoped lang="scss">
 .search-container{
   margin: 10px 15px 0px 15px;
-  padding: 15px 20px 0 20px;
+  padding: 8px 20px 0 20px;
   background-color: #FFF;
   border-radius: 2px;
   .el-form-item{
-      margin-bottom: 15px;
+      margin-bottom: 8px;
   }
 
 }

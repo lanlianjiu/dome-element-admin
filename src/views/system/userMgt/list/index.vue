@@ -7,17 +7,17 @@
     <div class="search-container">
       <el-form :inline="true" :model="searchForm">
         <el-form-item label="用户名称">
-          <el-input v-model="searchForm.name" placeholder="请输入用户名称" />
+          <el-input v-model="searchForm.name" placeholder="请输入用户名称" size="small" />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="searchAction">查询</el-button>
-          <el-button @click="resetSearch">重置</el-button>
+          <el-button type="primary" size="small" @click="searchAction">查询</el-button>
+          <el-button size="small" @click="resetSearch">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
     <div class="page-warp">
       <div class="table-action-body">
-        <el-button type="primary" @click="handleAction()">
+        <el-button type="primary" size="small" @click="handleAction()">
           新增
         </el-button>
       </div>
@@ -50,7 +50,7 @@
               <el-row>
                 <el-col :span="12">
                   <el-form-item label="用户角色：">
-                    <el-tag v-for="(item,index) in props.row.roles || []" :key="index" style="margin-right:5px;">
+                    <el-tag v-for="(item,index) in props.row.roles || []" :key="index" style="margin-right:5px;" size="small">
                       {{ item.roleName }}
                     </el-tag>
                   </el-form-item>
@@ -102,7 +102,7 @@
           align="center"
         >
           <template slot-scope="{row}">
-            <el-tag :type="row.status | statusFilter">
+            <el-tag :type="row.status | statusFilter" size="small">
               {{ statusMap[row.status] ||'' }}
             </el-tag>
           </template>
@@ -215,6 +215,7 @@
                       multiple
                       filterable
                       allow-create
+                      size="small"
                       default-first-option
                       placeholder="请选择角色"
                     >
@@ -237,6 +238,7 @@
                       v-model="ruleForm.userName"
                       maxlength="30"
                       show-word-limit
+                      size="small"
                       clearable
                       :disabled="!is_edit"
                       placeholder="请输入用户账号"
@@ -249,6 +251,7 @@
                     <el-input
                       v-model.trim="ruleForm.userPassword"
                       maxlength="15"
+                      size="small"
                       show-word-limit
                       clearable
                       placeholder="请输入用户密码"
@@ -262,6 +265,7 @@
                       v-model="ruleForm.nickName"
                       maxlength="30"
                       show-word-limit
+                      size="small"
                       clearable
                       placeholder="请输入用户昵称"
                     />
@@ -273,6 +277,7 @@
                     <el-input
                       v-model="ruleForm.userMobile"
                       maxlength="20"
+                      size="small"
                       show-word-limit
                       clearable
                       placeholder="请输入用户电话"
@@ -286,6 +291,7 @@
                       v-model="ruleForm.userEmali"
                       maxlength="50"
                       show-word-limit
+                      size="small"
                       clearable
                       placeholder="请输入用户邮箱"
                     />
@@ -293,7 +299,7 @@
                 </el-col>
 
                 <el-col :span="12">
-                  <el-form-item label="用户状态" style="margin-bottom: 12px">
+                  <el-form-item label="用户状态" style="margin-bottom: 10px">
                     <div class="swatch-body">
                       <el-switch
                         v-model="ruleForm.status"
@@ -351,8 +357,8 @@
         </el-form>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="resetForm">取 消</el-button>
-        <el-button type="primary" @click="saveForm">确 定</el-button>
+        <el-button size="small" @click="resetForm">取 消</el-button>
+        <el-button type="primary" size="small" @click="saveForm">确 定</el-button>
       </span>
     </el-dialog>
 
@@ -374,6 +380,7 @@
                   maxlength="8"
                   show-word-limit
                   clearable
+                  size="small"
                   placeholder="请输入新密码"
                 />
               </el-form-item>
@@ -382,9 +389,9 @@
 
         </el-form>
       </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="cancelForm">取 消</el-button>
-        <el-button type="primary" @click="changePasssave">确 定</el-button>
+      <span slot="footer" class="dialog-footer cpassword-footer">
+        <el-button size="small" @click="cancelForm">取 消</el-button>
+        <el-button type="primary" size="small" @click="changePasssave">确 定</el-button>
       </span>
     </el-dialog>
 
@@ -774,7 +781,15 @@ export default {
       padding: 0px 20px 0px 20px;
     }
     .vue-treeselect__single-value,.vue-treeselect__placeholder{
-      line-height: 40px !important;
+      height: 32px;
+      line-height: 32px !important;
+    }
+    .vue-treeselect__control{
+      height: 32px;
+      line-height: 32px;
+    }
+    .el-form-item {
+        margin-bottom: 20px;
     }
   }
   .cpassword-dialog-body{
@@ -812,37 +827,42 @@ export default {
     margin-bottom: 0;
     width: 50%;
   }
+
 }
-  .avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    margin: auto;
-  }
-  .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-  }
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 120px;
-    height: 120px;
-    line-height: 120px;
-    text-align: center;
-    border: 1px dashed #d9d9d9;
-    border-radius: 50%;
-  }
-  .avatar {
-    width: 120px;
-    height: 120px;
-    display: block;
-    border-radius: 50%;
-  }
-  .swatch-body{
-    line-height: 36px;
-    height: 36px;
-    display: flex;
-  }
+.cpassword-footer{
+  display: flex;
+  justify-content:center;
+}
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  margin: auto;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 120px;
+  height: 120px;
+  line-height: 120px;
+  text-align: center;
+  border: 1px dashed #d9d9d9;
+  border-radius: 50%;
+}
+.avatar {
+  width: 120px;
+  height: 120px;
+  display: block;
+  border-radius: 50%;
+}
+.swatch-body{
+  line-height: 36px;
+  height: 36px;
+  display: flex;
+}
 </style>

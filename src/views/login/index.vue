@@ -346,7 +346,7 @@ $light_gray:#eee;
   min-height: 100%;
   width: 100%;
   overflow: hidden;
-
+  background-color: #E8F0FE;
 .login-form-body{
     padding-top: 10%;
   .login-form {
@@ -356,7 +356,8 @@ $light_gray:#eee;
     padding: 40px 35px 0;
     margin: 0 auto;
     overflow: hidden;
-    background-color: #E8F0FE;
+    //background-color: #E8F0FE;
+    background-color: rgba(45,58,75,0.8);
     border-radius: 4px;
     z-index: 999;
   }
@@ -388,7 +389,8 @@ $light_gray:#eee;
 
     .title {
       font-size: 26px;
-      color: #606266;
+      //color: #606266;
+      color: #FFF;
       margin: 0px auto 40px auto;
       text-align: center;
       font-weight: bold;

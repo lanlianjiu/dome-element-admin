@@ -7,11 +7,11 @@
     <div class="search-container">
       <el-form :inline="true" :model="searchForm">
         <el-form-item label="接口名称">
-          <el-input v-model="searchForm.apiName" placeholder="请输入接口名称" />
+          <el-input v-model="searchForm.apiName" size="small" placeholder="请输入接口名称" />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="searchAction">查询</el-button>
-          <el-button @click="resetSearch">重置</el-button>
+          <el-button type="primary" size="small" @click="searchAction">查询</el-button>
+          <el-button size="small" @click="resetSearch">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -439,11 +439,11 @@ export default {
 <style scoped lang="scss">
 .search-container{
   margin: 10px 15px 0px 15px;
-  padding: 15px 20px 0 20px;
+  padding: 8px 20px 0 20px;
   background-color: #FFF;
   border-radius: 2px;
   .el-form-item{
-      margin-bottom: 15px;
+      margin-bottom: 8px;
   }
 
 }

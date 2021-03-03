@@ -46,6 +46,7 @@
                 v-model="actionForm.menusCode"
                 maxlength="100"
                 show-word-limit
+                size="small"
                 clearable
                 :disabled="($route.query.id)?true:false"
                 class="input_w"
@@ -65,6 +66,7 @@
                 v-model="actionForm.name"
                 maxlength="200"
                 show-word-limit
+                size="small"
                 clearable
                 class="input_w"
                 placeholder="请输入路由名称"
@@ -95,6 +97,7 @@
                 maxlength="200"
                 show-word-limit
                 clearable
+                size="small"
                 class="input_w"
                 placeholder="请输入路由路径"
               />
@@ -113,6 +116,7 @@
                 maxlength="200"
                 show-word-limit
                 clearable
+                size="small"
                 class="input_w"
                 placeholder="请输入页面路径"
               />
@@ -154,6 +158,7 @@
                 v-model="actionForm.meta.icon"
                 class="menuMgt-autocomplete"
                 :fetch-suggestions="querySearch"
+                size="small"
                 clearable
                 placeholder="请选择菜单图标"
               >
@@ -201,6 +206,7 @@
                 maxlength="200"
                 show-word-limit
                 clearable
+                size="small"
                 :disabled="actionForm.is_external_link"
                 class="input_w"
                 placeholder="请输入可点击路由或noRedirect"
@@ -275,6 +281,7 @@
                 maxlength="200"
                 show-word-limit
                 clearable
+                size="small"
                 :disabled="actionForm.is_external_link"
                 class="input_w"
                 placeholder="请输入高亮的路由路径"
@@ -290,8 +297,8 @@
     </el-form>
     <footer>
       <div class="footer-body">
-        <el-button @click="cancelForm">取 消</el-button>
-        <el-button type="primary" @click="submitForm">保 存</el-button>
+        <el-button size="small" @click="cancelForm">取 消</el-button>
+        <el-button type="primary" size="small" @click="submitForm">保 存</el-button>
       </div>
     </footer>
 
@@ -465,7 +472,12 @@ export default {
 <style lang="scss">
 .meuns_mgt_action{
   .vue-treeselect__single-value,.vue-treeselect__placeholder{
-    line-height: 40px !important;
+    height: 32px;
+    line-height: 32px !important;
+  }
+  .vue-treeselect__control{
+    height: 32px;
+    line-height: 32px;
   }
 }
 </style>
