@@ -244,6 +244,46 @@ const baseArr = [
           pid: 17
         }]
       }, {
+        'component': '/systemTools/formGenerator/index',
+        'redirect': '/systemTools/formGenerator/list',
+        'hidden': false,
+        'id': 23,
+        'menusCode': '1-code-23',
+        'status': 1,
+        'sortNo': 5,
+        'meta': {
+          'title': '表单生成',
+          'icon': '',
+          'noCache': false,
+          'breadcrumb': false,
+          'affix': false,
+          'activeMenu': '',
+          'is_local': true
+        },
+        'name': '表单生成',
+        'path': 'formGenerator',
+        'pid': 14,
+        'children': [{
+          'component': '/systemTools/formGenerator/list',
+          'hidden': true,
+          'id': 24,
+          'menusCode': '1-code-24',
+          'status': 1,
+          'sortNo': 1,
+          'meta': {
+            'title': '表单配置',
+            'noCache': true,
+            'activeMenu': '/systemTools/formGenerator',
+            'icon': '',
+            'breadcrumb': true,
+            'affix': false,
+            'is_local': true
+          },
+          'name': '表单配置',
+          'path': 'list',
+          'pid': 23
+        }]
+      }, {
         component: '/systemTools/builMgt/index',
         redirect: '/systemTools/builMgt/list',
         hidden: false,

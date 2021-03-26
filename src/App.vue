@@ -6,6 +6,12 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  mounted() {
+    document.body.ondrop = event => {
+      event.preventDefault()
+      event.stopPropagation()
+    }
+  }
 }
 </script>

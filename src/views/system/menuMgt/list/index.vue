@@ -421,12 +421,16 @@ export default {
     .el-dialog__body{
       padding: 20px;
     }
+
   }
-  .sortable-ghost{
-    opacity: .8;
-    color: #fff!important;
-    background: #1890ff!important;
+  .sortMgt-dialog{
+    .sortable-ghost{
+      opacity: .8;
+      color: #fff!important;
+      background: #1890ff!important;
+    }
   }
+
 </style>
 <style scoped lang="scss">
 .search-container{
